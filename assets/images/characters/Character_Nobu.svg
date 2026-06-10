@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 240" role="img" aria-labelledby="title">
+	<title id="title">Nobu</title>
+	<rect width="240" height="240" rx="28" fill="#f6f1e5"/>
+	<circle cx="120" cy="82" r="39" fill="#3f463d"/>
+	<path d="M56 206c9-52 42-82 64-82s55 30 64 82" fill="#6c6a60"/>
+	<path d="M80 78c16-42 66-48 82 0-28-13-54-13-82 0z" fill="#d8d2c3"/>
+	<path d="M92 128h56" stroke="#d8d2c3" stroke-width="14" stroke-linecap="round"/>
+	<path d="M94 154h52" stroke="#fbfaf4" stroke-width="10" stroke-linecap="round"/>
+</svg>

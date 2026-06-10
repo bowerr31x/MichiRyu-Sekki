@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 240" role="img" aria-labelledby="title">
+	<title id="title">Daichi</title>
+	<rect width="240" height="240" rx="28" fill="#f6f1e5"/>
+	<circle cx="120" cy="84" r="39" fill="#4a3b2d"/>
+	<path d="M56 206c9-54 42-84 64-84s55 30 64 84" fill="#687661"/>
+	<path d="M72 72h96l-18-24H90z" fill="#8f7b42"/>
+	<path d="M84 82c24-12 48-12 72 0" stroke="#2f332d" stroke-width="12" stroke-linecap="round"/>
+	<path d="M96 154h48" stroke="#fbfaf4" stroke-width="10" stroke-linecap="round"/>
+</svg>

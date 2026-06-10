@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 1200" role="img" aria-labelledby="title desc">
+	<title id="title">Bush Warbler Sings</title>
+	<desc id="desc">A clean scalable icon of a rounded bird with a clear head and beak.</desc>
+	<g fill="#111111">
+		<path d="M230 660 C230 510 365 390 540 390 C705 390 838 492 872 632 C788 720 663 772 526 772 C356 772 230 724 230 660 Z" />
+		<circle cx="830" cy="470" r="126" />
+		<path d="M914 448 L1080 522 L914 596 Z" />
+		<path d="M287 614 L116 510 L174 724 Z" />
+		<path d="M470 534 C555 584 642 610 742 606 C693 678 585 711 486 674 C420 649 383 606 368 560 C404 551 437 543 470 534 Z" fill="#ffffff" opacity="0.92" />
+		<path d="M444 758 H506 V930 H444 Z" />
+		<path d="M632 748 H694 V930 H632 Z" />
+	</g>
+	<g fill="none" stroke="#111111" stroke-linecap="round" stroke-linejoin="round" stroke-width="42">
+		<path d="M446 930 L368 998" />
+		<path d="M506 930 L576 998" />
+		<path d="M634 930 L566 998" />
+		<path d="M694 930 L768 998" />
+	</g>
+	<circle cx="868" cy="438" r="28" fill="#ffffff" />
+</svg>

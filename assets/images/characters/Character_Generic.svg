@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 240" role="img" aria-labelledby="title">
+	<title id="title">Yuki no Sato Character</title>
+	<rect width="240" height="240" rx="28" fill="#f6f1e5"/>
+	<circle cx="120" cy="82" r="38" fill="#6c6a60"/>
+	<path d="M58 206c8-52 40-82 62-82s54 30 62 82" fill="#687661"/>
+	<path d="M82 82c16-40 62-46 76 0-24-12-52-12-76 0z" fill="#2f332d"/>
+	<path d="M94 152h52" stroke="#fbfaf4" stroke-width="10" stroke-linecap="round"/>
+</svg>

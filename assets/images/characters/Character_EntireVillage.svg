@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 240" role="img" aria-labelledby="title">
+	<title id="title">Entire Village</title>
+	<rect width="240" height="240" rx="28" fill="#f6f1e5"/>
+	<circle cx="78" cy="82" r="28" fill="#687661"/>
+	<circle cx="120" cy="72" r="32" fill="#7b644d"/>
+	<circle cx="164" cy="84" r="27" fill="#8f7b42"/>
+	<path d="M36 206c8-48 32-76 58-76s50 28 58 76" fill="#687661"/>
+	<path d="M76 206c8-58 38-90 64-90s56 32 64 90" fill="#7b644d"/>
+	<path d="M112 206c7-48 31-76 58-76s50 28 58 76" fill="#8f7b42"/>
+</svg>
