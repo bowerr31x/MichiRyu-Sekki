@@ -335,7 +335,7 @@
 		var popovers = map.querySelectorAll( '[data-mrs-character-popover]' );
 		var activeMarker = null;
 		var activeStorySection = null;
-		var firstStoryTab = null;
+		var storyTab = null;
 
 		markers.forEach( function ( marker ) {
 			var isActive = marker.getAttribute( 'data-season' ) === slug;
@@ -381,9 +381,20 @@
 			popover.hidden = true;
 		} );
 
-		firstStoryTab = activeStorySection ? activeStorySection.querySelector( '[data-mrs-story-tab]' ) : null;
-		if ( firstStoryTab ) {
-			selectMapStory( map, firstStoryTab.getAttribute( 'data-story' ) );
+		if ( activeStorySection ) {
+			storyTab = activeStorySection.querySelector( '[data-mrs-story-tab].is-active' );
+
+			if ( ! storyTab && slug === map.getAttribute( 'data-current-season' ) ) {
+				storyTab = activeStorySection.querySelector( '[data-mrs-story-tab][data-ko="' + map.getAttribute( 'data-current-ko' ) + '"]' );
+			}
+
+			if ( ! storyTab ) {
+				storyTab = activeStorySection.querySelector( '[data-mrs-story-tab]' );
+			}
+		}
+
+		if ( storyTab ) {
+			selectMapStory( map, storyTab.getAttribute( 'data-story' ) );
 		} else {
 			updateStoryCharacters( map, '' );
 		}
@@ -420,6 +431,8 @@
 
 	function selectMapStory( map, storyId ) {
 		var activeSection;
+		var activeTab = null;
+		var activeKo = '';
 
 		if ( ! map || ! storyId ) {
 			return;
@@ -432,6 +445,10 @@
 			tab.classList.toggle( 'is-active', isActive );
 			tab.setAttribute( 'aria-selected', isActive ? 'true' : 'false' );
 			tab.setAttribute( 'tabindex', isActive ? '0' : '-1' );
+			if ( isActive ) {
+				activeTab = tab;
+				activeKo = tab.getAttribute( 'data-ko' ) || '';
+			}
 		} );
 
 		if ( activeSection ) {
@@ -439,10 +456,38 @@
 				var isActive = story.getAttribute( 'data-story' ) === storyId;
 				story.classList.toggle( 'is-active', isActive );
 				story.hidden = ! isActive;
+				if ( isActive && ! activeKo ) {
+					activeKo = story.getAttribute( 'data-ko' ) || '';
+				}
 			} );
 		}
 
+		map.querySelectorAll( '[data-mrs-map-ko-details]' ).forEach( function ( details ) {
+			var activeDetail = null;
+
+			details.querySelectorAll( '[data-ko]' ).forEach( function ( detail ) {
+				var isActive = ( activeKo && detail.getAttribute( 'data-ko' ) === activeKo ) || detail.getAttribute( 'data-story' ) === storyId;
+				detail.classList.toggle( 'is-active', isActive );
+				detail.hidden = ! isActive;
+				if ( isActive ) {
+					activeDetail = detail;
+				}
+			} );
+
+			if ( ! activeDetail ) {
+				activeDetail = details.querySelector( '[data-ko]' );
+				if ( activeDetail ) {
+					activeDetail.classList.add( 'is-active' );
+					activeDetail.hidden = false;
+				}
+			}
+		} );
+
 		updateStoryCharacters( map, storyId );
+
+		if ( activeTab ) {
+			activeTab.scrollIntoView( { block: 'nearest', inline: 'center' } );
+		}
 	}
 
 	function stepMapStory( button ) {

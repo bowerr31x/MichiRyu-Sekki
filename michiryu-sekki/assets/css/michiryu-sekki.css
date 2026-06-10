@@ -1026,7 +1026,7 @@
 	transform: translateX(-50%);
 }
 
-.michiryu-sekki-map__marker:focus-visible::after {
+.michiryu-sekki-map__marker:hover::after {
 	display: block;
 }
 
@@ -1141,6 +1141,52 @@
 .michiryu-sekki-map__phrase {
 	color: var(--mrs-bark);
 	font-style: italic;
+}
+
+.michiryu-sekki-map__ko-details {
+	margin-top: 1rem;
+	padding-top: 0.85rem;
+	border-top: 1px solid rgba(123, 100, 77, 0.16);
+}
+
+.michiryu-sekki-map__ko-detail {
+	padding: 0.8rem;
+	background: #fffdf6;
+	border: 1px solid rgba(104, 118, 97, 0.22);
+	border-radius: 8px;
+}
+
+.michiryu-sekki-map__ko-detail[hidden] {
+	display: none;
+}
+
+.michiryu-sekki-map__ko-eyebrow,
+.michiryu-sekki-map__ko-date {
+	margin: 0;
+	color: var(--mrs-muted);
+	font-size: 0.82rem;
+}
+
+.michiryu-sekki-map__ko-title {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 0.16rem 0.4rem;
+	align-items: baseline;
+	margin: 0.3rem 0 0;
+	color: var(--mrs-ink);
+	font-size: 1rem;
+	line-height: 1.22;
+	letter-spacing: 0;
+}
+
+.michiryu-sekki-map__ko-english,
+.michiryu-sekki-map__ko-description {
+	margin: 0.5rem 0 0;
+}
+
+.michiryu-sekki-map__ko-english {
+	color: var(--mrs-bark);
+	font-weight: 700;
 }
 
 .michiryu-sekki-map__nav {

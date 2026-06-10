@@ -1428,6 +1428,14 @@ class MichiRyu_Sekki {
 			$attrs = ' href="' . esc_url( $url ) . '"';
 		}
 
+		if ( 'modal' === $behavior && ! empty( $story ) && ! empty( $season ) ) {
+			$attrs .= sprintf(
+				' data-mrs-read-story-open data-season="%1$s" data-story="%2$s"',
+				esc_attr( $season['slug'] ?? '' ),
+				esc_attr( $story['id'] ?? '' )
+			);
+		}
+
 		if ( ! empty( $story ) && ! empty( $season ) ) {
 			$story_attrs = $attrs;
 			$actions[] = sprintf(
@@ -1531,6 +1539,7 @@ class MichiRyu_Sekki {
 	private function render_map( $args, $options ) {
 		$seasons      = MichiRyu_Sekki_Data::get_seasons();
 		$current      = MichiRyu_Sekki_Data::get_current();
+		$current_ko   = MichiRyu_Sekki_Data::get_current_ko();
 		$current_only = ! empty( $args['current_only'] );
 		$title_id     = $args['title_id'] ?? wp_unique_id( 'michiryu-sekki-map-title-' );
 		$map_url      = $this->get_map_image_url();
@@ -1548,7 +1557,7 @@ class MichiRyu_Sekki {
 
 		ob_start();
 		?>
-		<section class="michiryu-sekki-map<?php echo ! empty( $args['is_modal'] ) ? ' michiryu-sekki-map--modal' : ''; ?>" data-mrs-map data-current-season="<?php echo esc_attr( $current['slug'] ); ?>" aria-labelledby="<?php echo esc_attr( $title_id ); ?>">
+		<section class="michiryu-sekki-map<?php echo ! empty( $args['is_modal'] ) ? ' michiryu-sekki-map--modal' : ''; ?>" data-mrs-map data-current-season="<?php echo esc_attr( $current['slug'] ); ?>" data-current-ko="<?php echo esc_attr( $current_ko['ko_number'] ?? '' ); ?>" aria-labelledby="<?php echo esc_attr( $title_id ); ?>">
 			<div class="michiryu-sekki-map__header">
 				<div>
 					<h2 class="michiryu-sekki-map__title" id="<?php echo esc_attr( $title_id ); ?>"><?php esc_html_e( 'Explore Map', 'michiryu-sekki' ); ?></h2>
@@ -1588,7 +1597,7 @@ class MichiRyu_Sekki {
 				</div>
 				<div class="michiryu-sekki-map__details" data-mrs-map-details aria-live="polite">
 					<?php foreach ( $seasons as $season ) : ?>
-						<?php echo $this->render_map_detail( $season, $current, $options ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
+						<?php echo $this->render_map_detail( $season, $current, $current_ko, $options ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
 					<?php endforeach; ?>
 				</div>
 			</div>
@@ -1749,6 +1758,8 @@ class MichiRyu_Sekki {
 	 */
 	private function render_map_characters( $seasons, $current ) {
 		$characters = MichiRyu_Sekki_Content::get_characters();
+		$current_story = $this->get_current_story_for_season( $current );
+		$current_story_id = $current_story['id'] ?? '';
 		$story_characters = array();
 		$has_characters = false;
 		$has_current_characters = false;
@@ -1756,11 +1767,12 @@ class MichiRyu_Sekki {
 		foreach ( $seasons as $season ) {
 			$stories = MichiRyu_Sekki_Content::get_stories_for_sekki( $season['sekki_number'] );
 			foreach ( $stories as $story_index => $story ) {
+				$is_initial = $season['slug'] === $current['slug'] && ! empty( $current_story_id ) && $story['id'] === $current_story_id;
 				$ids = array_values( array_unique( array_merge( array( 'masaru' ), $story['characters'] ) ) );
 				$story_characters[] = array(
 					'season_slug' => $season['slug'],
 					'story_id'    => $story['id'],
-					'is_initial'  => $season['slug'] === $current['slug'] && 0 === $story_index,
+					'is_initial'  => $is_initial,
 					'lesson'      => $story['lesson'],
 					'spotlight'   => $story['spotlight'],
 					'ids'         => $ids,
@@ -1769,7 +1781,7 @@ class MichiRyu_Sekki {
 				if ( ! empty( $ids ) ) {
 					$has_characters = true;
 				}
-				if ( $season['slug'] === $current['slug'] && 0 === $story_index && ! empty( $ids ) ) {
+				if ( $is_initial && ! empty( $ids ) ) {
 					$has_current_characters = true;
 				}
 			}
@@ -1905,10 +1917,11 @@ class MichiRyu_Sekki {
 	 *
 	 * @param array<string,mixed> $season Season record.
 	 * @param array<string,mixed> $current Current season.
+	 * @param array<string,mixed> $current_ko Current ko record.
 	 * @param array<string,mixed> $options Saved options.
 	 * @return string
 	 */
-	private function render_map_detail( $season, $current, $options ) {
+	private function render_map_detail( $season, $current, $current_ko, $options ) {
 		$previous = MichiRyu_Sekki_Data::get_previous( $season['slug'] );
 		$next     = MichiRyu_Sekki_Data::get_next( $season['slug'] );
 		$image    = $this->render_map_detail_image( $season, $options );
@@ -1949,10 +1962,63 @@ class MichiRyu_Sekki {
 			<?php if ( ! empty( $read_more_url ) ) : ?>
 				<p><a class="michiryu-sekki-map__read-more" href="<?php echo esc_url( $read_more_url ); ?>"><?php esc_html_e( 'Read more', 'michiryu-sekki' ); ?></a></p>
 			<?php endif; ?>
+			<?php echo $this->render_map_ko_details( $season, $current_ko ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
 			<?php if ( $nav_bottom ) : ?>
 				<?php echo $nav; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
 			<?php endif; ?>
 		</article>
+		<?php
+
+		return ob_get_clean();
+	}
+
+	/**
+	 * Render ko detail cards for a map season.
+	 *
+	 * @param array<string,mixed> $season Season record.
+	 * @param array<string,mixed> $current_ko Current ko record.
+	 * @return string
+	 */
+	private function render_map_ko_details( $season, $current_ko ) {
+		$ko_records = MichiRyu_Sekki_Data::get_ko();
+		$stories = MichiRyu_Sekki_Content::get_stories_for_sekki( (int) $season['sekki_number'] );
+		$story_ids_by_ko = array();
+		$active_ko_number = absint( $season['related_ko'][0] ?? 0 );
+
+		foreach ( $stories as $story ) {
+			$story_ids_by_ko[ absint( $story['ko_number'] ?? 0 ) ] = $story['id'] ?? '';
+		}
+
+		if ( in_array( absint( $current_ko['ko_number'] ?? 0 ), array_map( 'absint', $season['related_ko'] ?? array() ), true ) ) {
+			$active_ko_number = absint( $current_ko['ko_number'] );
+		}
+
+		ob_start();
+		?>
+		<div class="michiryu-sekki-map__ko-details" data-mrs-map-ko-details>
+			<?php foreach ( $season['related_ko'] as $ko_number ) : ?>
+				<?php $ko = $ko_records[ absint( $ko_number ) - 1 ] ?? array(); ?>
+				<?php if ( empty( $ko ) ) : ?>
+					<?php continue; ?>
+				<?php endif; ?>
+				<?php $is_active = absint( $ko['ko_number'] ) === $active_ko_number; ?>
+				<article class="michiryu-sekki-map__ko-detail<?php echo $is_active ? ' is-active' : ''; ?>" data-ko="<?php echo esc_attr( $ko['ko_number'] ); ?>" data-story="<?php echo esc_attr( $story_ids_by_ko[ absint( $ko['ko_number'] ) ] ?? '' ); ?>" <?php echo $is_active ? '' : 'hidden'; ?>>
+					<p class="michiryu-sekki-map__ko-eyebrow">
+						<?php
+						printf(
+							/* translators: %d: Ko number. */
+							esc_html__( 'Ko %d', 'michiryu-sekki' ),
+							absint( $ko['ko_number'] )
+						);
+						?>
+					</p>
+					<h4 class="michiryu-sekki-map__ko-title"><span><?php echo esc_html( $ko['romaji'] ); ?></span> <span><?php echo esc_html( $ko['kanji'] ); ?></span></h4>
+					<p class="michiryu-sekki-map__ko-english"><?php echo esc_html( $ko['english_name'] ); ?></p>
+					<p class="michiryu-sekki-map__ko-date"><?php echo esc_html( $ko['date_range'] ); ?></p>
+					<p class="michiryu-sekki-map__ko-description"><?php echo esc_html( $ko['short_description'] ); ?></p>
+				</article>
+			<?php endforeach; ?>
+		</div>
 		<?php
 
 		return ob_get_clean();
@@ -1985,6 +2051,8 @@ class MichiRyu_Sekki {
 	private function render_map_stories( $season, $current ) {
 		$stories = MichiRyu_Sekki_Content::get_stories_for_sekki( $season['sekki_number'] );
 		$is_current = $season['slug'] === $current['slug'];
+		$current_story = $is_current ? $this->get_current_story_for_season( $season ) : array();
+		$current_story_id = $current_story['id'] ?? '';
 
 		if ( empty( $stories ) ) {
 			return sprintf(
@@ -2007,7 +2075,8 @@ class MichiRyu_Sekki {
 				<?php foreach ( $stories as $story_index => $story ) : ?>
 					<?php $panel_id = $this->get_story_panel_id( $season, $story ); ?>
 					<?php $tab_id = $panel_id . '-tab'; ?>
-					<button class="michiryu-sekki-map__story-tab<?php echo 0 === $story_index ? ' is-active' : ''; ?>" id="<?php echo esc_attr( $tab_id ); ?>" type="button" role="tab" data-mrs-story-tab data-season="<?php echo esc_attr( $season['slug'] ); ?>" data-story="<?php echo esc_attr( $story['id'] ); ?>" aria-selected="<?php echo 0 === $story_index ? 'true' : 'false'; ?>" aria-controls="<?php echo esc_attr( $panel_id ); ?>" tabindex="<?php echo 0 === $story_index ? '0' : '-1'; ?>">
+					<?php $is_active_story = $is_current ? $story['id'] === $current_story_id : 0 === $story_index; ?>
+					<button class="michiryu-sekki-map__story-tab<?php echo $is_active_story ? ' is-active' : ''; ?>" id="<?php echo esc_attr( $tab_id ); ?>" type="button" role="tab" data-mrs-story-tab data-season="<?php echo esc_attr( $season['slug'] ); ?>" data-story="<?php echo esc_attr( $story['id'] ); ?>" data-ko="<?php echo esc_attr( $story['ko_number'] ); ?>" aria-selected="<?php echo $is_active_story ? 'true' : 'false'; ?>" aria-controls="<?php echo esc_attr( $panel_id ); ?>" tabindex="<?php echo $is_active_story ? '0' : '-1'; ?>">
 						<span><?php echo esc_html( sprintf( __( 'Ko %d', 'michiryu-sekki' ), absint( $story['ko_number'] ) ) ); ?></span>
 						<strong><?php echo esc_html( $story['title'] ); ?></strong>
 					</button>
@@ -2017,7 +2086,8 @@ class MichiRyu_Sekki {
 				<?php foreach ( $stories as $story_index => $story ) : ?>
 					<?php $panel_id = $this->get_story_panel_id( $season, $story ); ?>
 					<?php $tab_id = $panel_id . '-tab'; ?>
-					<article class="michiryu-sekki-map__story<?php echo 0 === $story_index ? ' is-active' : ''; ?>" id="<?php echo esc_attr( $panel_id ); ?>" role="tabpanel" aria-labelledby="<?php echo esc_attr( $tab_id ); ?>" tabindex="0" data-mrs-story data-story="<?php echo esc_attr( $story['id'] ); ?>" <?php echo 0 === $story_index ? '' : 'hidden'; ?>>
+					<?php $is_active_story = $is_current ? $story['id'] === $current_story_id : 0 === $story_index; ?>
+					<article class="michiryu-sekki-map__story<?php echo $is_active_story ? ' is-active' : ''; ?>" id="<?php echo esc_attr( $panel_id ); ?>" role="tabpanel" aria-labelledby="<?php echo esc_attr( $tab_id ); ?>" tabindex="0" data-mrs-story data-story="<?php echo esc_attr( $story['id'] ); ?>" data-ko="<?php echo esc_attr( $story['ko_number'] ); ?>" <?php echo $is_active_story ? '' : 'hidden'; ?>>
 						<p class="michiryu-sekki-map__story-eyebrow">
 							<?php
 							printf(
