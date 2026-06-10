@@ -864,18 +864,37 @@
 }
 
 .michiryu-sekki-map__viewport {
-	overflow: auto;
+	overflow: hidden;
 	background: #eee7da;
 	border: 1px solid var(--mrs-wash);
 	border-radius: 8px;
+	scrollbar-width: none;
+	-ms-overflow-style: none;
+}
+
+.michiryu-sekki-map__viewport::-webkit-scrollbar {
+	display: none;
 }
 
 .michiryu-sekki-map__canvas {
 	position: relative;
 	width: 100%;
-	min-width: min(48rem, 100%);
 	transform-origin: top left;
 	transition: transform 160ms ease;
+	will-change: transform;
+}
+
+.michiryu-sekki-map.is-map-zoomed .michiryu-sekki-map__viewport {
+	cursor: grab;
+	touch-action: none;
+}
+
+.michiryu-sekki-map.is-map-dragging .michiryu-sekki-map__viewport {
+	cursor: grabbing;
+}
+
+.michiryu-sekki-map.is-map-dragging .michiryu-sekki-map__canvas {
+	transition: none;
 }
 
 .michiryu-sekki-map__image {

@@ -562,7 +562,11 @@
 		}
 
 		map.setAttribute( 'data-zoom', zoom.toFixed( 2 ) );
-		canvas.style.transform = 'scale(' + zoom + ')';
+		map.classList.toggle( 'is-map-zoomed', zoom > 1 );
+		if ( zoom <= 1 ) {
+			map._mrsMapPan = { x: 0, y: 0 };
+		}
+		applyMapTransform( map );
 	}
 
 	function getMapZoom( map ) {
@@ -571,6 +575,62 @@
 		}
 
 		return parseFloat( map.getAttribute( 'data-zoom' ) || '1' ) || 1;
+	}
+
+	function getMapPan( map ) {
+		if ( ! map || ! map._mrsMapPan ) {
+			return { x: 0, y: 0 };
+		}
+
+		return map._mrsMapPan;
+	}
+
+	function clampMapPan( map, pan ) {
+		var viewport = map ? map.querySelector( '[data-mrs-map-viewport]' ) : null;
+		var canvas = map ? map.querySelector( '[data-mrs-map-canvas]' ) : null;
+		var zoom = getMapZoom( map );
+		var minX;
+		var minY;
+
+		if ( ! viewport || ! canvas || zoom <= 1 ) {
+			return { x: 0, y: 0 };
+		}
+
+		minX = Math.min( 0, viewport.clientWidth - ( canvas.offsetWidth * zoom ) );
+		minY = Math.min( 0, viewport.clientHeight - ( canvas.offsetHeight * zoom ) );
+
+		return {
+			x: Math.max( minX, Math.min( 0, pan.x ) ),
+			y: Math.max( minY, Math.min( 0, pan.y ) ),
+		};
+	}
+
+	function applyMapTransform( map ) {
+		var canvas = map ? map.querySelector( '[data-mrs-map-canvas]' ) : null;
+		var zoom = getMapZoom( map );
+		var pan;
+
+		if ( ! canvas ) {
+			return;
+		}
+
+		pan = clampMapPan( map, getMapPan( map ) );
+		map._mrsMapPan = pan;
+		canvas.style.transform = 'translate(' + pan.x + 'px, ' + pan.y + 'px) scale(' + zoom + ')';
+	}
+
+	function resetMapView( map ) {
+		var viewport = map ? map.querySelector( '[data-mrs-map-viewport]' ) : null;
+
+		if ( viewport ) {
+			viewport.scrollLeft = 0;
+			viewport.scrollTop = 0;
+		}
+
+		if ( map ) {
+			map._mrsMapPan = { x: 0, y: 0 };
+			setMapZoom( map, 1 );
+		}
 	}
 
 	function startMapSettling( map ) {
@@ -595,6 +655,7 @@
 	function openMapModal( trigger ) {
 		var card = trigger.closest( '.michiryu-sekki' );
 		var modal = card ? card.querySelector( '[data-mrs-map-modal]' ) : document.querySelector( '[data-mrs-map-modal]' );
+		var dialog;
 		var map;
 		var firstMarker;
 
@@ -607,6 +668,11 @@
 		modal._mrsTrigger = trigger;
 		document.documentElement.classList.add( 'mrs-map-modal-open' );
 
+		dialog = modal.querySelector( '.michiryu-sekki-map-modal__dialog' );
+		if ( dialog ) {
+			dialog.scrollTop = 0;
+		}
+
 		map = modal.querySelector( '[data-mrs-map]' );
 		startMapSettling( map );
 
@@ -615,7 +681,12 @@
 			firstMarker.focus( { preventScroll: true } );
 		}
 
-		window.requestAnimationFrame( centerActiveTimelines );
+		window.requestAnimationFrame( function () {
+			if ( dialog ) {
+				dialog.scrollTop = 0;
+			}
+			centerActiveTimelines();
+		} );
 
 		return modal;
 	}
@@ -624,7 +695,6 @@
 		var map = modal ? modal.querySelector( '[data-mrs-map]' ) : null;
 		var season = trigger.getAttribute( 'data-season' );
 		var storyId = trigger.getAttribute( 'data-story' );
-		var story;
 
 		if ( ! map || ! season || ! storyId ) {
 			return;
@@ -632,14 +702,6 @@
 
 		selectMapSeason( map, season, false );
 		selectMapStory( map, storyId );
-
-		story = map.querySelector( '[data-mrs-story][data-story="' + storyId + '"]' );
-		if ( story ) {
-			story.focus( { preventScroll: true } );
-			story.scrollIntoView( {
-				block: window.matchMedia( '(max-width: 640px)' ).matches ? 'start' : 'nearest',
-			} );
-		}
 	}
 
 	function closeMapModal( modal ) {
@@ -736,6 +798,53 @@
 		} );
 	}
 
+	document.addEventListener( 'pointerdown', function ( event ) {
+		var viewport = event.target.closest( '[data-mrs-map-viewport]' );
+		var map = viewport ? getMapRoot( viewport ) : null;
+		var startPan;
+		var startX;
+		var startY;
+		var dragging = false;
+
+		if ( ! viewport || ! map || getMapZoom( map ) <= 1 || event.target.closest( 'button, a, input, select, textarea' ) ) {
+			return;
+		}
+
+		event.preventDefault();
+		startPan = getMapPan( map );
+		startX = event.clientX;
+		startY = event.clientY;
+		map.classList.add( 'is-map-dragging' );
+		viewport.setPointerCapture( event.pointerId );
+
+		function moveMap( moveEvent ) {
+			var nextPan = {
+				x: startPan.x + moveEvent.clientX - startX,
+				y: startPan.y + moveEvent.clientY - startY,
+			};
+
+			dragging = true;
+			map._mrsMapPan = nextPan;
+			applyMapTransform( map );
+		}
+
+		function stopDrag() {
+			map.classList.remove( 'is-map-dragging' );
+			viewport.removeEventListener( 'pointermove', moveMap );
+			viewport.removeEventListener( 'pointerup', stopDrag );
+			viewport.removeEventListener( 'pointercancel', stopDrag );
+			if ( dragging ) {
+				window.setTimeout( function () {
+					dragging = false;
+				}, 0 );
+			}
+		}
+
+		viewport.addEventListener( 'pointermove', moveMap );
+		viewport.addEventListener( 'pointerup', stopDrag );
+		viewport.addEventListener( 'pointercancel', stopDrag );
+	} );
+
 	document.addEventListener( 'click', function ( event ) {
 		var previous = event.target.closest( '[data-mrs-carousel-prev]' );
 		var next = event.target.closest( '[data-mrs-carousel-next]' );
@@ -810,7 +919,7 @@
 		}
 
 		if ( reset ) {
-			setMapZoom( getMapRoot( reset ), 1 );
+			resetMapView( getMapRoot( reset ) );
 		}
 
 		if ( current ) {
