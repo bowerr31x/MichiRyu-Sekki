@@ -2413,7 +2413,7 @@ class MichiRyu_Sekki {
 		return sprintf(
 			'<div class="michiryu-sekki__ko">%1$s<div class="michiryu-sekki__ko-body"><p class="michiryu-sekki__ko-label">%2$s</p><h4 class="michiryu-sekki__ko-title"><span>%3$s</span> <span>%4$s</span></h4><p class="michiryu-sekki__ko-english">%5$s</p><p class="michiryu-sekki__ko-date">%6$s</p>%7$s</div></div>',
 			$icon,
-			esc_html__( 'Current ko', 'michiryu-sekki' ),
+			esc_html__( 'Microseason', 'michiryu-sekki' ),
 			esc_html( $ko['romaji'] ),
 			esc_html( $ko['kanji'] ),
 			esc_html( $ko['english_name'] ),
