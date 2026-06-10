@@ -16,11 +16,12 @@
 ## Git, ZIP, and Version Workflow
 
 - Make related changes in small batches.
-- Commit each logical batch to Git with a clear message.
-- Push to GitHub regularly after useful commits so the work is backed up.
-- Do not create a new ZIP for every tiny change.
-- Create a ZIP only when the user asks for a test build, install build, shareable build, or release build.
+- For routine development, make the requested code changes without incrementing the plugin version unless the user specifically asks for a release/version bump.
+- When the user asks for a local testing package, generate a complete installable WordPress plugin ZIP and keep the same plugin version.
+- Expect test cycles to repeat: change, ZIP, local WordPress/LocalWP testing, fix, ZIP, and test again.
+- Bug fixes during testing should get a new test ZIP with the same version number.
+- Do not create a ZIP for every tiny change unless the user asks for a test build, install build, shareable build, or release build.
 - Keep generated ZIP files out of Git.
-- Do not increment the plugin version for ordinary development commits.
-- Increment the plugin version only when making a ZIP/release build that may be installed or distributed.
-- Use patch-style version bumps for test ZIPs, minor version bumps for stable feature batches, and reserve major version bumps for stable larger milestones.
+- Do not treat test ZIPs as GitHub releases.
+- When a feature batch is complete and ready for production, update the plugin version, update changelog entries, commit to Git with a clear message, push to GitHub, and generate a release ZIP.
+- Use patch-style version bumps for production bug-fix releases, minor version bumps for stable feature batches, and reserve major version bumps for stable larger milestones.
