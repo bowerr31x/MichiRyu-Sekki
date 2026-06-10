@@ -19,7 +19,7 @@ class MichiRyu_Sekki_Widget extends WP_Widget {
 	public function __construct() {
 		parent::__construct(
 			'michiryu_sekki_widget',
-			__( 'MichiRyu Sekki', 'michiryu-sekki' ),
+			__( '[MichiRyu-Sekki]', 'michiryu-sekki' ),
 			array(
 				'description' => __( 'Display the current Japanese 24 Sekki solar term.', 'michiryu-sekki' ),
 			)
@@ -33,12 +33,14 @@ class MichiRyu_Sekki_Widget extends WP_Widget {
 	 * @param array<string,mixed> $instance Widget settings.
 	 */
 	public function widget( $args, $instance ) {
+		$allowed_widget_styles = array( 'banner', 'small' );
 		$title = ! empty( $instance['title'] ) ? apply_filters( 'widget_title', $instance['title'] ) : '';
-		$style = ! empty( $instance['style'] ) ? sanitize_key( $instance['style'] ) : 'compact';
+		$style = ! empty( $instance['style'] ) ? sanitize_key( $instance['style'] ) : 'banner';
+		$style = in_array( $style, $allowed_widget_styles, true ) ? $style : 'banner';
 		$plan  = ! empty( $instance['plan'] ) ? sanitize_key( $instance['plan'] ) : 'standard';
-		$show_ko = ! empty( $instance['show_ko'] );
+		$show_ko = array_key_exists( 'show_ko', $instance ) ? ! empty( $instance['show_ko'] ) : true;
 		$carousel = ! empty( $instance['carousel'] );
-		$show_date_stamp = ! empty( $instance['show_date_stamp'] );
+		$show_date_stamp = array_key_exists( 'show_date_stamp', $instance ) ? ! empty( $instance['show_date_stamp'] ) : true;
 		$sekki = new MichiRyu_Sekki();
 		$options = $sekki->get_options();
 		$show_map_link = ! empty( $options['enable_map_link'] ) && ! empty( $options['show_map_in_widget'] );
@@ -49,11 +51,7 @@ class MichiRyu_Sekki_Widget extends WP_Widget {
 			echo wp_kses_post( $args['before_title'] . esc_html( $title ) . $args['after_title'] );
 		}
 
-		if ( 'journey' === $style ) {
-			echo $sekki->render_journey( array( 'variant' => 'widget' ) ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
-		} else {
-			echo $sekki->render( array( 'style' => $style, 'plan' => $plan, 'show_ko' => $show_ko ? 'true' : 'false', 'carousel' => $carousel ? 'true' : 'false', 'show_date_stamp' => $show_date_stamp ? 'true' : 'false', 'show_map_link' => $show_map_link ? 'true' : 'false' ) ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
-		}
+		echo $sekki->render( array( 'style' => $style, 'plan' => $plan, 'show_ko' => $show_ko ? 'true' : 'false', 'carousel' => $carousel ? 'true' : 'false', 'show_date_stamp' => $show_date_stamp ? 'true' : 'false', 'show_map_link' => $show_map_link ? 'true' : 'false', 'show_story' => 'false' ) ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 
 		echo wp_kses_post( $args['after_widget'] );
 	}
@@ -64,12 +62,12 @@ class MichiRyu_Sekki_Widget extends WP_Widget {
 	 * @param array<string,mixed> $instance Widget settings.
 	 */
 	public function form( $instance ) {
-		$title = $instance['title'] ?? __( 'Current Sekki', 'michiryu-sekki' );
-		$style = $instance['style'] ?? 'compact';
+		$title = $instance['title'] ?? '';
+		$style = in_array( $instance['style'] ?? '', array( 'banner', 'small' ), true ) ? $instance['style'] : 'banner';
 		$plan  = $instance['plan'] ?? 'standard';
-		$show_ko = ! empty( $instance['show_ko'] );
+		$show_ko = array_key_exists( 'show_ko', $instance ) ? ! empty( $instance['show_ko'] ) : true;
 		$carousel = ! empty( $instance['carousel'] );
-		$show_date_stamp = ! empty( $instance['show_date_stamp'] );
+		$show_date_stamp = array_key_exists( 'show_date_stamp', $instance ) ? ! empty( $instance['show_date_stamp'] ) : true;
 		?>
 		<p>
 			<label for="<?php echo esc_attr( $this->get_field_id( 'title' ) ); ?>"><?php esc_html_e( 'Title:', 'michiryu-sekki' ); ?></label>
@@ -78,7 +76,7 @@ class MichiRyu_Sekki_Widget extends WP_Widget {
 		<p>
 			<label for="<?php echo esc_attr( $this->get_field_id( 'style' ) ); ?>"><?php esc_html_e( 'Style:', 'michiryu-sekki' ); ?></label>
 			<select class="widefat" id="<?php echo esc_attr( $this->get_field_id( 'style' ) ); ?>" name="<?php echo esc_attr( $this->get_field_name( 'style' ) ); ?>">
-				<?php foreach ( array( 'journey', 'text', 'compact', 'banner', 'image_card', 'ikebana', 'explore_map' ) as $choice ) : ?>
+				<?php foreach ( array( 'banner', 'small' ) as $choice ) : ?>
 					<option value="<?php echo esc_attr( $choice ); ?>" <?php selected( $style, $choice ); ?>><?php echo esc_html( ucfirst( str_replace( '_', ' ', $choice ) ) ); ?></option>
 				<?php endforeach; ?>
 			</select>
@@ -121,10 +119,10 @@ class MichiRyu_Sekki_Widget extends WP_Widget {
 	 */
 	public function update( $new_instance, $old_instance ) {
 		$instance          = $old_instance;
-		$allowed_styles    = array( 'journey', 'text', 'compact', 'banner', 'image_card', 'ikebana', 'explore_map' );
+		$allowed_styles    = array( 'banner', 'small' );
 		$allowed_plans     = array( 'minimal', 'standard', 'ikebana', 'banner', 'educational' );
 		$instance['title'] = sanitize_text_field( $new_instance['title'] ?? '' );
-		$instance['style'] = in_array( $new_instance['style'] ?? '', $allowed_styles, true ) ? $new_instance['style'] : 'compact';
+		$instance['style'] = in_array( $new_instance['style'] ?? '', $allowed_styles, true ) ? $new_instance['style'] : 'banner';
 		$instance['plan']  = in_array( $new_instance['plan'] ?? '', $allowed_plans, true ) ? $new_instance['plan'] : 'standard';
 		$instance['show_ko'] = ! empty( $new_instance['show_ko'] );
 		$instance['carousel'] = ! empty( $new_instance['carousel'] );

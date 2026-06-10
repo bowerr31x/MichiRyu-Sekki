@@ -268,6 +268,11 @@
 	font-weight: 700;
 }
 
+.michiryu-sekki__ko-label-date {
+	color: var(--mrs-muted);
+	font-weight: 400;
+}
+
 .michiryu-sekki__ko-title {
 	display: flex;
 	flex-wrap: wrap;
@@ -1418,6 +1423,82 @@
 .michiryu-sekki--compact {
 	max-width: 22rem;
 	box-shadow: 0 8px 22px rgba(47, 51, 45, 0.08);
+}
+
+.michiryu-sekki--small {
+	max-width: 18rem;
+	box-shadow: 0 8px 20px rgba(47, 51, 45, 0.08);
+}
+
+.michiryu-sekki--small .michiryu-sekki__body {
+	padding: 0.72rem;
+}
+
+.michiryu-sekki--small .michiryu-sekki__image {
+	min-height: 4.6rem;
+}
+
+.michiryu-sekki--small .michiryu-sekki__image > img:not(.michiryu-sekki-signature) {
+	aspect-ratio: 16 / 5;
+}
+
+.michiryu-sekki--small .michiryu-sekki-date-stamp {
+	top: 0.45rem;
+	right: 0.45rem;
+	transform: scale(0.82);
+	transform-origin: top right;
+}
+
+.michiryu-sekki--small .michiryu-sekki__title {
+	font-size: 1rem;
+}
+
+.michiryu-sekki--small .michiryu-sekki__date,
+.michiryu-sekki--small .michiryu-sekki__ko-label,
+.michiryu-sekki--small .michiryu-sekki__story-kicker {
+	font-size: 0.72rem;
+}
+
+.michiryu-sekki--small .michiryu-sekki__description,
+.michiryu-sekki--small .michiryu-sekki__theme,
+.michiryu-sekki--small .michiryu-sekki__ko-description,
+.michiryu-sekki--small .michiryu-sekki__story-excerpt,
+.michiryu-sekki--small .michiryu-sekki__story-characters {
+	display: none;
+}
+
+.michiryu-sekki--small .michiryu-sekki__ko {
+	margin-top: 0.7rem;
+	padding-top: 0.65rem;
+}
+
+.michiryu-sekki--small .michiryu-sekki__ko-icon {
+	display: none;
+}
+
+.michiryu-sekki--small .michiryu-sekki__ko-title {
+	font-size: 0.9rem;
+}
+
+.michiryu-sekki--small .michiryu-sekki__ko-english,
+.michiryu-sekki--small .michiryu-sekki__story-title {
+	font-size: 0.86rem;
+}
+
+.michiryu-sekki--small .michiryu-sekki__story-teaser {
+	margin-top: 0.7rem;
+	padding: 0.58rem;
+}
+
+.michiryu-sekki--small .michiryu-sekki__action-wrap {
+	gap: 0.4rem;
+	margin-top: 0.7rem;
+}
+
+.michiryu-sekki--small .michiryu-sekki__action-link {
+	min-height: 2rem;
+	padding: 0.35rem 0.55rem;
+	font-size: 0.78rem;
 }
 
 .michiryu-sekki--banner,

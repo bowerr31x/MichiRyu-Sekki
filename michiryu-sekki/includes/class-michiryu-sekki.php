@@ -20,7 +20,7 @@ class MichiRyu_Sekki {
 	 *
 	 * @var array<int,string>
 	 */
-	private $styles = array( 'text', 'compact', 'banner', 'image_card', 'ikebana', 'explore_map' );
+	private $styles = array( 'text', 'compact', 'small', 'banner', 'image_card', 'ikebana', 'explore_map' );
 
 	/**
 	 * Allowed plan names.
@@ -153,6 +153,7 @@ class MichiRyu_Sekki {
 				'show_ikebana_materials' => '',
 				'carousel'               => '',
 				'show_date_stamp'        => '',
+				'show_story'             => '',
 				'signature_position'     => '',
 				'signature_size'         => '',
 				'signature_opacity'      => '',
@@ -308,7 +309,7 @@ class MichiRyu_Sekki {
 		$season  = MichiRyu_Sekki_Data::get_current();
 		$next    = MichiRyu_Sekki_Data::get_next( $season['slug'] );
 		$ko      = $args['show_ko'] ? MichiRyu_Sekki_Data::get_current_ko() : null;
-		$story   = $this->get_current_story_for_season( $season );
+		$story   = $args['show_story'] ? $this->get_current_story_for_season( $season ) : array();
 		$image   = $has_sekki_image ? $this->render_sekki_image( $season, $options, $args ) : '';
 		$ko_html = $ko ? $this->render_ko( $ko, $options ) : '';
 
@@ -1099,6 +1100,7 @@ class MichiRyu_Sekki {
 			'show_ikebana_materials' => $this->resolve_bool_arg( $args['show_ikebana_materials'] ?? '', $options['show_ikebana_materials'] ),
 			'carousel'               => $this->resolve_bool_arg( $args['carousel'] ?? '', false ),
 			'show_date_stamp'        => $this->resolve_bool_arg( $args['show_date_stamp'] ?? '', $options['show_date_stamp'] ),
+			'show_story'             => $this->resolve_bool_arg( $args['show_story'] ?? '', true ),
 			'show_map_link'          => $this->resolve_bool_arg( $args['show_map_link'] ?? '', $options['enable_map_link'] ),
 			'signature_position'     => in_array( $signature_position, $signature_positions, true ) ? $signature_position : $options['signature_position'],
 			'signature_size'         => in_array( $signature_size, $signature_sizes, true ) ? $signature_size : $options['signature_size'],
@@ -2407,9 +2409,9 @@ class MichiRyu_Sekki {
 		}
 
 		return sprintf(
-			'<div class="michiryu-sekki__ko">%1$s<div class="michiryu-sekki__ko-body"><p class="michiryu-sekki__ko-label">%2$s</p><h4 class="michiryu-sekki__ko-title"><span>%3$s</span> <span>%4$s</span></h4><p class="michiryu-sekki__ko-english">%5$s</p><p class="michiryu-sekki__ko-date">%6$s</p>%7$s</div></div>',
+			'<div class="michiryu-sekki__ko">%1$s<div class="michiryu-sekki__ko-body"><p class="michiryu-sekki__ko-label"><span>%2$s</span> <span class="michiryu-sekki__ko-label-date">%6$s</span></p><h4 class="michiryu-sekki__ko-title"><span>%3$s</span> <span>%4$s</span></h4><p class="michiryu-sekki__ko-english">%5$s</p>%7$s</div></div>',
 			$icon,
-			esc_html__( 'Microseason', 'michiryu-sekki' ),
+			esc_html__( 'Ko Microseason', 'michiryu-sekki' ),
 			esc_html( $ko['romaji'] ),
 			esc_html( $ko['kanji'] ),
 			esc_html( $ko['english_name'] ),

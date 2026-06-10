@@ -265,6 +265,7 @@ class MichiRyu_Sekki_Admin {
 		return array(
 			'text'       => __( 'Text', 'michiryu-sekki' ),
 			'compact'    => __( 'Compact', 'michiryu-sekki' ),
+			'small'      => __( 'Small', 'michiryu-sekki' ),
 			'banner'     => __( 'Banner', 'michiryu-sekki' ),
 			'image_card' => __( 'Image card', 'michiryu-sekki' ),
 			'ikebana'    => __( 'Ikebana', 'michiryu-sekki' ),
