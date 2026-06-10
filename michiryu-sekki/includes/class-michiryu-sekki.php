@@ -96,7 +96,7 @@ class MichiRyu_Sekki {
 					),
 					'showKo' => array(
 						'type'    => 'boolean',
-						'default' => false,
+						'default' => true,
 					),
 					'carousel' => array(
 						'type'    => 'boolean',
@@ -104,7 +104,7 @@ class MichiRyu_Sekki {
 					),
 					'showDateStamp' => array(
 						'type'    => 'boolean',
-						'default' => false,
+						'default' => true,
 					),
 					'signaturePosition' => array(
 						'type'    => 'string',
@@ -116,7 +116,7 @@ class MichiRyu_Sekki {
 					),
 					'signatureOpacity' => array(
 						'type'    => 'number',
-						'default' => 0,
+						'default' => 1,
 					),
 				),
 				'render_callback' => array( $this, 'render_block' ),
@@ -799,7 +799,7 @@ class MichiRyu_Sekki {
 				array(
 					'signature_position' => 'bottom-right',
 					'signature_size'     => 'small',
-					'signature_opacity'  => $options['signature_opacity'] ?? 0.85,
+					'signature_opacity'  => $options['signature_opacity'] ?? 1,
 				)
 			); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 			?>
@@ -1003,13 +1003,13 @@ class MichiRyu_Sekki {
 			'show_date_range'         => true,
 			'show_description'        => true,
 			'show_sekki_image'        => true,
-			'show_ko_icon'            => false,
+			'show_ko_icon'            => true,
 			'show_ikebana_materials'  => true,
 			'use_bundled_images'      => true,
-			'show_date_stamp'         => false,
+			'show_date_stamp'         => true,
 			'signature_position'      => 'bottom-right',
 			'signature_size'          => 'medium',
-			'signature_opacity'       => 0.85,
+			'signature_opacity'       => 1,
 			'custom_fallback_image_url' => '',
 			'image_style'             => 'banner',
 			'icon_style'              => 'outline',
@@ -2232,7 +2232,7 @@ class MichiRyu_Sekki {
 				array(
 					'signature_position' => 'bottom-right',
 					'signature_size'     => 'small',
-					'signature_opacity'  => $options['signature_opacity'] ?? 0.85,
+					'signature_opacity'  => $options['signature_opacity'] ?? 1,
 				)
 			)
 		);
@@ -2436,7 +2436,7 @@ class MichiRyu_Sekki {
 
 		$position = sanitize_html_class( $args['signature_position'] ?? 'bottom-right' );
 		$size     = sanitize_html_class( $args['signature_size'] ?? 'medium' );
-		$opacity  = max( 0.5, min( 1.0, (float) ( $args['signature_opacity'] ?? 0.85 ) ) );
+		$opacity  = max( 0.5, min( 1.0, (float) ( $args['signature_opacity'] ?? 1 ) ) );
 
 		return sprintf(
 			'<img class="michiryu-sekki-signature michiryu-sekki-signature--%1$s michiryu-sekki-signature--%2$s" src="%3$s" alt="" aria-hidden="true" loading="lazy" style="--mrs-signature-opacity:%4$s;" />',

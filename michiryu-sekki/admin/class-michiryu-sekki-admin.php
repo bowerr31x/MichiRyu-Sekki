@@ -150,7 +150,7 @@ class MichiRyu_Sekki_Admin {
 					$this->render_checkbox_row( 'show_date_range', __( 'Show date range', 'michiryu-sekki' ), $options['show_date_range'] );
 					$this->render_checkbox_row( 'show_description', __( 'Show description', 'michiryu-sekki' ), $options['show_description'] );
 					$this->render_checkbox_row( 'show_sekki_image', __( 'Show Sekki image', 'michiryu-sekki' ), $options['show_sekki_image'] );
-					$this->render_checkbox_row( 'show_ko_icon', __( 'Show Ko microseason icon', 'michiryu-sekki' ), $options['show_ko_icon'] );
+					$this->render_checkbox_row( 'show_ko_icon', __( 'Show Ko microseason section', 'michiryu-sekki' ), $options['show_ko_icon'] );
 					$this->render_checkbox_row( 'show_ikebana_materials', __( 'Show ikebana materials', 'michiryu-sekki' ), $options['show_ikebana_materials'] );
 					$this->render_checkbox_row( 'use_bundled_images', __( 'Use bundled images', 'michiryu-sekki' ), $options['use_bundled_images'] );
 					$this->render_checkbox_row( 'show_date_stamp', __( 'Show current date stamp', 'michiryu-sekki' ), $options['show_date_stamp'] );
