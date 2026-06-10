@@ -1515,7 +1515,7 @@
 }
 
 .michiryu-sekki--small .michiryu-sekki__image--has-date-stamp .michiryu-sekki-signature {
-	height: clamp(42px, 44%, 72px);
+	height: calc(100% - 0.7rem);
 	max-height: calc(100% - 0.7rem);
 }
 
