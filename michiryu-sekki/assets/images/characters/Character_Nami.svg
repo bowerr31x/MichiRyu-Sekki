@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 240" role="img" aria-labelledby="title">
+	<title id="title">Nami</title>
+	<rect width="240" height="240" rx="28" fill="#f6f1e5"/>
+	<circle cx="120" cy="82" r="38" fill="#3f463d"/>
+	<path d="M58 206c8-52 40-82 62-82s54 30 62 82" fill="#536679"/>
+	<path d="M78 82c16-42 68-50 86 0-24-14-60-14-86 0z" fill="#2f332d"/>
+	<path d="M145 146c13-12 30-12 43 0-13 12-30 12-43 0z" fill="#8f3e32"/>
+	<path d="M145 166c13-12 30-12 43 0-13 12-30 12-43 0z" fill="#8f7b42"/>
+</svg>

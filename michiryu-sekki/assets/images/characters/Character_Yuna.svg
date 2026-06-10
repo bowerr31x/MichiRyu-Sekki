@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 240" role="img" aria-labelledby="title">
+	<title id="title">Yuna</title>
+	<rect width="240" height="240" rx="28" fill="#f6f1e5"/>
+	<circle cx="120" cy="82" r="37" fill="#3f463d"/>
+	<path d="M58 206c8-52 40-82 62-82s54 30 62 82" fill="#687661"/>
+	<path d="M78 82c18-44 68-48 86 0-28-16-58-16-86 0z" fill="#2f332d"/>
+	<path d="M73 160c28-12 66-12 94 0M78 178c24-10 60-10 84 0" stroke="#8f7b42" stroke-width="7" stroke-linecap="round"/>
+</svg>

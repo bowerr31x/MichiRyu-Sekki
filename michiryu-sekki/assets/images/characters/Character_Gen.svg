@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 240" role="img" aria-labelledby="title">
+	<title id="title">Gen</title>
+	<rect width="240" height="240" rx="28" fill="#f6f1e5"/>
+	<circle cx="120" cy="82" r="39" fill="#4a3b2d"/>
+	<path d="M56 206c9-52 42-82 64-82s55 30 64 82" fill="#7b644d"/>
+	<path d="M80 78c16-42 66-48 82 0-28-13-54-13-82 0z" fill="#d8d2c3"/>
+	<circle cx="166" cy="152" r="15" fill="#b75a36"/>
+	<path d="M166 137c8-10 18-12 28-6" stroke="#687661" stroke-width="6" stroke-linecap="round"/>
+</svg>

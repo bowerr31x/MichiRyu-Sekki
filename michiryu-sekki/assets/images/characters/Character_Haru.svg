@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 240" role="img" aria-labelledby="title">
+	<title id="title">Haru</title>
+	<rect width="240" height="240" rx="28" fill="#f6f1e5"/>
+	<circle cx="120" cy="82" r="34" fill="#3f463d"/>
+	<path d="M62 206c9-48 39-76 58-76s49 28 58 76" fill="#687661"/>
+	<path d="M80 78c20-35 70-36 82 3-32-7-54-4-82-3z" fill="#1f211e"/>
+	<circle cx="166" cy="154" r="14" fill="#8f7b42"/>
+	<path d="M152 154h-12M180 154h12M156 143l-9-9M176 143l9-9" stroke="#2f332d" stroke-width="5" stroke-linecap="round"/>
+</svg>

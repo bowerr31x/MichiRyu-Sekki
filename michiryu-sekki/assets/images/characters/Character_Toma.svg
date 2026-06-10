@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 240" role="img" aria-labelledby="title">
+	<title id="title">Toma</title>
+	<rect width="240" height="240" rx="28" fill="#f6f1e5"/>
+	<circle cx="120" cy="82" r="36" fill="#2f332d"/>
+	<path d="M60 206c9-50 40-78 60-78s51 28 60 78" fill="#8f7b42"/>
+	<path d="M76 78c20-38 72-39 88 1-30-8-58-6-88-1z" fill="#1f211e"/>
+	<path d="M143 154h48M175 138l16 16-16 16" fill="none" stroke="#8f3e32" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/>
+</svg>

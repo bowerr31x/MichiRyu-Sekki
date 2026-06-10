@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 240" role="img" aria-labelledby="title">
+	<title id="title">Aya</title>
+	<rect width="240" height="240" rx="28" fill="#f6f1e5"/>
+	<circle cx="120" cy="84" r="40" fill="#6c6a60"/>
+	<path d="M58 206c7-50 39-82 62-82s55 32 62 82" fill="#7b644d"/>
+	<path d="M76 86c18-48 70-55 88 0-20-18-65-18-88 0z" fill="#fbfaf4"/>
+	<ellipse cx="166" cy="156" rx="26" ry="14" fill="#d8d2c3" stroke="#7b644d" stroke-width="5"/>
+	<path d="M145 156c14-8 28-8 42 0" stroke="#fbfaf4" stroke-width="5" stroke-linecap="round"/>
+</svg>
