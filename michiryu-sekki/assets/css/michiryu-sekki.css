@@ -880,8 +880,7 @@
 	position: relative;
 	width: 100%;
 	transform-origin: top left;
-	transition: transform 160ms ease;
-	will-change: transform;
+	transition: width 160ms ease, transform 160ms ease;
 }
 
 .michiryu-sekki-map.is-map-zoomed .michiryu-sekki-map__viewport {

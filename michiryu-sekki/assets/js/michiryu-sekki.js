@@ -563,6 +563,7 @@
 
 		map.setAttribute( 'data-zoom', zoom.toFixed( 2 ) );
 		map.classList.toggle( 'is-map-zoomed', zoom > 1 );
+		canvas.style.width = ( zoom * 100 ).toFixed( 2 ) + '%';
 		if ( zoom <= 1 ) {
 			map._mrsMapPan = { x: 0, y: 0 };
 		}
@@ -596,8 +597,8 @@
 			return { x: 0, y: 0 };
 		}
 
-		minX = Math.min( 0, viewport.clientWidth - ( canvas.offsetWidth * zoom ) );
-		minY = Math.min( 0, viewport.clientHeight - ( canvas.offsetHeight * zoom ) );
+		minX = Math.min( 0, viewport.clientWidth - canvas.offsetWidth );
+		minY = Math.min( 0, viewport.clientHeight - canvas.offsetHeight );
 
 		return {
 			x: Math.max( minX, Math.min( 0, pan.x ) ),
@@ -607,7 +608,6 @@
 
 	function applyMapTransform( map ) {
 		var canvas = map ? map.querySelector( '[data-mrs-map-canvas]' ) : null;
-		var zoom = getMapZoom( map );
 		var pan;
 
 		if ( ! canvas ) {
@@ -616,7 +616,7 @@
 
 		pan = clampMapPan( map, getMapPan( map ) );
 		map._mrsMapPan = pan;
-		canvas.style.transform = 'translate(' + pan.x + 'px, ' + pan.y + 'px) scale(' + zoom + ')';
+		canvas.style.transform = 'translate(' + pan.x + 'px, ' + pan.y + 'px)';
 	}
 
 	function resetMapView( map ) {
