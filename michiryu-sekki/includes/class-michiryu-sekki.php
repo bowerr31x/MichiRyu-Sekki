@@ -1017,7 +1017,7 @@ class MichiRyu_Sekki {
 			'reader_open_behavior'    => 'modal',
 			'show_map_in_widget'      => false,
 			'show_current_map_highlight' => true,
-			'map_progression_style'   => 'wheel',
+			'map_progression_style'   => 'timeline',
 			'read_more_link_behavior' => 'none',
 			'external_season_base_url' => '',
 			'map_page_url'            => '',
@@ -2388,6 +2388,16 @@ class MichiRyu_Sekki {
 	 */
 	private function render_ko( $ko, $options ) {
 		$icon = '';
+		$description = (string) ( $ko['short_description'] ?? '' );
+		$duplicate_description = sprintf(
+			/* translators: %s: ko English name. */
+			__( 'A five-day microseason: %s.', 'michiryu-sekki' ),
+			$ko['english_name'] ?? ''
+		);
+
+		if ( $description === $duplicate_description ) {
+			$description = '';
+		}
 
 		if ( 'none' !== $options['icon_style'] ) {
 			$icon_url = $this->get_asset_url( 'ko', $ko['icon_file'], '', $options );
@@ -2401,14 +2411,14 @@ class MichiRyu_Sekki {
 		}
 
 		return sprintf(
-			'<div class="michiryu-sekki__ko">%1$s<div class="michiryu-sekki__ko-body"><p class="michiryu-sekki__ko-label">%2$s</p><h4 class="michiryu-sekki__ko-title"><span>%3$s</span> <span>%4$s</span> <span>%5$s</span></h4><p class="michiryu-sekki__ko-date">%6$s</p><p class="michiryu-sekki__ko-description">%7$s</p></div></div>',
+			'<div class="michiryu-sekki__ko">%1$s<div class="michiryu-sekki__ko-body"><p class="michiryu-sekki__ko-label">%2$s</p><h4 class="michiryu-sekki__ko-title"><span>%3$s</span> <span>%4$s</span></h4><p class="michiryu-sekki__ko-english">%5$s</p><p class="michiryu-sekki__ko-date">%6$s</p>%7$s</div></div>',
 			$icon,
-			esc_html__( 'Current ko microseason', 'michiryu-sekki' ),
+			esc_html__( 'Current ko', 'michiryu-sekki' ),
 			esc_html( $ko['romaji'] ),
 			esc_html( $ko['kanji'] ),
 			esc_html( $ko['english_name'] ),
 			esc_html( $ko['date_range'] ),
-			esc_html( $ko['short_description'] )
+			'' === $description ? '' : '<p class="michiryu-sekki__ko-description">' . esc_html( $description ) . '</p>'
 		);
 	}
 
