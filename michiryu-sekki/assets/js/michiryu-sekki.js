@@ -2,6 +2,72 @@
 	var progressKey = 'michiryuSekkiReadStories';
 	var lastReadKey = 'michiryuSekkiLastReadStory';
 	var totalStories = 72;
+	var timezoneCookie = 'michiryu_sekki_timezone';
+
+	function getBrowserTimezone() {
+		try {
+			return window.Intl && Intl.DateTimeFormat ? Intl.DateTimeFormat().resolvedOptions().timeZone || '' : '';
+		} catch ( error ) {
+			return '';
+		}
+	}
+
+	function getCookie( name ) {
+		var match = document.cookie.match( new RegExp( '(?:^|; )' + name.replace( /([.$?*|{}()[\]\\/+^])/g, '\\$1' ) + '=([^;]*)' ) );
+		return match ? decodeURIComponent( match[1] ) : '';
+	}
+
+	function saveTimezoneCookie() {
+		var timezone = getBrowserTimezone();
+
+		if ( ! timezone || getCookie( timezoneCookie ) === timezone ) {
+			return;
+		}
+
+		document.cookie = timezoneCookie + '=' + encodeURIComponent( timezone ) + '; path=/; max-age=31536000; SameSite=Lax';
+	}
+
+	function updateDateStampsForBrowserTimezone() {
+		var timezone = getBrowserTimezone();
+
+		if ( ! timezone ) {
+			return;
+		}
+
+		document.querySelectorAll( '[data-mrs-date-stamp][data-timestamp]' ).forEach( function ( stamp ) {
+			var timestamp = parseInt( stamp.getAttribute( 'data-timestamp' ), 10 );
+			var date;
+			var month;
+			var day;
+			var parts;
+			var dateParts = {};
+
+			if ( ! timestamp ) {
+				return;
+			}
+
+			date = new Date( timestamp * 1000 );
+			month = new Intl.DateTimeFormat( undefined, { month: 'short', timeZone: timezone } ).format( date ).toUpperCase();
+			day = new Intl.DateTimeFormat( undefined, { day: 'numeric', timeZone: timezone } ).format( date );
+			parts = new Intl.DateTimeFormat( 'en-US', { year: 'numeric', month: '2-digit', day: '2-digit', timeZone: timezone } ).formatToParts( date );
+			parts.forEach( function ( part ) {
+				dateParts[ part.type ] = part.value;
+			} );
+
+			stamp.setAttribute( 'datetime', dateParts.year + '-' + dateParts.month + '-' + dateParts.day );
+			stamp.setAttribute( 'data-timezone', timezone );
+
+			if ( stamp.querySelector( '.michiryu-sekki-date-stamp__month' ) ) {
+				stamp.querySelector( '.michiryu-sekki-date-stamp__month' ).textContent = month;
+			}
+
+			if ( stamp.querySelector( '.michiryu-sekki-date-stamp__day' ) ) {
+				stamp.querySelector( '.michiryu-sekki-date-stamp__day' ).textContent = day;
+			}
+		} );
+	}
+
+	saveTimezoneCookie();
 
 	function focusCurrentSlide( track ) {
 		var currentSlide = track.querySelector( '.michiryu-sekki-carousel__slide.is-current' );
@@ -994,16 +1060,19 @@
 
 	if ( document.readyState === 'loading' ) {
 		document.addEventListener( 'DOMContentLoaded', function () {
+			updateDateStampsForBrowserTimezone();
 			window.requestAnimationFrame( focusCurrentSlides );
 			window.requestAnimationFrame( centerActiveTimelines );
 			initializeStoryReaderProgress();
 		} );
 	} else {
+		updateDateStampsForBrowserTimezone();
 		window.requestAnimationFrame( focusCurrentSlides );
 		window.requestAnimationFrame( centerActiveTimelines );
 		initializeStoryReaderProgress();
 	}
 
+	window.addEventListener( 'load', updateDateStampsForBrowserTimezone );
 	window.addEventListener( 'load', focusCurrentSlides );
 	window.addEventListener( 'load', centerActiveTimelines );
 

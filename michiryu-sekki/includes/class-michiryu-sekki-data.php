@@ -190,12 +190,13 @@ class MichiRyu_Sekki_Data {
 	/**
 	 * Determine current Sekki by month and day.
 	 *
-	 * @param int|null $timestamp Optional Unix timestamp.
+	 * @param int|null    $timestamp Optional UTC Unix timestamp.
+	 * @param string|null $timezone Optional display timezone.
 	 * @return array<string,mixed>
 	 */
-	public static function get_current( $timestamp = null ) {
-		$timestamp = $timestamp ? absint( $timestamp ) : current_time( 'timestamp' );
-		$today     = gmdate( 'm-d', $timestamp );
+	public static function get_current( $timestamp = null, $timezone = null ) {
+		$timestamp = $timestamp ? absint( $timestamp ) : time();
+		$today     = self::format_timestamp( $timestamp, $timezone, 'm-d' );
 
 		foreach ( self::get_seasons() as $season ) {
 			if ( self::date_in_range( $today, $season['start'], $season['end'] ) ) {
@@ -209,12 +210,13 @@ class MichiRyu_Sekki_Data {
 	/**
 	 * Determine current ko by month and day.
 	 *
-	 * @param int|null $timestamp Optional Unix timestamp.
+	 * @param int|null    $timestamp Optional UTC Unix timestamp.
+	 * @param string|null $timezone Optional display timezone.
 	 * @return array<string,mixed>
 	 */
-	public static function get_current_ko( $timestamp = null ) {
-		$timestamp = $timestamp ? absint( $timestamp ) : current_time( 'timestamp' );
-		$today     = gmdate( 'm-d', $timestamp );
+	public static function get_current_ko( $timestamp = null, $timezone = null ) {
+		$timestamp = $timestamp ? absint( $timestamp ) : time();
+		$today     = self::format_timestamp( $timestamp, $timezone, 'm-d' );
 
 		foreach ( self::get_ko() as $ko ) {
 			if ( self::date_in_range( $today, $ko['start'], $ko['end'] ) ) {
@@ -265,20 +267,23 @@ class MichiRyu_Sekki_Data {
 	 * Calculate days until the next Sekki starts.
 	 *
 	 * @param array<string,mixed> $current Current season.
-	 * @param int|null           $timestamp Optional Unix timestamp.
+	 * @param int|null           $timestamp Optional UTC Unix timestamp.
+	 * @param string|null        $timezone Optional display timezone.
 	 * @return int
 	 */
-	public static function days_until_next( $current, $timestamp = null ) {
-		$timestamp = $timestamp ? absint( $timestamp ) : current_time( 'timestamp' );
+	public static function days_until_next( $current, $timestamp = null, $timezone = null ) {
+		$timestamp = $timestamp ? absint( $timestamp ) : time();
+		$timezone_object = self::get_timezone_object( $timezone );
+		$now       = ( new DateTimeImmutable( '@' . $timestamp ) )->setTimezone( $timezone_object );
 		$next      = self::get_next( $current['slug'] );
-		$year      = (int) gmdate( 'Y', $timestamp );
-		$target    = strtotime( $year . '-' . $next['start'] . ' 00:00:00' );
+		$year      = (int) $now->format( 'Y' );
+		$target    = self::create_local_midnight_timestamp( $year, $next['start'], $timezone_object );
 
-		if ( false === $target || $target <= $timestamp ) {
-			$target = strtotime( ( $year + 1 ) . '-' . $next['start'] . ' 00:00:00' );
+		if ( null === $target || $target <= $timestamp ) {
+			$target = self::create_local_midnight_timestamp( $year + 1, $next['start'], $timezone_object );
 		}
 
-		if ( false === $target ) {
+		if ( null === $target ) {
 			return 0;
 		}
 
@@ -397,5 +402,55 @@ class MichiRyu_Sekki_Data {
 		}
 
 		return $today >= $start || $today <= $end;
+	}
+
+	/**
+	 * Format a UTC timestamp in a display timezone.
+	 *
+	 * @param int         $timestamp UTC Unix timestamp.
+	 * @param string|null $timezone Optional timezone string.
+	 * @param string      $format Date format.
+	 * @return string
+	 */
+	private static function format_timestamp( $timestamp, $timezone, $format ) {
+		return ( new DateTimeImmutable( '@' . absint( $timestamp ) ) )
+			->setTimezone( self::get_timezone_object( $timezone ) )
+			->format( $format );
+	}
+
+	/**
+	 * Build a timezone object, falling back to the WordPress site timezone.
+	 *
+	 * @param string|null $timezone Optional timezone string.
+	 * @return DateTimeZone
+	 */
+	private static function get_timezone_object( $timezone = null ) {
+		if ( is_string( $timezone ) && '' !== $timezone ) {
+			try {
+				return new DateTimeZone( $timezone );
+			} catch ( Exception $exception ) {
+				// Fall back below.
+			}
+		}
+
+		if ( function_exists( 'wp_timezone' ) ) {
+			return wp_timezone();
+		}
+
+		return new DateTimeZone( 'UTC' );
+	}
+
+	/**
+	 * Create a UTC timestamp for local midnight in a timezone.
+	 *
+	 * @param int          $year Year.
+	 * @param string       $month_day Month-day string.
+	 * @param DateTimeZone $timezone Display timezone.
+	 * @return int|null
+	 */
+	private static function create_local_midnight_timestamp( $year, $month_day, $timezone ) {
+		$date = DateTimeImmutable::createFromFormat( '!Y-m-d H:i:s', absint( $year ) . '-' . $month_day . ' 00:00:00', $timezone );
+
+		return $date instanceof DateTimeImmutable ? $date->getTimestamp() : null;
 	}
 }

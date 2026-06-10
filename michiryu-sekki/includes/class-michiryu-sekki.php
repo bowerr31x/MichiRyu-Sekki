@@ -293,6 +293,10 @@ class MichiRyu_Sekki {
 
 		$options = $this->get_options();
 		$args    = $this->normalize_args( $args, $options );
+		$timestamp_utc = $this->get_current_timestamp_utc();
+		$display_timezone = $this->get_display_timezone();
+		$args['timestamp_utc'] = $timestamp_utc;
+		$args['display_timezone'] = $display_timezone;
 
 		if ( 'explore_map' === $args['style'] ) {
 			wp_enqueue_script( 'michiryu-sekki' );
@@ -306,10 +310,10 @@ class MichiRyu_Sekki {
 			return $this->render_carousel( $args, $options );
 		}
 
-		$season  = MichiRyu_Sekki_Data::get_current();
+		$season  = MichiRyu_Sekki_Data::get_current( $timestamp_utc, $display_timezone );
 		$next    = MichiRyu_Sekki_Data::get_next( $season['slug'] );
-		$ko      = $args['show_ko'] ? MichiRyu_Sekki_Data::get_current_ko() : null;
-		$story   = $args['show_story'] ? $this->get_current_story_for_season( $season ) : array();
+		$ko      = $args['show_ko'] ? MichiRyu_Sekki_Data::get_current_ko( $timestamp_utc, $display_timezone ) : null;
+		$story   = $args['show_story'] ? $this->get_current_story_for_season( $season, $timestamp_utc, $display_timezone ) : array();
 		$image   = $has_sekki_image ? $this->render_sekki_image( $season, $options, $args ) : '';
 		$ko_html = $ko ? $this->render_ko( $ko, $options ) : '';
 
@@ -376,7 +380,7 @@ class MichiRyu_Sekki {
 							/* translators: 1: next season romanized name, 2: days count. */
 							esc_html__( 'Next: %1$s in %2$d days.', 'michiryu-sekki' ),
 							esc_html( $next['romaji'] ),
-							absint( MichiRyu_Sekki_Data::days_until_next( $season ) )
+							absint( MichiRyu_Sekki_Data::days_until_next( $season, $timestamp_utc, $display_timezone ) )
 						);
 						?>
 					</p>
@@ -422,9 +426,11 @@ class MichiRyu_Sekki {
 				'variant' => 'large',
 			)
 		);
-		$season  = MichiRyu_Sekki_Data::get_current();
-		$ko      = MichiRyu_Sekki_Data::get_current_ko();
-		$story   = $this->get_current_story_for_season( $season );
+		$timestamp_utc = $this->get_current_timestamp_utc();
+		$display_timezone = $this->get_display_timezone();
+		$season  = MichiRyu_Sekki_Data::get_current( $timestamp_utc, $display_timezone );
+		$ko      = MichiRyu_Sekki_Data::get_current_ko( $timestamp_utc, $display_timezone );
+		$story   = $this->get_current_story_for_season( $season, $timestamp_utc, $display_timezone );
 		$next    = MichiRyu_Sekki_Data::get_next( $season['slug'] );
 		$story_id = $story['id'] ?? '';
 		$excerpt = ! empty( $story['body_text'] ) ? wp_trim_words( (string) $story['body_text'], 28, '...' ) : '';
@@ -652,11 +658,14 @@ class MichiRyu_Sekki {
 		if ( ! empty( $args['sekki'] ) ) {
 			$season = MichiRyu_Sekki_Data::get_by_slug( (string) $args['sekki'] );
 			if ( ! empty( $season ) ) {
-				return $this->get_current_story_for_season( $season );
+				return $this->get_current_story_for_season( $season, $this->get_current_timestamp_utc(), $this->get_display_timezone() );
 			}
 		}
 
-		return $this->get_current_story_for_season( MichiRyu_Sekki_Data::get_current() );
+		$timestamp_utc = $this->get_current_timestamp_utc();
+		$display_timezone = $this->get_display_timezone();
+
+		return $this->get_current_story_for_season( MichiRyu_Sekki_Data::get_current( $timestamp_utc, $display_timezone ), $timestamp_utc, $display_timezone );
 	}
 
 	/**
@@ -989,6 +998,67 @@ class MichiRyu_Sekki {
 	}
 
 	/**
+	 * Return the current UTC timestamp.
+	 *
+	 * @return int
+	 */
+	private function get_current_timestamp_utc() {
+		return time();
+	}
+
+	/**
+	 * Resolve the display timezone from the browser cookie or WordPress settings.
+	 *
+	 * @return string
+	 */
+	private function get_display_timezone() {
+		$browser_timezone = isset( $_COOKIE['michiryu_sekki_timezone'] ) ? sanitize_text_field( wp_unslash( $_COOKIE['michiryu_sekki_timezone'] ) ) : ''; // phpcs:ignore WordPressVIPMinimum.Variables.RestrictedVariables.cache_constraints___COOKIE
+
+		if ( $this->is_valid_timezone( $browser_timezone ) ) {
+			return $browser_timezone;
+		}
+
+		$site_timezone = wp_timezone_string();
+
+		return $this->is_valid_timezone( $site_timezone ) ? $site_timezone : wp_timezone()->getName();
+	}
+
+	/**
+	 * Check whether a timezone string is a valid IANA timezone.
+	 *
+	 * @param string $timezone Timezone string.
+	 * @return bool
+	 */
+	private function is_valid_timezone( $timezone ) {
+		if ( ! is_string( $timezone ) || '' === $timezone ) {
+			return false;
+		}
+
+		try {
+			new DateTimeZone( $timezone );
+			return true;
+		} catch ( Exception $exception ) {
+			return false;
+		}
+	}
+
+	/**
+	 * Format a UTC timestamp for display.
+	 *
+	 * @param int    $timestamp UTC timestamp.
+	 * @param string $timezone Display timezone.
+	 * @param string $format Date format.
+	 * @return string
+	 */
+	private function format_timestamp_for_timezone( $timestamp, $timezone, $format ) {
+		$timezone_object = $this->is_valid_timezone( $timezone ) ? new DateTimeZone( $timezone ) : wp_timezone();
+
+		return ( new DateTimeImmutable( '@' . absint( $timestamp ) ) )
+			->setTimezone( $timezone_object )
+			->format( $format );
+	}
+
+	/**
 	 * Default settings.
 	 *
 	 * @return array<string,mixed>
@@ -1126,8 +1196,10 @@ class MichiRyu_Sekki {
 	 */
 	private function render_carousel( $args, $options ) {
 		$seasons        = MichiRyu_Sekki_Data::get_seasons();
-		$current        = MichiRyu_Sekki_Data::get_current();
-		$current_ko     = MichiRyu_Sekki_Data::get_current_ko();
+		$timestamp_utc  = $this->get_current_timestamp_utc();
+		$display_timezone = $this->get_display_timezone();
+		$current        = MichiRyu_Sekki_Data::get_current( $timestamp_utc, $display_timezone );
+		$current_ko     = MichiRyu_Sekki_Data::get_current_ko( $timestamp_utc, $display_timezone );
 		$show_ko_track  = $args['show_ko'];
 		$carousel_id    = wp_unique_id( 'michiryu-sekki-carousel-' );
 		$classes        = array(
@@ -1336,14 +1408,14 @@ class MichiRyu_Sekki {
 	 * @param array<string,mixed> $season Season data.
 	 * @return array<string,mixed>
 	 */
-	private function get_current_story_for_season( $season ) {
+	private function get_current_story_for_season( $season, $timestamp_utc = null, $display_timezone = null ) {
 		$stories = MichiRyu_Sekki_Content::get_stories_for_sekki( (int) ( $season['sekki_number'] ?? 0 ) );
 
 		if ( empty( $stories ) ) {
 			return array();
 		}
 
-		$current_ko = MichiRyu_Sekki_Data::get_current_ko();
+		$current_ko = MichiRyu_Sekki_Data::get_current_ko( $timestamp_utc ?? $this->get_current_timestamp_utc(), $display_timezone ?? $this->get_display_timezone() );
 		foreach ( $stories as $story ) {
 			if ( (int) ( $story['ko_number'] ?? 0 ) === (int) ( $current_ko['ko_number'] ?? 0 ) ) {
 				return $story;
@@ -1538,8 +1610,10 @@ class MichiRyu_Sekki {
 	 */
 	private function render_map( $args, $options ) {
 		$seasons      = MichiRyu_Sekki_Data::get_seasons();
-		$current      = MichiRyu_Sekki_Data::get_current();
-		$current_ko   = MichiRyu_Sekki_Data::get_current_ko();
+		$timestamp_utc = $this->get_current_timestamp_utc();
+		$display_timezone = $this->get_display_timezone();
+		$current      = MichiRyu_Sekki_Data::get_current( $timestamp_utc, $display_timezone );
+		$current_ko   = MichiRyu_Sekki_Data::get_current_ko( $timestamp_utc, $display_timezone );
 		$current_only = ! empty( $args['current_only'] );
 		$title_id     = $args['title_id'] ?? wp_unique_id( 'michiryu-sekki-map-title-' );
 		$map_url      = $this->get_map_image_url();
@@ -1574,7 +1648,7 @@ class MichiRyu_Sekki {
 			<div class="michiryu-sekki-map__layout">
 				<div class="michiryu-sekki-map__main">
 					<div class="michiryu-sekki-map__main-top">
-						<?php echo $this->render_map_characters( $seasons, $current ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
+						<?php echo $this->render_map_characters( $seasons, $current, $timestamp_utc, $display_timezone ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
 						<div class="michiryu-sekki-map__viewport" data-mrs-map-viewport>
 							<div class="michiryu-sekki-map__canvas" data-mrs-map-canvas>
 								<?php if ( ! empty( $map_url ) ) : ?>
@@ -1591,7 +1665,7 @@ class MichiRyu_Sekki {
 					</div>
 					<div class="michiryu-sekki-map__story-region" data-mrs-map-stories>
 						<?php foreach ( $seasons as $season ) : ?>
-							<?php echo $this->render_map_stories( $season, $current ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
+							<?php echo $this->render_map_stories( $season, $current, $timestamp_utc, $display_timezone ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
 						<?php endforeach; ?>
 					</div>
 				</div>
@@ -1756,9 +1830,9 @@ class MichiRyu_Sekki {
 	 * @param array<string,mixed>            $current Current season.
 	 * @return string
 	 */
-	private function render_map_characters( $seasons, $current ) {
+	private function render_map_characters( $seasons, $current, $timestamp_utc, $display_timezone ) {
 		$characters = MichiRyu_Sekki_Content::get_characters();
-		$current_story = $this->get_current_story_for_season( $current );
+		$current_story = $this->get_current_story_for_season( $current, $timestamp_utc, $display_timezone );
 		$current_story_id = $current_story['id'] ?? '';
 		$story_characters = array();
 		$has_characters = false;
@@ -2048,10 +2122,10 @@ class MichiRyu_Sekki {
 	 * @param array<string,mixed> $current Current season.
 	 * @return string
 	 */
-	private function render_map_stories( $season, $current ) {
+	private function render_map_stories( $season, $current, $timestamp_utc, $display_timezone ) {
 		$stories = MichiRyu_Sekki_Content::get_stories_for_sekki( $season['sekki_number'] );
 		$is_current = $season['slug'] === $current['slug'];
-		$current_story = $is_current ? $this->get_current_story_for_season( $season ) : array();
+		$current_story = $is_current ? $this->get_current_story_for_season( $season, $timestamp_utc, $display_timezone ) : array();
 		$current_story_id = $current_story['id'] ?? '';
 
 		if ( empty( $stories ) ) {
@@ -2408,13 +2482,16 @@ class MichiRyu_Sekki {
 			return '';
 		}
 
-		$timestamp = current_time( 'timestamp' );
-		$month     = strtoupper( gmdate( 'M', $timestamp ) );
-		$day       = gmdate( 'j', $timestamp );
+		$timestamp = absint( $args['timestamp_utc'] ?? $this->get_current_timestamp_utc() );
+		$timezone  = (string) ( $args['display_timezone'] ?? $this->get_display_timezone() );
+		$month     = strtoupper( $this->format_timestamp_for_timezone( $timestamp, $timezone, 'M' ) );
+		$day       = $this->format_timestamp_for_timezone( $timestamp, $timezone, 'j' );
 
 		return sprintf(
-			'<time class="michiryu-sekki-date-stamp" datetime="%1$s"><span class="michiryu-sekki-date-stamp__month">%2$s</span><span class="michiryu-sekki-date-stamp__day">%3$s</span></time>',
-			esc_attr( gmdate( 'Y-m-d', $timestamp ) ),
+			'<time class="michiryu-sekki-date-stamp" datetime="%1$s" data-mrs-date-stamp data-timestamp="%2$d" data-timezone="%3$s"><span class="michiryu-sekki-date-stamp__month">%4$s</span><span class="michiryu-sekki-date-stamp__day">%5$s</span></time>',
+			esc_attr( $this->format_timestamp_for_timezone( $timestamp, $timezone, 'Y-m-d' ) ),
+			absint( $timestamp ),
+			esc_attr( $timezone ),
 			esc_html( $month ),
 			esc_html( $day )
 		);
