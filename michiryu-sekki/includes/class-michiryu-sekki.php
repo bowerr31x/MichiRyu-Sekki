@@ -1365,7 +1365,7 @@ class MichiRyu_Sekki {
 		ob_start();
 		?>
 		<aside class="michiryu-sekki__story-teaser" aria-label="<?php esc_attr_e( 'Current story preview', 'michiryu-sekki' ); ?>">
-			<p class="michiryu-sekki__story-kicker"><?php esc_html_e( 'Today’s story', 'michiryu-sekki' ); ?></p>
+			<p class="michiryu-sekki__story-kicker"><?php esc_html_e( 'Ko story', 'michiryu-sekki' ); ?></p>
 			<h4 class="michiryu-sekki__story-title"><?php echo esc_html( $story['title'] ?? '' ); ?></h4>
 			<?php if ( ! empty( $excerpt ) ) : ?>
 				<p class="michiryu-sekki__story-excerpt"><?php echo esc_html( $excerpt ); ?></p>
@@ -1376,7 +1376,6 @@ class MichiRyu_Sekki {
 					<?php echo esc_html( implode( ', ', $character_names ) ); ?>
 				</p>
 			<?php endif; ?>
-			<p class="michiryu-sekki__story-season"><?php echo esc_html( $season['romaji'] . ' - ' . $season['english_name'] ); ?></p>
 		</aside>
 		<?php
 
@@ -1429,13 +1428,10 @@ class MichiRyu_Sekki {
 
 		if ( ! empty( $story ) && ! empty( $season ) ) {
 			$story_attrs = $attrs;
-			if ( 'modal' === $behavior ) {
-				$story_attrs .= ' data-mrs-read-story-open data-season="' . esc_attr( $season['slug'] ) . '" data-story="' . esc_attr( $story['id'] ) . '"';
-			}
 			$actions[] = sprintf(
 				'<a class="michiryu-sekki__action-link michiryu-sekki__action-link--primary"%1$s>%2$s</a>',
 				$story_attrs,
-				esc_html( sprintf( __( 'Read %s story', 'michiryu-sekki' ), $season['romaji'] ) )
+				esc_html__( 'Read & Explore', 'michiryu-sekki' )
 			);
 		}
 
