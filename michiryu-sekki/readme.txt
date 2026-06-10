@@ -4,7 +4,7 @@ Tags: sekki, seasons, japan, shortcode, widget, block, ikebana
 Requires at least: 6.0
 Tested up to: 6.5
 Requires PHP: 7.4
-Stable tag: 1.2.11
+Stable tag: 1.2.12
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -108,6 +108,9 @@ The plugin stores filenames in the data model, checks whether each file exists b
 The data model includes the 72 ko micro-seasons and remains prepared for local seasonal notes, class and event integration, Boston ikebana seasonal material suggestions, and automatic current season inspiration.
 
 == Changelog ==
+
+= 1.2.12 =
+* Test build with Ko story panel action updates.
 
 = 1.2.11 =
 * Let the reader's two-row Ko story path fill the available width instead of bunching to the left.
