@@ -50,15 +50,6 @@ class MichiRyu_Sekki_Admin {
 			'dashicons-palmtree',
 			58
 		);
-
-		add_submenu_page(
-			'michiryu',
-			__( 'Sekki', 'michiryu-sekki' ),
-			__( 'Sekki', 'michiryu-sekki' ),
-			'manage_options',
-			'michiryu-sekki',
-			array( $this, 'render_page' )
-		);
 	}
 
 	/**
