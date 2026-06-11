@@ -106,6 +106,7 @@ class MichiRyu_Sekki_Admin {
 					<?php $this->render_checkbox_row( 'show_sekki_image', __( 'Show Sekki image', 'michiryu-sekki' ), $options['show_sekki_image'] ); ?>
 					<?php $this->render_checkbox_row( 'show_ikebana_materials', __( 'Show ikebana materials', 'michiryu-sekki' ), $options['show_ikebana_materials'] ); ?>
 					<?php $this->render_checkbox_row( 'show_date_stamp', __( 'Show current date stamp', 'michiryu-sekki' ), $options['show_date_stamp'] ); ?>
+					<?php $this->render_checkbox_row( 'show_story_teaser', __( 'Show story teaser', 'michiryu-sekki' ), $options['show_story_teaser'] ); ?>
 					<tr>
 						<th scope="row"><label for="michiryu-sekki-map-page-url"><?php esc_html_e( 'Dedicated map page URL', 'michiryu-sekki' ); ?></label></th>
 						<td>

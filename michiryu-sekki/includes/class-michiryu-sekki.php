@@ -315,7 +315,7 @@ class MichiRyu_Sekki {
 		$ko      = $args['show_ko'] ? MichiRyu_Sekki_Data::get_current_ko( $timestamp_utc, $display_timezone ) : null;
 		$story   = $args['show_story'] ? $this->get_current_story_for_season( $season, $timestamp_utc, $display_timezone ) : array();
 		$image   = $has_sekki_image ? $this->render_sekki_image( $season, $options, $args ) : '';
-		$ko_html = $ko ? $this->render_ko( $ko, $options ) : '';
+		$ko_html = $ko ? $this->render_ko( $ko, $options, $args ) : '';
 
 		if ( $has_sekki_image || $args['show_map_link'] || ! empty( $story ) ) {
 			wp_enqueue_script( 'michiryu-sekki' );
@@ -1075,6 +1075,7 @@ class MichiRyu_Sekki {
 			'show_sekki_image'        => true,
 			'show_ko_icon'            => true,
 			'show_ikebana_materials'  => true,
+			'show_story_teaser'       => true,
 			'use_bundled_images'      => true,
 			'show_date_stamp'         => true,
 			'signature_position'      => 'bottom-right',
@@ -1110,7 +1111,7 @@ class MichiRyu_Sekki {
 		$output['default_style'] = in_array( $input['default_style'] ?? '', $this->styles, true ) ? $input['default_style'] : $defaults['default_style'];
 		$output['default_plan']  = in_array( $input['default_plan'] ?? '', $this->plans, true ) ? $input['default_plan'] : $defaults['default_plan'];
 
-		foreach ( array( 'show_kanji', 'show_romanized', 'show_english', 'show_date_range', 'show_description', 'show_sekki_image', 'show_ko_icon', 'show_ikebana_materials', 'use_bundled_images', 'show_date_stamp', 'enable_map_link', 'show_map_in_widget', 'show_current_map_highlight' ) as $key ) {
+		foreach ( array( 'show_kanji', 'show_romanized', 'show_english', 'show_date_range', 'show_description', 'show_sekki_image', 'show_ko_icon', 'show_ikebana_materials', 'show_story_teaser', 'use_bundled_images', 'show_date_stamp', 'enable_map_link', 'show_map_in_widget', 'show_current_map_highlight' ) as $key ) {
 			$output[ $key ] = ! empty( $input[ $key ] );
 		}
 
@@ -1170,7 +1171,7 @@ class MichiRyu_Sekki {
 			'show_ikebana_materials' => $this->resolve_bool_arg( $args['show_ikebana_materials'] ?? '', $options['show_ikebana_materials'] ),
 			'carousel'               => $this->resolve_bool_arg( $args['carousel'] ?? '', false ),
 			'show_date_stamp'        => $this->resolve_bool_arg( $args['show_date_stamp'] ?? '', $options['show_date_stamp'] ),
-			'show_story'             => $this->resolve_bool_arg( $args['show_story'] ?? '', true ),
+			'show_story'             => $this->resolve_bool_arg( $args['show_story'] ?? '', $options['show_story_teaser'] ),
 			'show_map_link'          => $this->resolve_bool_arg( $args['show_map_link'] ?? '', $options['enable_map_link'] ),
 			'signature_position'     => in_array( $signature_position, $signature_positions, true ) ? $signature_position : $options['signature_position'],
 			'signature_size'         => in_array( $signature_size, $signature_sizes, true ) ? $signature_size : $options['signature_size'],
@@ -1216,7 +1217,7 @@ class MichiRyu_Sekki {
 			<?php echo $this->render_carousel_section( $carousel_id . '-seasons', __( 'Sekki seasons', 'michiryu-sekki' ), $this->render_season_slides( $seasons, $current, $args, $options ) ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
 
 			<?php if ( $show_ko_track ) : ?>
-				<?php echo $this->render_carousel_section( $carousel_id . '-ko', __( 'Ko microseasons', 'michiryu-sekki' ), $this->render_ko_slides( MichiRyu_Sekki_Data::get_ko(), $current_ko, $options ) ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
+				<?php echo $this->render_carousel_section( $carousel_id . '-ko', __( 'Ko microseasons', 'michiryu-sekki' ), $this->render_ko_slides( MichiRyu_Sekki_Data::get_ko(), $current_ko, $options, $args ) ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
 			<?php endif; ?>
 		</div>
 
@@ -1343,9 +1344,10 @@ class MichiRyu_Sekki {
 	 * @param array<int,array<string,mixed>> $ko_records Ko records.
 	 * @param array<string,mixed>            $current_ko Current ko.
 	 * @param array<string,mixed>            $options Saved options.
+	 * @param array<string,mixed>            $args Render args.
 	 * @return string
 	 */
-	private function render_ko_slides( $ko_records, $current_ko, $options ) {
+	private function render_ko_slides( $ko_records, $current_ko, $options, $args ) {
 		$slides = array();
 
 		foreach ( $ko_records as $ko ) {
@@ -1360,7 +1362,7 @@ class MichiRyu_Sekki {
 				'<article class="%1$s" %2$s>%3$s</article>',
 				esc_attr( implode( ' ', $classes ) ),
 				$is_current ? 'aria-current="date"' : '',
-				$this->render_ko_card( $ko, $options, $is_current )
+				$this->render_ko_card( $ko, $options, $is_current, $args )
 			);
 		}
 
@@ -1373,10 +1375,13 @@ class MichiRyu_Sekki {
 	 * @param array<string,mixed> $ko Ko record.
 	 * @param array<string,mixed> $options Saved options.
 	 * @param bool                $is_current Whether this ko is current.
+	 * @param array<string,mixed> $args Render args.
 	 * @return string
 	 */
-	private function render_ko_card( $ko, $options, $is_current ) {
-		$icon = '';
+	private function render_ko_card( $ko, $options, $is_current, $args ) {
+		$icon    = '';
+		$title   = $this->render_ko_name_title( $ko, $args, 'michiryu-sekki__ko-title' );
+		$english = ! empty( $args['show_english'] ) ? '<p class="michiryu-sekki__ko-english">' . esc_html( $ko['english_name'] ) . '</p>' : '';
 
 		if ( 'none' !== $options['icon_style'] ) {
 			$icon_url = $this->get_asset_url( 'ko', $ko['icon_file'], '', $options );
@@ -1390,13 +1395,12 @@ class MichiRyu_Sekki {
 		}
 
 		return sprintf(
-			'<div class="michiryu-sekki__ko michiryu-sekki-carousel__ko">%1$s<div class="michiryu-sekki__ko-body">%2$s<p class="michiryu-sekki__ko-label">%3$s</p><h4 class="michiryu-sekki__ko-title"><span>%4$s</span> <span>%5$s</span> <span>%6$s</span></h4><p class="michiryu-sekki__ko-date">%7$s</p><p class="michiryu-sekki__ko-description">%8$s</p></div></div>',
+			'<div class="michiryu-sekki__ko michiryu-sekki-carousel__ko">%1$s<div class="michiryu-sekki__ko-body">%2$s<p class="michiryu-sekki__ko-label">%3$s</p>%4$s%5$s<p class="michiryu-sekki__ko-date">%6$s</p><p class="michiryu-sekki__ko-description">%7$s</p></div></div>',
 			$icon,
 			$is_current ? '<p class="michiryu-sekki-carousel__eyebrow">' . esc_html__( 'Current microseason', 'michiryu-sekki' ) . '</p>' : '',
 			esc_html__( 'Ko microseason', 'michiryu-sekki' ),
-			esc_html( $ko['romaji'] ),
-			esc_html( $ko['kanji'] ),
-			esc_html( $ko['english_name'] ),
+			$title,
+			$english,
 			esc_html( $ko['date_range'] ),
 			esc_html( $ko['short_description'] )
 		);
@@ -2036,7 +2040,7 @@ class MichiRyu_Sekki {
 			<?php if ( ! empty( $read_more_url ) ) : ?>
 				<p><a class="michiryu-sekki-map__read-more" href="<?php echo esc_url( $read_more_url ); ?>"><?php esc_html_e( 'Read more', 'michiryu-sekki' ); ?></a></p>
 			<?php endif; ?>
-			<?php echo $this->render_map_ko_details( $season, $current_ko ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
+			<?php echo $this->render_map_ko_details( $season, $current_ko, $options ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
 			<?php if ( $nav_bottom ) : ?>
 				<?php echo $nav; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
 			<?php endif; ?>
@@ -2051,9 +2055,10 @@ class MichiRyu_Sekki {
 	 *
 	 * @param array<string,mixed> $season Season record.
 	 * @param array<string,mixed> $current_ko Current ko record.
+	 * @param array<string,mixed> $options Saved options.
 	 * @return string
 	 */
-	private function render_map_ko_details( $season, $current_ko ) {
+	private function render_map_ko_details( $season, $current_ko, $options ) {
 		$ko_records = MichiRyu_Sekki_Data::get_ko();
 		$stories = MichiRyu_Sekki_Content::get_stories_for_sekki( (int) $season['sekki_number'] );
 		$story_ids_by_ko = array();
@@ -2076,6 +2081,7 @@ class MichiRyu_Sekki {
 					<?php continue; ?>
 				<?php endif; ?>
 				<?php $is_active = absint( $ko['ko_number'] ) === $active_ko_number; ?>
+				<?php $title = $this->render_ko_name_title( $ko, $options, 'michiryu-sekki-map__ko-title' ); ?>
 				<article class="michiryu-sekki-map__ko-detail<?php echo $is_active ? ' is-active' : ''; ?>" data-ko="<?php echo esc_attr( $ko['ko_number'] ); ?>" data-story="<?php echo esc_attr( $story_ids_by_ko[ absint( $ko['ko_number'] ) ] ?? '' ); ?>" <?php echo $is_active ? '' : 'hidden'; ?>>
 					<p class="michiryu-sekki-map__ko-eyebrow">
 						<?php
@@ -2086,8 +2092,10 @@ class MichiRyu_Sekki {
 						);
 						?>
 					</p>
-					<h4 class="michiryu-sekki-map__ko-title"><span><?php echo esc_html( $ko['romaji'] ); ?></span> <span><?php echo esc_html( $ko['kanji'] ); ?></span></h4>
-					<p class="michiryu-sekki-map__ko-english"><?php echo esc_html( $ko['english_name'] ); ?></p>
+					<?php echo $title; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
+					<?php if ( ! empty( $options['show_english'] ) ) : ?>
+						<p class="michiryu-sekki-map__ko-english"><?php echo esc_html( $ko['english_name'] ); ?></p>
+					<?php endif; ?>
 					<p class="michiryu-sekki-map__ko-date"><?php echo esc_html( $ko['date_range'] ); ?></p>
 					<p class="michiryu-sekki-map__ko-description"><?php echo esc_html( $ko['short_description'] ); ?></p>
 				</article>
@@ -2434,6 +2442,36 @@ class MichiRyu_Sekki {
 	}
 
 	/**
+	 * Render visible ko name parts.
+	 *
+	 * @param array<string,mixed> $ko Ko data.
+	 * @param array<string,mixed> $settings Visibility settings.
+	 * @param string              $class_name Heading class.
+	 * @return string
+	 */
+	private function render_ko_name_title( $ko, $settings, $class_name ) {
+		$parts = array();
+
+		if ( ! empty( $settings['show_romanized'] ) ) {
+			$parts[] = '<span>' . esc_html( $ko['romaji'] ) . '</span>';
+		}
+
+		if ( ! empty( $settings['show_kanji'] ) ) {
+			$parts[] = '<span>' . esc_html( $ko['kanji'] ) . '</span>';
+		}
+
+		if ( empty( $parts ) && empty( $settings['show_english'] ) ) {
+			$parts[] = '<span>' . esc_html( $ko['romaji'] ) . '</span>';
+		}
+
+		if ( empty( $parts ) ) {
+			return '';
+		}
+
+		return '<h4 class="' . esc_attr( $class_name ) . '">' . implode( ' ', $parts ) . '</h4>';
+	}
+
+	/**
 	 * Render season image when available.
 	 *
 	 * @param array<string,mixed> $season Season data.
@@ -2529,10 +2567,13 @@ class MichiRyu_Sekki {
 	 *
 	 * @param array<string,mixed> $ko Ko data.
 	 * @param array<string,mixed> $options Saved options.
+	 * @param array<string,mixed> $args Render args.
 	 * @return string
 	 */
-	private function render_ko( $ko, $options ) {
+	private function render_ko( $ko, $options, $args ) {
 		$icon = '';
+		$title = $this->render_ko_name_title( $ko, $args, 'michiryu-sekki__ko-title' );
+		$english = ! empty( $args['show_english'] ) ? '<p class="michiryu-sekki__ko-english">' . esc_html( $ko['english_name'] ) . '</p>' : '';
 		$description = (string) ( $ko['short_description'] ?? '' );
 		$duplicate_description = sprintf(
 			/* translators: %s: ko English name. */
@@ -2556,12 +2597,11 @@ class MichiRyu_Sekki {
 		}
 
 		return sprintf(
-			'<div class="michiryu-sekki__ko">%1$s<div class="michiryu-sekki__ko-body"><p class="michiryu-sekki__ko-label"><span>%2$s</span> <span class="michiryu-sekki__ko-label-date">%6$s</span></p><h4 class="michiryu-sekki__ko-title"><span>%3$s</span> <span>%4$s</span></h4><p class="michiryu-sekki__ko-english">%5$s</p>%7$s</div></div>',
+			'<div class="michiryu-sekki__ko">%1$s<div class="michiryu-sekki__ko-body"><p class="michiryu-sekki__ko-label"><span>%2$s</span> <span class="michiryu-sekki__ko-label-date">%5$s</span></p>%3$s%4$s%6$s</div></div>',
 			$icon,
 			esc_html__( 'Ko Microseason', 'michiryu-sekki' ),
-			esc_html( $ko['romaji'] ),
-			esc_html( $ko['kanji'] ),
-			esc_html( $ko['english_name'] ),
+			$title,
+			$english,
 			esc_html( $ko['date_range'] ),
 			'' === $description ? '' : '<p class="michiryu-sekki__ko-description">' . esc_html( $description ) . '</p>'
 		);

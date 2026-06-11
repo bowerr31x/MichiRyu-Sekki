@@ -63,6 +63,10 @@ Seasonal plan overrides:
 Go to MichiRyu-Sekki-Calendar > Sekki to set the core journey defaults:
 
 * Default display style
+* Show Ko microseason section
+* Show name fields, Sekki image, ikebana materials, date stamp, and story teaser
+* Dedicated map page URL
+* Optional custom CSS
 * Default Seasonal Plan
 * Map progression style
 * Story reader behavior
