@@ -104,7 +104,7 @@ class MichiRyu_Sekki_Admin {
 					<?php $this->render_checkbox_row( 'show_romanized', __( 'Show romanized name', 'michiryu-sekki' ), $options['show_romanized'] ); ?>
 					<?php $this->render_checkbox_row( 'show_english', __( 'Show English name', 'michiryu-sekki' ), $options['show_english'] ); ?>
 					<?php $this->render_checkbox_row( 'show_sekki_image', __( 'Show Sekki image', 'michiryu-sekki' ), $options['show_sekki_image'] ); ?>
-					<?php $this->render_checkbox_row( 'show_ikebana_materials', __( 'Show ikebana materials', 'michiryu-sekki' ), $options['show_ikebana_materials'] ); ?>
+					<?php $this->render_checkbox_row( 'show_ikebana_materials', __( 'Show ikebana materials and theme', 'michiryu-sekki' ), $options['show_ikebana_materials'] ); ?>
 					<?php $this->render_checkbox_row( 'show_date_stamp', __( 'Show current date stamp', 'michiryu-sekki' ), $options['show_date_stamp'] ); ?>
 					<?php $this->render_checkbox_row( 'show_story_teaser', __( 'Show story teaser', 'michiryu-sekki' ), $options['show_story_teaser'] ); ?>
 					<tr>
@@ -255,13 +255,11 @@ class MichiRyu_Sekki_Admin {
 	 */
 	private function get_style_options() {
 		return array(
-			'text'       => __( 'Text', 'michiryu-sekki' ),
-			'compact'    => __( 'Compact', 'michiryu-sekki' ),
-			'small'      => __( 'Small', 'michiryu-sekki' ),
-			'banner'     => __( 'Banner', 'michiryu-sekki' ),
-			'image_card' => __( 'Image card', 'michiryu-sekki' ),
-			'ikebana'    => __( 'Ikebana', 'michiryu-sekki' ),
-			'explore_map' => __( 'Explore Map', 'michiryu-sekki' ),
+			'text'                => __( 'Text (text only)', 'michiryu-sekki' ),
+			'small'               => __( 'Small (small format with minimal image)', 'michiryu-sekki' ),
+			'standard_vertical'   => __( 'Standard vertical (default)', 'michiryu-sekki' ),
+			'standard_horizontal' => __( 'Standard horizontal', 'michiryu-sekki' ),
+			'banner'              => __( 'Banner (full image, horizontal)', 'michiryu-sekki' ),
 		);
 	}
 

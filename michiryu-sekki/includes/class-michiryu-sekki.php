@@ -20,7 +20,7 @@ class MichiRyu_Sekki {
 	 *
 	 * @var array<int,string>
 	 */
-	private $styles = array( 'text', 'compact', 'small', 'banner', 'image_card', 'ikebana', 'explore_map' );
+	private $styles = array( 'text', 'small', 'standard_vertical', 'standard_horizontal', 'banner' );
 
 	/**
 	 * Allowed plan names.
@@ -298,11 +298,6 @@ class MichiRyu_Sekki {
 		$args['timestamp_utc'] = $timestamp_utc;
 		$args['display_timezone'] = $display_timezone;
 
-		if ( 'explore_map' === $args['style'] ) {
-			wp_enqueue_script( 'michiryu-sekki' );
-			return $this->render_map( array( 'is_modal' => false ), $options );
-		}
-
 		$has_sekki_image = $args['show_sekki_image'] && $this->should_show_image( $args['style'], $args['plan'] );
 
 		if ( $args['carousel'] ) {
@@ -355,7 +350,7 @@ class MichiRyu_Sekki {
 					<p class="michiryu-sekki__description"><?php echo esc_html( $season['description'] ); ?></p>
 				<?php endif; ?>
 
-				<?php if ( in_array( $args['plan'], array( 'standard', 'ikebana' ), true ) ) : ?>
+				<?php if ( $args['show_ikebana_materials'] && in_array( $args['plan'], array( 'standard', 'ikebana' ), true ) ) : ?>
 					<p class="michiryu-sekki__theme">
 						<span><?php esc_html_e( 'Theme', 'michiryu-sekki' ); ?></span>
 						<?php echo esc_html( $season['theme'] ); ?>
@@ -366,7 +361,7 @@ class MichiRyu_Sekki {
 					<p class="michiryu-sekki__phrase"><?php echo esc_html( $season['phrase'] ); ?></p>
 				<?php endif; ?>
 
-				<?php if ( $args['show_ikebana_materials'] && ( 'ikebana' === $args['plan'] || 'ikebana' === $args['style'] ) ) : ?>
+				<?php if ( $args['show_ikebana_materials'] && in_array( $args['plan'], array( 'standard', 'ikebana' ), true ) ) : ?>
 					<div class="michiryu-sekki__ikebana">
 						<p><span><?php esc_html_e( 'Materials', 'michiryu-sekki' ); ?></span> <?php echo esc_html( $season['materials'] ); ?></p>
 						<p><span><?php esc_html_e( 'Mood', 'michiryu-sekki' ); ?></span> <?php echo esc_html( $season['mood'] ); ?></p>
@@ -994,7 +989,10 @@ class MichiRyu_Sekki {
 	 */
 	public function get_options() {
 		$saved = get_option( self::OPTION_NAME, array() );
-		return wp_parse_args( is_array( $saved ) ? $saved : array(), $this->get_default_options() );
+		$options = wp_parse_args( is_array( $saved ) ? $saved : array(), $this->get_default_options() );
+		$options['default_style'] = $this->normalize_style_value( $options['default_style'] ?? '', 'standard_vertical' );
+
+		return $options;
 	}
 
 	/**
@@ -1065,7 +1063,7 @@ class MichiRyu_Sekki {
 	 */
 	public function get_default_options() {
 		return array(
-			'default_style'           => 'compact',
+			'default_style'           => 'standard_vertical',
 			'default_plan'            => 'standard',
 			'show_kanji'              => true,
 			'show_romanized'          => true,
@@ -1108,7 +1106,7 @@ class MichiRyu_Sekki {
 		$input    = is_array( $input ) ? $input : array();
 		$output   = array();
 
-		$output['default_style'] = in_array( $input['default_style'] ?? '', $this->styles, true ) ? $input['default_style'] : $defaults['default_style'];
+		$output['default_style'] = $this->normalize_style_value( $input['default_style'] ?? '', $defaults['default_style'] );
 		$output['default_plan']  = in_array( $input['default_plan'] ?? '', $this->plans, true ) ? $input['default_plan'] : $defaults['default_plan'];
 
 		foreach ( array( 'show_kanji', 'show_romanized', 'show_english', 'show_date_range', 'show_description', 'show_sekki_image', 'show_ko_icon', 'show_ikebana_materials', 'show_story_teaser', 'use_bundled_images', 'show_date_stamp', 'enable_map_link', 'show_map_in_widget', 'show_current_map_highlight' ) as $key ) {
@@ -1143,6 +1141,35 @@ class MichiRyu_Sekki {
 	}
 
 	/**
+	 * Normalize saved and legacy style values.
+	 *
+	 * @param string $style Raw style value.
+	 * @param string $fallback Fallback style value.
+	 * @return string
+	 */
+	private function normalize_style_value( $style, $fallback = 'standard_vertical' ) {
+		$style = sanitize_key( $style );
+
+		$legacy_styles = array(
+			'compact'     => 'standard_vertical',
+			'image_card'  => 'standard_vertical',
+			'ikebana'     => 'standard_vertical',
+			'explore_map' => 'standard_vertical',
+		);
+
+		if ( isset( $legacy_styles[ $style ] ) ) {
+			$style = $legacy_styles[ $style ];
+		}
+
+		if ( in_array( $style, $this->styles, true ) ) {
+			return $style;
+		}
+
+		$fallback = sanitize_key( $fallback );
+		return in_array( $fallback, $this->styles, true ) ? $fallback : 'standard_vertical';
+	}
+
+	/**
 	 * Normalize render arguments.
 	 *
 	 * @param array<string,mixed> $args Raw args.
@@ -1159,7 +1186,7 @@ class MichiRyu_Sekki {
 		$signature_sizes     = array( 'small', 'medium', 'large' );
 
 		$normalized = array(
-			'style'                  => in_array( $style, $this->styles, true ) ? $style : $options['default_style'],
+			'style'                  => $this->normalize_style_value( $style, $this->normalize_style_value( $options['default_style'] ?? '', 'standard_vertical' ) ),
 			'plan'                   => in_array( $plan, $this->plans, true ) ? $plan : $options['default_plan'],
 			'show_kanji'             => $this->resolve_bool_arg( $args['show_kanji'] ?? '', $options['show_kanji'] ),
 			'show_romanized'         => $this->resolve_bool_arg( $args['show_romanized'] ?? '', $options['show_romanized'] ),
@@ -1324,8 +1351,8 @@ class MichiRyu_Sekki {
 				<?php if ( $args['show_description'] ) : ?>
 					<p class="michiryu-sekki__description"><?php echo esc_html( $season['description'] ); ?></p>
 				<?php endif; ?>
-				<p class="michiryu-sekki__theme"><span><?php esc_html_e( 'Theme', 'michiryu-sekki' ); ?></span> <?php echo esc_html( $season['theme'] ); ?></p>
-				<?php if ( $args['show_ikebana_materials'] && ( 'ikebana' === $args['plan'] || 'ikebana' === $args['style'] ) ) : ?>
+				<?php if ( $args['show_ikebana_materials'] && in_array( $args['plan'], array( 'standard', 'ikebana' ), true ) ) : ?>
+					<p class="michiryu-sekki__theme"><span><?php esc_html_e( 'Theme', 'michiryu-sekki' ); ?></span> <?php echo esc_html( $season['theme'] ); ?></p>
 					<div class="michiryu-sekki__ikebana">
 						<p><span><?php esc_html_e( 'Materials', 'michiryu-sekki' ); ?></span> <?php echo esc_html( $season['materials'] ); ?></p>
 						<p><span><?php esc_html_e( 'Mood', 'michiryu-sekki' ); ?></span> <?php echo esc_html( $season['mood'] ); ?></p>

@@ -43,11 +43,11 @@ Stable story reader:
 Display style overrides:
 
 [michiryu_sekki style="text"]
-[michiryu_sekki style="compact"]
+[michiryu_sekki style="small"]
+[michiryu_sekki style="standard_vertical"]
+[michiryu_sekki style="standard_horizontal"]
 [michiryu_sekki style="banner"]
 [michiryu_sekki style="banner" show_ko="true"]
-[michiryu_sekki style="image_card"]
-[michiryu_sekki style="ikebana"]
 
 Seasonal plan overrides:
 
@@ -64,7 +64,7 @@ Go to MichiRyu-Sekki-Calendar > Sekki to set the core journey defaults:
 
 * Default display style
 * Show Ko microseason section
-* Show name fields, Sekki image, ikebana materials, date stamp, and story teaser
+* Show name fields, Sekki image, ikebana materials and theme, date stamp, and story teaser
 * Dedicated map page URL
 * Optional custom CSS
 * Default Seasonal Plan
@@ -77,7 +77,7 @@ Advanced display settings remain available for legacy widgets, older shortcodes,
 
 Advanced settings include:
 
-* Whether to show kanji, romanized names, English names, date ranges, descriptions, Sekki images, ko icons, and ikebana materials
+* Whether to show kanji, romanized names, English names, date ranges, descriptions, Sekki images, ko icons, and ikebana materials/theme
 * Whether to use bundled images
 * Whether to show the current date stamp over Sekki images
 * Signature position: bottom-right, bottom-left, top-right, or top-left

@@ -33,16 +33,16 @@ class MichiRyu_Sekki_Widget extends WP_Widget {
 	 * @param array<string,mixed> $instance Widget settings.
 	 */
 	public function widget( $args, $instance ) {
-		$allowed_widget_styles = array( 'banner', 'small' );
 		$title = ! empty( $instance['title'] ) ? apply_filters( 'widget_title', $instance['title'] ) : '';
-		$style = ! empty( $instance['style'] ) ? sanitize_key( $instance['style'] ) : 'banner';
-		$style = in_array( $style, $allowed_widget_styles, true ) ? $style : 'banner';
 		$plan  = ! empty( $instance['plan'] ) ? sanitize_key( $instance['plan'] ) : 'standard';
 		$show_ko = array_key_exists( 'show_ko', $instance ) ? ! empty( $instance['show_ko'] ) : true;
 		$carousel = ! empty( $instance['carousel'] );
 		$show_date_stamp = array_key_exists( 'show_date_stamp', $instance ) ? ! empty( $instance['show_date_stamp'] ) : true;
 		$sekki = new MichiRyu_Sekki();
 		$options = $sekki->get_options();
+		$allowed_widget_styles = array( 'text', 'small', 'standard_vertical', 'standard_horizontal', 'banner' );
+		$style = ! empty( $instance['style'] ) ? sanitize_key( $instance['style'] ) : ( $options['default_style'] ?? 'standard_vertical' );
+		$style = in_array( $style, $allowed_widget_styles, true ) ? $style : ( $options['default_style'] ?? 'standard_vertical' );
 		$show_map_link = ! empty( $options['enable_map_link'] ) && ! empty( $options['show_map_in_widget'] );
 
 		echo wp_kses_post( $args['before_widget'] );
@@ -63,7 +63,14 @@ class MichiRyu_Sekki_Widget extends WP_Widget {
 	 */
 	public function form( $instance ) {
 		$title = $instance['title'] ?? '';
-		$style = in_array( $instance['style'] ?? '', array( 'banner', 'small' ), true ) ? $instance['style'] : 'banner';
+		$style_options = array(
+			'text'                => __( 'Text', 'michiryu-sekki' ),
+			'small'               => __( 'Small', 'michiryu-sekki' ),
+			'standard_vertical'   => __( 'Standard vertical', 'michiryu-sekki' ),
+			'standard_horizontal' => __( 'Standard horizontal', 'michiryu-sekki' ),
+			'banner'              => __( 'Banner', 'michiryu-sekki' ),
+		);
+		$style = in_array( $instance['style'] ?? '', array_keys( $style_options ), true ) ? $instance['style'] : '';
 		$plan  = $instance['plan'] ?? 'standard';
 		$show_ko = array_key_exists( 'show_ko', $instance ) ? ! empty( $instance['show_ko'] ) : true;
 		$carousel = ! empty( $instance['carousel'] );
@@ -76,8 +83,9 @@ class MichiRyu_Sekki_Widget extends WP_Widget {
 		<p>
 			<label for="<?php echo esc_attr( $this->get_field_id( 'style' ) ); ?>"><?php esc_html_e( 'Style:', 'michiryu-sekki' ); ?></label>
 			<select class="widefat" id="<?php echo esc_attr( $this->get_field_id( 'style' ) ); ?>" name="<?php echo esc_attr( $this->get_field_name( 'style' ) ); ?>">
-				<?php foreach ( array( 'banner', 'small' ) as $choice ) : ?>
-					<option value="<?php echo esc_attr( $choice ); ?>" <?php selected( $style, $choice ); ?>><?php echo esc_html( ucfirst( str_replace( '_', ' ', $choice ) ) ); ?></option>
+				<option value="" <?php selected( $style, '' ); ?>><?php esc_html_e( 'Use default setting', 'michiryu-sekki' ); ?></option>
+				<?php foreach ( $style_options as $choice => $label ) : ?>
+					<option value="<?php echo esc_attr( $choice ); ?>" <?php selected( $style, $choice ); ?>><?php echo esc_html( $label ); ?></option>
 				<?php endforeach; ?>
 			</select>
 		</p>
@@ -119,10 +127,10 @@ class MichiRyu_Sekki_Widget extends WP_Widget {
 	 */
 	public function update( $new_instance, $old_instance ) {
 		$instance          = $old_instance;
-		$allowed_styles    = array( 'banner', 'small' );
+		$allowed_styles    = array( 'text', 'small', 'standard_vertical', 'standard_horizontal', 'banner' );
 		$allowed_plans     = array( 'minimal', 'standard', 'ikebana', 'banner', 'educational' );
 		$instance['title'] = sanitize_text_field( $new_instance['title'] ?? '' );
-		$instance['style'] = in_array( $new_instance['style'] ?? '', $allowed_styles, true ) ? $new_instance['style'] : 'banner';
+		$instance['style'] = in_array( $new_instance['style'] ?? '', $allowed_styles, true ) ? $new_instance['style'] : '';
 		$instance['plan']  = in_array( $new_instance['plan'] ?? '', $allowed_plans, true ) ? $new_instance['plan'] : 'standard';
 		$instance['show_ko'] = ! empty( $new_instance['show_ko'] );
 		$instance['carousel'] = ! empty( $new_instance['carousel'] );
