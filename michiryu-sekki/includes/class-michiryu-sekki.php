@@ -1452,18 +1452,15 @@ class MichiRyu_Sekki {
 	private function render_story_teaser( $season, $story, $args = array() ) {
 		$character_names = $this->get_story_character_names( $story );
 		$is_narrow_banner = 'banner_narrow' === ( $args['style'] ?? '' );
-		$excerpt_words = $is_narrow_banner ? 120 : 24;
+		$excerpt_words = $is_narrow_banner ? 80 : 24;
 		$excerpt = wp_trim_words( (string) ( $story['body_text'] ?? '' ), $excerpt_words, '...' );
-		$excerpt_html = $is_narrow_banner && ! empty( $story['body_html'] ) ? wp_kses_post( $story['body_html'] ) : '';
 
 		ob_start();
 		?>
 		<aside class="michiryu-sekki__story-teaser" aria-label="<?php esc_attr_e( 'Current story preview', 'michiryu-sekki' ); ?>">
 			<p class="michiryu-sekki__story-kicker"><?php esc_html_e( 'Ko story', 'michiryu-sekki' ); ?></p>
 			<h4 class="michiryu-sekki__story-title"><?php echo esc_html( $story['title'] ?? '' ); ?></h4>
-			<?php if ( ! empty( $excerpt_html ) ) : ?>
-				<div class="michiryu-sekki__story-excerpt michiryu-sekki__story-excerpt--html"><?php echo $excerpt_html; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?></div>
-			<?php elseif ( ! empty( $excerpt ) ) : ?>
+			<?php if ( ! empty( $excerpt ) ) : ?>
 				<p class="michiryu-sekki__story-excerpt"><?php echo esc_html( $excerpt ); ?></p>
 			<?php endif; ?>
 			<?php if ( ! empty( $character_names ) ) : ?>
