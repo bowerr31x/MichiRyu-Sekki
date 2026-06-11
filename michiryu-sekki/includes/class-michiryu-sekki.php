@@ -377,7 +377,7 @@ class MichiRyu_Sekki {
 
 				<div class="michiryu-sekki__story-panel">
 					<?php if ( ! empty( $story ) ) : ?>
-						<?php echo $this->render_story_teaser( $season, $story ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
+						<?php echo $this->render_story_teaser( $season, $story, $args ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
 					<?php endif; ?>
 
 					<?php if ( $args['show_map_link'] || ! empty( $story ) ) : ?>
@@ -1446,11 +1446,13 @@ class MichiRyu_Sekki {
 	 *
 	 * @param array<string,mixed> $season Season data.
 	 * @param array<string,mixed> $story Story data.
+	 * @param array<string,mixed> $args Render args.
 	 * @return string
 	 */
-	private function render_story_teaser( $season, $story ) {
+	private function render_story_teaser( $season, $story, $args = array() ) {
 		$character_names = $this->get_story_character_names( $story );
-		$excerpt = wp_trim_words( (string) ( $story['body_text'] ?? '' ), 24, '...' );
+		$excerpt_words = 'banner_narrow' === ( $args['style'] ?? '' ) ? 80 : 24;
+		$excerpt = wp_trim_words( (string) ( $story['body_text'] ?? '' ), $excerpt_words, '...' );
 
 		ob_start();
 		?>
