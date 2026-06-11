@@ -26,7 +26,7 @@ Default shortcode:
 [michiryu_sekki carousel="true" show_ko="true"]
 [michiryu_sekki show_date_stamp="true"]
 [michiryu_sekki signature_position="bottom-right"]
-[michiryu_sekki style="banner" signature_size="small"]
+[michiryu_sekki style="banner_tall" signature_size="small"]
 
 Seasonal journey entry:
 
@@ -46,8 +46,8 @@ Display style overrides:
 [michiryu_sekki style="small"]
 [michiryu_sekki style="standard_vertical"]
 [michiryu_sekki style="standard_horizontal"]
-[michiryu_sekki style="banner"]
-[michiryu_sekki style="banner" show_ko="true"]
+[michiryu_sekki style="banner_tall"]
+[michiryu_sekki style="banner_narrow" show_ko="true"]
 
 Seasonal plan overrides:
 

@@ -20,7 +20,7 @@ class MichiRyu_Sekki {
 	 *
 	 * @var array<int,string>
 	 */
-	private $styles = array( 'text', 'small', 'standard_vertical', 'standard_horizontal', 'banner' );
+	private $styles = array( 'text', 'small', 'standard_vertical', 'standard_horizontal', 'banner_tall', 'banner_narrow' );
 
 	/**
 	 * Allowed plan names.
@@ -334,52 +334,56 @@ class MichiRyu_Sekki {
 			<?php endif; ?>
 
 			<div class="michiryu-sekki__body">
-				<?php echo $this->render_heading( $season, $args ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
+				<div class="michiryu-sekki__detail-panel">
+					<?php echo $this->render_heading( $season, $args ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
 
-				<?php if ( 'educational' === $args['plan'] ) : ?>
-					<p class="michiryu-sekki__education">
-						<?php esc_html_e( 'The 24 Sekki are traditional Japanese solar terms: 24 divisions of the year based on the sun’s movement, each lasting about 15 days.', 'michiryu-sekki' ); ?>
-					</p>
-				<?php endif; ?>
+					<?php if ( 'educational' === $args['plan'] ) : ?>
+						<p class="michiryu-sekki__education">
+							<?php esc_html_e( 'The 24 Sekki are traditional Japanese solar terms: 24 divisions of the year based on the sun’s movement, each lasting about 15 days.', 'michiryu-sekki' ); ?>
+						</p>
+					<?php endif; ?>
 
-				<?php if ( $args['show_date_range'] && in_array( $args['plan'], array( 'standard', 'banner', 'educational' ), true ) ) : ?>
-					<p class="michiryu-sekki__date"><span><?php esc_html_e( 'Sekki Around Date', 'michiryu-sekki' ); ?></span> <?php echo esc_html( $season['date_range'] ); ?></p>
-				<?php endif; ?>
+					<?php if ( $args['show_date_range'] && in_array( $args['plan'], array( 'standard', 'banner', 'educational' ), true ) ) : ?>
+						<p class="michiryu-sekki__date"><span><?php esc_html_e( 'Sekki Around Date', 'michiryu-sekki' ); ?></span> <?php echo esc_html( $season['date_range'] ); ?></p>
+					<?php endif; ?>
 
-				<?php if ( $args['show_description'] && in_array( $args['plan'], array( 'standard', 'educational' ), true ) ) : ?>
-					<p class="michiryu-sekki__description"><?php echo esc_html( $season['description'] ); ?></p>
-				<?php endif; ?>
+					<?php if ( $args['show_description'] && in_array( $args['plan'], array( 'standard', 'educational' ), true ) ) : ?>
+						<p class="michiryu-sekki__description"><?php echo esc_html( $season['description'] ); ?></p>
+					<?php endif; ?>
 
-				<?php echo $this->render_season_materials_list( $season, $args ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
+					<?php echo $this->render_season_materials_list( $season, $args ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
 
-				<?php if ( 'banner' === $args['plan'] || 'banner' === $args['style'] ) : ?>
-					<p class="michiryu-sekki__phrase"><?php echo esc_html( $season['phrase'] ); ?></p>
-				<?php endif; ?>
+					<?php if ( 'banner' === $args['plan'] || in_array( $args['style'], array( 'banner_tall', 'banner_narrow' ), true ) ) : ?>
+						<p class="michiryu-sekki__phrase"><?php echo esc_html( $season['phrase'] ); ?></p>
+					<?php endif; ?>
 
-				<?php if ( 'educational' === $args['plan'] ) : ?>
-					<p class="michiryu-sekki__next">
-						<?php
-						printf(
-							/* translators: 1: next season romanized name, 2: days count. */
-							esc_html__( 'Next: %1$s in %2$d days.', 'michiryu-sekki' ),
-							esc_html( $next['romaji'] ),
-							absint( MichiRyu_Sekki_Data::days_until_next( $season, $timestamp_utc, $display_timezone ) )
-						);
-						?>
-					</p>
-				<?php endif; ?>
+					<?php if ( 'educational' === $args['plan'] ) : ?>
+						<p class="michiryu-sekki__next">
+							<?php
+							printf(
+								/* translators: 1: next season romanized name, 2: days count. */
+								esc_html__( 'Next: %1$s in %2$d days.', 'michiryu-sekki' ),
+								esc_html( $next['romaji'] ),
+								absint( MichiRyu_Sekki_Data::days_until_next( $season, $timestamp_utc, $display_timezone ) )
+							);
+							?>
+						</p>
+					<?php endif; ?>
 
-				<?php if ( ! empty( $ko_html ) ) : ?>
-					<?php echo $ko_html; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
-				<?php endif; ?>
+					<?php if ( ! empty( $ko_html ) ) : ?>
+						<?php echo $ko_html; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
+					<?php endif; ?>
+				</div>
 
-				<?php if ( ! empty( $story ) ) : ?>
-					<?php echo $this->render_story_teaser( $season, $story ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
-				<?php endif; ?>
+				<div class="michiryu-sekki__story-panel">
+					<?php if ( ! empty( $story ) ) : ?>
+						<?php echo $this->render_story_teaser( $season, $story ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
+					<?php endif; ?>
 
-				<?php if ( $args['show_map_link'] || ! empty( $story ) ) : ?>
-					<?php echo $this->render_map_link( $options, $season, $story, $args['show_map_link'] ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
-				<?php endif; ?>
+					<?php if ( $args['show_map_link'] || ! empty( $story ) ) : ?>
+						<?php echo $this->render_map_link( $options, $season, $story, $args['show_map_link'] ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
+					<?php endif; ?>
+				</div>
 			</div>
 		</div>
 
@@ -1143,6 +1147,7 @@ class MichiRyu_Sekki {
 			'image_card'  => 'standard_vertical',
 			'ikebana'     => 'standard_vertical',
 			'explore_map' => 'standard_vertical',
+			'banner'      => 'banner_tall',
 		);
 
 		if ( isset( $legacy_styles[ $style ] ) ) {

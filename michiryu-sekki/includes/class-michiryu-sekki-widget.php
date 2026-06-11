@@ -40,7 +40,7 @@ class MichiRyu_Sekki_Widget extends WP_Widget {
 		$show_date_stamp = array_key_exists( 'show_date_stamp', $instance ) ? ! empty( $instance['show_date_stamp'] ) : true;
 		$sekki = new MichiRyu_Sekki();
 		$options = $sekki->get_options();
-		$allowed_widget_styles = array( 'text', 'small', 'standard_vertical', 'standard_horizontal', 'banner' );
+		$allowed_widget_styles = array( 'text', 'small', 'standard_vertical', 'standard_horizontal', 'banner_tall', 'banner_narrow' );
 		$style = ! empty( $instance['style'] ) ? sanitize_key( $instance['style'] ) : ( $options['default_style'] ?? 'standard_vertical' );
 		$style = in_array( $style, $allowed_widget_styles, true ) ? $style : ( $options['default_style'] ?? 'standard_vertical' );
 		$show_map_link = ! empty( $options['enable_map_link'] ) && ! empty( $options['show_map_in_widget'] );
@@ -68,7 +68,8 @@ class MichiRyu_Sekki_Widget extends WP_Widget {
 			'small'               => __( 'Small', 'michiryu-sekki' ),
 			'standard_vertical'   => __( 'Standard vertical', 'michiryu-sekki' ),
 			'standard_horizontal' => __( 'Standard horizontal', 'michiryu-sekki' ),
-			'banner'              => __( 'Banner', 'michiryu-sekki' ),
+			'banner_tall'         => __( 'Banner tall', 'michiryu-sekki' ),
+			'banner_narrow'       => __( 'Banner narrow', 'michiryu-sekki' ),
 		);
 		$style = in_array( $instance['style'] ?? '', array_keys( $style_options ), true ) ? $instance['style'] : '';
 		$plan  = $instance['plan'] ?? 'standard';
@@ -127,7 +128,7 @@ class MichiRyu_Sekki_Widget extends WP_Widget {
 	 */
 	public function update( $new_instance, $old_instance ) {
 		$instance          = $old_instance;
-		$allowed_styles    = array( 'text', 'small', 'standard_vertical', 'standard_horizontal', 'banner' );
+		$allowed_styles    = array( 'text', 'small', 'standard_vertical', 'standard_horizontal', 'banner_tall', 'banner_narrow' );
 		$allowed_plans     = array( 'minimal', 'standard', 'ikebana', 'banner', 'educational' );
 		$instance['title'] = sanitize_text_field( $new_instance['title'] ?? '' );
 		$instance['style'] = in_array( $new_instance['style'] ?? '', $allowed_styles, true ) ? $new_instance['style'] : '';

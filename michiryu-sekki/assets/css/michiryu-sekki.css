@@ -1644,7 +1644,16 @@
 	font-size: 0.78rem;
 }
 
-.michiryu-sekki--banner,
+.michiryu-sekki__detail-panel,
+.michiryu-sekki__story-panel {
+	min-width: 0;
+}
+
+.michiryu-sekki__story-panel:empty {
+	display: none;
+}
+
+.michiryu-sekki--banner_tall,
 .michiryu-sekki--plan-banner {
 	display: grid;
 	grid-template-columns: minmax(0, 0.9fr) minmax(18rem, 1.4fr);
@@ -1652,24 +1661,24 @@
 	min-height: 13rem;
 }
 
-.michiryu-sekki--banner.michiryu-sekki--no-image,
+.michiryu-sekki--banner_tall.michiryu-sekki--no-image,
 .michiryu-sekki--plan-banner.michiryu-sekki--no-image {
 	display: block;
 	min-height: 0;
 }
 
-.michiryu-sekki--banner .michiryu-sekki__image,
+.michiryu-sekki--banner_tall .michiryu-sekki__image,
 .michiryu-sekki--plan-banner .michiryu-sekki__image {
 	min-height: 100%;
 }
 
-.michiryu-sekki--banner .michiryu-sekki__image > img:not(.michiryu-sekki-signature),
+.michiryu-sekki--banner_tall .michiryu-sekki__image > img:not(.michiryu-sekki-signature),
 .michiryu-sekki--plan-banner .michiryu-sekki__image > img:not(.michiryu-sekki-signature) {
 	height: 100%;
 	aspect-ratio: auto;
 }
 
-.michiryu-sekki--banner .michiryu-sekki__body,
+.michiryu-sekki--banner_tall .michiryu-sekki__body,
 .michiryu-sekki--plan-banner .michiryu-sekki__body {
 	display: flex;
 	flex-direction: column;
@@ -1678,14 +1687,80 @@
 	border-left: 4px solid rgba(104, 118, 97, 0.28);
 }
 
-.michiryu-sekki--banner.michiryu-sekki--no-image .michiryu-sekki__body,
+.michiryu-sekki--banner_tall.michiryu-sekki--no-image .michiryu-sekki__body,
 .michiryu-sekki--plan-banner.michiryu-sekki--no-image .michiryu-sekki__body {
 	border-left: 0;
 }
 
-.michiryu-sekki--banner .michiryu-sekki__title,
+.michiryu-sekki--banner_tall .michiryu-sekki__title,
 .michiryu-sekki--plan-banner .michiryu-sekki__title {
 	font-size: clamp(1.45rem, 2vw, 2.2rem);
+}
+
+.michiryu-sekki--banner_narrow {
+	display: grid;
+	grid-template-columns: minmax(12rem, 0.8fr) minmax(28rem, 2.2fr);
+	align-items: stretch;
+	min-height: 7rem;
+}
+
+.michiryu-sekki--banner_narrow.michiryu-sekki--no-image {
+	display: block;
+	min-height: 0;
+}
+
+.michiryu-sekki--banner_narrow .michiryu-sekki__image {
+	min-height: 100%;
+}
+
+.michiryu-sekki--banner_narrow .michiryu-sekki__image > img:not(.michiryu-sekki-signature) {
+	height: 100%;
+	aspect-ratio: auto;
+}
+
+.michiryu-sekki--banner_narrow .michiryu-sekki__body {
+	display: grid;
+	grid-template-columns: minmax(14rem, 1fr) minmax(13rem, 0.9fr);
+	gap: clamp(0.85rem, 2vw, 1.35rem);
+	align-items: start;
+	padding: clamp(0.85rem, 2vw, 1.25rem);
+	border-left: 4px solid rgba(104, 118, 97, 0.28);
+}
+
+.michiryu-sekki--banner_narrow.michiryu-sekki--no-image .michiryu-sekki__body {
+	border-left: 0;
+}
+
+.michiryu-sekki--banner_narrow .michiryu-sekki__title {
+	font-size: clamp(1.15rem, 1.5vw, 1.5rem);
+}
+
+.michiryu-sekki--banner_narrow .michiryu-sekki__date,
+.michiryu-sekki--banner_narrow .michiryu-sekki__description,
+.michiryu-sekki--banner_narrow .michiryu-sekki__materials-list,
+.michiryu-sekki--banner_narrow .michiryu-sekki__phrase,
+.michiryu-sekki--banner_narrow .michiryu-sekki__ko {
+	margin-top: 0.35rem;
+}
+
+.michiryu-sekki--banner_narrow .michiryu-sekki__story-teaser {
+	margin-top: 0;
+	padding: 0.75rem;
+}
+
+.michiryu-sekki--banner_narrow .michiryu-sekki__action-wrap {
+	margin-top: 0.6rem;
+}
+
+.michiryu-sekki--banner_narrow .michiryu-sekki__action-link {
+	min-height: 2.1rem;
+	padding: 0.4rem 0.65rem;
+	font-size: 0.82rem;
+}
+
+.michiryu-sekki--banner_narrow .michiryu-sekki__story-excerpt,
+.michiryu-sekki--banner_narrow .michiryu-sekki__story-characters {
+	display: none;
 }
 
 .michiryu-sekki--image_card {
@@ -1873,16 +1948,20 @@
 	box-shadow: 0 0 0 1px rgba(104, 118, 97, 0.35), 0 14px 30px rgba(47, 51, 45, 0.1);
 }
 
+.michiryu-sekki-carousel--banner_tall .michiryu-sekki-carousel__track,
+.michiryu-sekki-carousel--banner_narrow .michiryu-sekki-carousel__track,
 .michiryu-sekki-carousel--banner .michiryu-sekki-carousel__track {
 	grid-auto-columns: minmax(20rem, 34rem);
 }
 
-.michiryu-sekki-carousel--banner .michiryu-sekki--banner,
+.michiryu-sekki-carousel--banner_tall .michiryu-sekki--banner_tall,
+.michiryu-sekki-carousel--banner_narrow .michiryu-sekki--banner_narrow,
 .michiryu-sekki-carousel--banner .michiryu-sekki--plan-banner {
 	grid-template-columns: 1fr;
 }
 
-.michiryu-sekki-carousel--banner .michiryu-sekki__body,
+.michiryu-sekki-carousel--banner_tall .michiryu-sekki__body,
+.michiryu-sekki-carousel--banner_narrow .michiryu-sekki__body,
 .michiryu-sekki-carousel--banner .michiryu-sekki--plan-banner .michiryu-sekki__body {
 	border-left: 0;
 	border-top: 4px solid rgba(104, 118, 97, 0.28);
@@ -2556,17 +2635,23 @@
 
 @media (max-width: 640px) {
 	.michiryu-sekki--standard_horizontal,
-	.michiryu-sekki--banner,
+	.michiryu-sekki--banner_tall,
+	.michiryu-sekki--banner_narrow,
 	.michiryu-sekki--plan-banner {
 		display: block;
 		min-height: 0;
 	}
 
 	.michiryu-sekki--standard_horizontal .michiryu-sekki__body,
-	.michiryu-sekki--banner .michiryu-sekki__body,
+	.michiryu-sekki--banner_tall .michiryu-sekki__body,
+	.michiryu-sekki--banner_narrow .michiryu-sekki__body,
 	.michiryu-sekki--plan-banner .michiryu-sekki__body {
 		border-left: 0;
 		border-top: 4px solid rgba(104, 118, 97, 0.28);
+	}
+
+	.michiryu-sekki--banner_narrow .michiryu-sekki__body {
+		grid-template-columns: 1fr;
 	}
 
 	.michiryu-sekki__ko {

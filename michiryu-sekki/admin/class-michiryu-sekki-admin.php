@@ -259,7 +259,8 @@ class MichiRyu_Sekki_Admin {
 			'small'               => __( 'Small (small format with minimal image)', 'michiryu-sekki' ),
 			'standard_vertical'   => __( 'Standard vertical (default)', 'michiryu-sekki' ),
 			'standard_horizontal' => __( 'Standard horizontal', 'michiryu-sekki' ),
-			'banner'              => __( 'Banner (full image, horizontal)', 'michiryu-sekki' ),
+			'banner_tall'         => __( 'Banner tall (current full image layout)', 'michiryu-sekki' ),
+			'banner_narrow'       => __( 'Banner narrow (image, details, story)', 'michiryu-sekki' ),
 		);
 	}
 
