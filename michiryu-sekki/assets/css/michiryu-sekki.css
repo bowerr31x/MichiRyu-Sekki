@@ -1761,14 +1761,31 @@
 }
 
 .michiryu-sekki--banner_narrow .michiryu-sekki__story-excerpt {
-	display: -webkit-box;
 	flex: 1 1 auto;
 	overflow: hidden;
-	-webkit-box-orient: vertical;
-	-webkit-line-clamp: 7;
 	margin-top: 0.35rem;
 	font-size: 0.84rem;
 	line-height: 1.34;
+}
+
+.michiryu-sekki--banner_narrow p.michiryu-sekki__story-excerpt {
+	display: -webkit-box;
+	-webkit-box-orient: vertical;
+	-webkit-line-clamp: 7;
+}
+
+.michiryu-sekki--banner_narrow .michiryu-sekki__story-excerpt--sentences {
+	display: flex;
+	flex-direction: column;
+	gap: 0.18rem;
+	max-height: calc(5 * 1.34em + 4 * 0.18rem);
+}
+
+.michiryu-sekki--banner_narrow .michiryu-sekki__story-excerpt--sentences span {
+	display: block;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
 }
 
 .michiryu-sekki--banner_narrow .michiryu-sekki__action-wrap {

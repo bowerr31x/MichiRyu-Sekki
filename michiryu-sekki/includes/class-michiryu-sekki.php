@@ -344,7 +344,7 @@ class MichiRyu_Sekki {
 					<?php endif; ?>
 
 					<?php if ( $args['show_date_range'] && in_array( $args['plan'], array( 'standard', 'banner', 'educational' ), true ) ) : ?>
-						<p class="michiryu-sekki__date"><span><?php esc_html_e( 'Sekki Around Date', 'michiryu-sekki' ); ?></span> <?php echo esc_html( $season['date_range'] ); ?></p>
+						<p class="michiryu-sekki__date"><span><?php esc_html_e( 'Sekki', 'michiryu-sekki' ); ?></span> <?php echo esc_html( $season['date_range'] ); ?></p>
 					<?php endif; ?>
 
 					<?php if ( $args['show_description'] && in_array( $args['plan'], array( 'standard', 'educational' ), true ) ) : ?>
@@ -1339,7 +1339,7 @@ class MichiRyu_Sekki {
 				<?php endif; ?>
 				<?php echo $this->render_heading( $season, $args ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
 				<?php if ( $args['show_date_range'] ) : ?>
-					<p class="michiryu-sekki__date"><span><?php esc_html_e( 'Sekki Around Date', 'michiryu-sekki' ); ?></span> <?php echo esc_html( $season['date_range'] ); ?></p>
+					<p class="michiryu-sekki__date"><span><?php esc_html_e( 'Sekki', 'michiryu-sekki' ); ?></span> <?php echo esc_html( $season['date_range'] ); ?></p>
 				<?php endif; ?>
 				<?php if ( $args['show_description'] ) : ?>
 					<p class="michiryu-sekki__description"><?php echo esc_html( $season['description'] ); ?></p>
@@ -1454,13 +1454,20 @@ class MichiRyu_Sekki {
 		$is_narrow_banner = 'banner_narrow' === ( $args['style'] ?? '' );
 		$excerpt_words = $is_narrow_banner ? 80 : 24;
 		$excerpt = wp_trim_words( (string) ( $story['body_text'] ?? '' ), $excerpt_words, '...' );
+		$sentence_excerpt = $is_narrow_banner ? $this->get_story_teaser_sentences( (string) ( $story['body_text'] ?? '' ), 5 ) : array();
 
 		ob_start();
 		?>
 		<aside class="michiryu-sekki__story-teaser" aria-label="<?php esc_attr_e( 'Current story preview', 'michiryu-sekki' ); ?>">
 			<p class="michiryu-sekki__story-kicker"><?php esc_html_e( 'Ko story', 'michiryu-sekki' ); ?></p>
 			<h4 class="michiryu-sekki__story-title"><?php echo esc_html( $story['title'] ?? '' ); ?></h4>
-			<?php if ( ! empty( $excerpt ) ) : ?>
+			<?php if ( ! empty( $sentence_excerpt ) ) : ?>
+				<div class="michiryu-sekki__story-excerpt michiryu-sekki__story-excerpt--sentences">
+					<?php foreach ( $sentence_excerpt as $sentence ) : ?>
+						<span><?php echo esc_html( $sentence ); ?></span>
+					<?php endforeach; ?>
+				</div>
+			<?php elseif ( ! empty( $excerpt ) ) : ?>
 				<p class="michiryu-sekki__story-excerpt"><?php echo esc_html( $excerpt ); ?></p>
 			<?php endif; ?>
 			<?php if ( ! empty( $character_names ) ) : ?>
@@ -1473,6 +1480,37 @@ class MichiRyu_Sekki {
 		<?php
 
 		return ob_get_clean();
+	}
+
+	/**
+	 * Return a sentence-by-sentence story teaser.
+	 *
+	 * @param string $body_text Story body text.
+	 * @param int    $limit Maximum sentences to show.
+	 * @return array<int,string>
+	 */
+	private function get_story_teaser_sentences( $body_text, $limit = 5 ) {
+		$body_text = trim( preg_replace( '/\s+/', ' ', wp_strip_all_tags( $body_text ) ) );
+
+		if ( '' === $body_text ) {
+			return array();
+		}
+
+		$sentences = preg_split( '/(?<=[.!?])\s+/', $body_text, -1, PREG_SPLIT_NO_EMPTY );
+		$sentences = array_values( array_filter( array_map( 'trim', (array) $sentences ) ) );
+
+		if ( empty( $sentences ) ) {
+			return array();
+		}
+
+		$limited = array_slice( $sentences, 0, max( 1, absint( $limit ) ) );
+
+		if ( count( $sentences ) > count( $limited ) ) {
+			$last_index = count( $limited ) - 1;
+			$limited[ $last_index ] = rtrim( $limited[ $last_index ], ".!?\t\n\r\0\x0B " ) . '...';
+		}
+
+		return $limited;
 	}
 
 	/**
