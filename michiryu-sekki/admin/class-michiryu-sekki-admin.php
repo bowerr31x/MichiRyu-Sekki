@@ -100,11 +100,24 @@ class MichiRyu_Sekki_Admin {
 						</td>
 					</tr>
 					<?php $this->render_checkbox_row( 'show_ko_icon', __( 'Show Ko microseason section', 'michiryu-sekki' ), $options['show_ko_icon'] ); ?>
+					<?php $this->render_checkbox_row( 'show_kanji', __( 'Show Japanese kanji', 'michiryu-sekki' ), $options['show_kanji'] ); ?>
+					<?php $this->render_checkbox_row( 'show_romanized', __( 'Show romanized name', 'michiryu-sekki' ), $options['show_romanized'] ); ?>
+					<?php $this->render_checkbox_row( 'show_english', __( 'Show English name', 'michiryu-sekki' ), $options['show_english'] ); ?>
+					<?php $this->render_checkbox_row( 'show_sekki_image', __( 'Show Sekki image', 'michiryu-sekki' ), $options['show_sekki_image'] ); ?>
+					<?php $this->render_checkbox_row( 'show_ikebana_materials', __( 'Show ikebana materials', 'michiryu-sekki' ), $options['show_ikebana_materials'] ); ?>
+					<?php $this->render_checkbox_row( 'show_date_stamp', __( 'Show current date stamp', 'michiryu-sekki' ), $options['show_date_stamp'] ); ?>
 					<tr>
 						<th scope="row"><label for="michiryu-sekki-map-page-url"><?php esc_html_e( 'Dedicated map page URL', 'michiryu-sekki' ); ?></label></th>
 						<td>
 							<input id="michiryu-sekki-map-page-url" type="url" class="large-text" name="<?php echo esc_attr( MichiRyu_Sekki::OPTION_NAME ); ?>[map_page_url]" value="<?php echo esc_attr( $options['map_page_url'] ); ?>" />
 							<p class="description"><?php esc_html_e( 'Use this when Map open behavior is Dedicated page or New tab. Add [michiryu_sekki_map] to that page.', 'michiryu-sekki' ); ?></p>
+						</td>
+					</tr>
+					<tr>
+						<th scope="row"><label for="michiryu-sekki-custom-css"><?php esc_html_e( 'Optional custom CSS', 'michiryu-sekki' ); ?></label></th>
+						<td>
+							<textarea id="michiryu-sekki-custom-css" name="<?php echo esc_attr( MichiRyu_Sekki::OPTION_NAME ); ?>[custom_css]" class="large-text code" rows="8"><?php echo esc_textarea( $options['custom_css'] ); ?></textarea>
+							<p class="description"><?php esc_html_e( 'CSS is printed only when the Sekki display renders.', 'michiryu-sekki' ); ?></p>
 						</td>
 					</tr>
 				</table>
@@ -114,15 +127,9 @@ class MichiRyu_Sekki_Admin {
 					<p class="description"><?php esc_html_e( 'These options are mostly for older widgets, shortcodes, and custom map/page setups.', 'michiryu-sekki' ); ?></p>
 					<table class="form-table" role="presentation">
 					<?php
-					$this->render_checkbox_row( 'show_kanji', __( 'Show Japanese kanji', 'michiryu-sekki' ), $options['show_kanji'] );
-					$this->render_checkbox_row( 'show_romanized', __( 'Show romanized name', 'michiryu-sekki' ), $options['show_romanized'] );
-					$this->render_checkbox_row( 'show_english', __( 'Show English name', 'michiryu-sekki' ), $options['show_english'] );
 					$this->render_checkbox_row( 'show_date_range', __( 'Show date range', 'michiryu-sekki' ), $options['show_date_range'] );
 					$this->render_checkbox_row( 'show_description', __( 'Show description', 'michiryu-sekki' ), $options['show_description'] );
-					$this->render_checkbox_row( 'show_sekki_image', __( 'Show Sekki image', 'michiryu-sekki' ), $options['show_sekki_image'] );
-					$this->render_checkbox_row( 'show_ikebana_materials', __( 'Show ikebana materials', 'michiryu-sekki' ), $options['show_ikebana_materials'] );
 					$this->render_checkbox_row( 'use_bundled_images', __( 'Use bundled images', 'michiryu-sekki' ), $options['use_bundled_images'] );
-					$this->render_checkbox_row( 'show_date_stamp', __( 'Show current date stamp', 'michiryu-sekki' ), $options['show_date_stamp'] );
 					$this->render_checkbox_row( 'enable_map_link', __( 'Enable Explore Map link', 'michiryu-sekki' ), $options['enable_map_link'] );
 					$this->render_checkbox_row( 'show_map_in_widget', __( 'Show map in widget', 'michiryu-sekki' ), $options['show_map_in_widget'] );
 					$this->render_checkbox_row( 'show_current_map_highlight', __( 'Show current season highlight', 'michiryu-sekki' ), $options['show_current_map_highlight'] );
@@ -190,13 +197,6 @@ class MichiRyu_Sekki_Admin {
 						<td>
 							<input id="michiryu-sekki-fallback-image" type="url" class="large-text" name="<?php echo esc_attr( MichiRyu_Sekki::OPTION_NAME ); ?>[custom_fallback_image_url]" value="<?php echo esc_attr( $options['custom_fallback_image_url'] ); ?>" />
 							<p class="description"><?php esc_html_e( 'Used for Sekki displays when the matching bundled image file is missing. Per-season custom image URLs can be added later.', 'michiryu-sekki' ); ?></p>
-						</td>
-					</tr>
-					<tr>
-						<th scope="row"><label for="michiryu-sekki-custom-css"><?php esc_html_e( 'Optional custom CSS', 'michiryu-sekki' ); ?></label></th>
-						<td>
-							<textarea id="michiryu-sekki-custom-css" name="<?php echo esc_attr( MichiRyu_Sekki::OPTION_NAME ); ?>[custom_css]" class="large-text code" rows="8"><?php echo esc_textarea( $options['custom_css'] ); ?></textarea>
-							<p class="description"><?php esc_html_e( 'CSS is printed only when the Sekki display renders.', 'michiryu-sekki' ); ?></p>
 						</td>
 					</tr>
 					</table>
