@@ -54,7 +54,8 @@
 .michiryu-sekki__phrase,
 .michiryu-sekki__education,
 .michiryu-sekki__next,
-.michiryu-sekki__ikebana p {
+.michiryu-sekki__ikebana p,
+.michiryu-sekki__materials-list {
 	margin: 0.55rem 0 0;
 }
 
@@ -64,10 +65,37 @@
 	font-size: 0.9rem;
 }
 
+.michiryu-sekki__date span {
+	font-weight: 700;
+}
+
 .michiryu-sekki__theme span,
 .michiryu-sekki__ikebana span {
 	color: var(--mrs-bark);
 	font-weight: 700;
+}
+
+.michiryu-sekki__materials-list {
+	display: grid;
+	gap: 0.18rem;
+	padding-left: 1.15rem;
+	color: var(--mrs-ink);
+	font-size: 0.92rem;
+	line-height: 1.32;
+}
+
+.michiryu-sekki__materials-list li {
+	padding-left: 0.1rem;
+}
+
+.michiryu-sekki__materials-list span {
+	color: var(--mrs-bark);
+	font-weight: 700;
+}
+
+.michiryu-sekki__materials-list em {
+	color: var(--mrs-ink);
+	font-style: italic;
 }
 
 .michiryu-sekki__phrase {
@@ -274,18 +302,23 @@
 }
 
 .michiryu-sekki__ko-title {
-	display: flex;
-	flex-wrap: wrap;
-	gap: 0.18rem 0.35rem;
-	align-items: baseline;
+	display: grid;
+	gap: 0.08rem;
 	margin: 0.18rem 0 0;
+	color: var(--mrs-ink);
 	font-size: 1.06rem;
 	line-height: 1.22;
 	letter-spacing: 0;
 }
 
+.michiryu-sekki__ko-title-line {
+	display: block;
+	color: var(--mrs-ink);
+	font-weight: 600;
+}
+
 .michiryu-sekki__ko-english {
-	color: var(--mrs-bark);
+	color: var(--mrs-ink);
 	font-size: 0.94rem;
 	font-weight: 700;
 	line-height: 1.3;
@@ -1186,10 +1219,8 @@
 }
 
 .michiryu-sekki-map__ko-title {
-	display: flex;
-	flex-wrap: wrap;
-	gap: 0.16rem 0.4rem;
-	align-items: baseline;
+	display: grid;
+	gap: 0.08rem;
 	margin: 0.3rem 0 0;
 	color: var(--mrs-ink);
 	font-size: 1rem;
@@ -1572,6 +1603,7 @@
 
 .michiryu-sekki--small .michiryu-sekki__description,
 .michiryu-sekki--small .michiryu-sekki__theme,
+.michiryu-sekki--small .michiryu-sekki__materials-list,
 .michiryu-sekki--small .michiryu-sekki__ko-description,
 .michiryu-sekki--small .michiryu-sekki__story-excerpt,
 .michiryu-sekki--small .michiryu-sekki__story-characters {
