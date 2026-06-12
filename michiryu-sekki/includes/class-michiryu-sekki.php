@@ -53,18 +53,23 @@ class MichiRyu_Sekki {
 	 * Register styles without enqueueing until render time.
 	 */
 	public function register_assets() {
+		$style_path     = MICHIRYU_SEKKI_PATH . 'assets/css/michiryu-sekki.css';
+		$script_path    = MICHIRYU_SEKKI_PATH . 'assets/js/michiryu-sekki.js';
+		$style_version  = file_exists( $style_path ) ? MICHIRYU_SEKKI_VERSION . '.' . filemtime( $style_path ) : MICHIRYU_SEKKI_VERSION;
+		$script_version = file_exists( $script_path ) ? MICHIRYU_SEKKI_VERSION . '.' . filemtime( $script_path ) : MICHIRYU_SEKKI_VERSION;
+
 		wp_register_style(
 			'michiryu-sekki',
 			MICHIRYU_SEKKI_URL . 'assets/css/michiryu-sekki.css',
 			array(),
-			MICHIRYU_SEKKI_VERSION
+			$style_version
 		);
 
 		wp_register_script(
 			'michiryu-sekki',
 			MICHIRYU_SEKKI_URL . 'assets/js/michiryu-sekki.js',
 			array(),
-			MICHIRYU_SEKKI_VERSION,
+			$script_version,
 			true
 		);
 	}
@@ -181,6 +186,7 @@ class MichiRyu_Sekki {
 		$atts = shortcode_atts(
 			array(
 				'current_only' => 'false',
+				'layout'       => '',
 			),
 			$atts,
 			'michiryu_sekki_map'
@@ -193,6 +199,7 @@ class MichiRyu_Sekki {
 			array(
 				'current_only' => $this->resolve_bool_arg( $atts['current_only'], false ),
 				'is_modal'     => false,
+				'layout'       => sanitize_key( $atts['layout'] ),
 			),
 			$this->get_options()
 		);
@@ -1711,6 +1718,18 @@ class MichiRyu_Sekki {
 		$current_only = ! empty( $args['current_only'] );
 		$title_id     = $args['title_id'] ?? wp_unique_id( 'michiryu-sekki-map-title-' );
 		$map_url      = $this->get_map_image_url();
+		$is_modal     = ! empty( $args['is_modal'] );
+		$layout_arg   = sanitize_key( $args['layout'] ?? '' );
+		$layout       = 'default' === $layout_arg ? 'default' : ( $is_modal ? 'default' : 'page' );
+		$classes      = array( 'michiryu-sekki-map' );
+
+		if ( $is_modal ) {
+			$classes[] = 'michiryu-sekki-map--modal';
+		}
+
+		if ( 'page' === $layout ) {
+			$classes[] = 'michiryu-sekki-map--page';
+		}
 
 		if ( $current_only ) {
 			$seasons = array_values(
@@ -1725,7 +1744,7 @@ class MichiRyu_Sekki {
 
 		ob_start();
 		?>
-		<section class="michiryu-sekki-map<?php echo ! empty( $args['is_modal'] ) ? ' michiryu-sekki-map--modal' : ''; ?>" data-mrs-map data-current-season="<?php echo esc_attr( $current['slug'] ); ?>" data-current-ko="<?php echo esc_attr( $current_ko['ko_number'] ?? '' ); ?>" aria-labelledby="<?php echo esc_attr( $title_id ); ?>">
+		<section class="<?php echo esc_attr( implode( ' ', $classes ) ); ?>" data-mrs-map data-current-season="<?php echo esc_attr( $current['slug'] ); ?>" data-current-ko="<?php echo esc_attr( $current_ko['ko_number'] ?? '' ); ?>" aria-labelledby="<?php echo esc_attr( $title_id ); ?>">
 			<div class="michiryu-sekki-map__header">
 				<div>
 					<h2 class="michiryu-sekki-map__title" id="<?php echo esc_attr( $title_id ); ?>"><?php esc_html_e( 'Explore Map', 'michiryu-sekki' ); ?></h2>
@@ -1739,37 +1758,80 @@ class MichiRyu_Sekki {
 				</div>
 			</div>
 			<?php echo $this->render_map_progression( $seasons, $current, $options ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
-			<div class="michiryu-sekki-map__layout">
-				<div class="michiryu-sekki-map__main">
-					<div class="michiryu-sekki-map__main-top">
-						<?php echo $this->render_map_characters( $seasons, $current, $timestamp_utc, $display_timezone ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
-						<div class="michiryu-sekki-map__viewport" data-mrs-map-viewport>
-							<div class="michiryu-sekki-map__canvas" data-mrs-map-canvas>
-								<?php if ( ! empty( $map_url ) ) : ?>
-									<img class="michiryu-sekki-map__image" src="<?php echo esc_url( $map_url ); ?>" alt="<?php esc_attr_e( 'Illustrated location map of Yuki no Sato with the 24 Sekki locations.', 'michiryu-sekki' ); ?>" loading="lazy" />
-								<?php endif; ?>
-								<?php echo $this->render_map_season_path( $seasons, $current ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
-								<div class="michiryu-sekki-map__markers" aria-label="<?php esc_attr_e( 'Sekki locations', 'michiryu-sekki' ); ?>">
+			<?php if ( 'page' === $layout ) : ?>
+				<div class="michiryu-sekki-map__page-layout">
+					<div class="michiryu-sekki-map__page-primary">
+						<div class="michiryu-sekki-map__page-map-stack">
+							<div class="michiryu-sekki-map__page-map">
+								<?php echo $this->render_map_viewport( $seasons, $current, $options, $map_url ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
+							</div>
+							<div class="michiryu-sekki-map__page-under-map">
+								<?php echo $this->render_map_characters( $seasons, $current, $timestamp_utc, $display_timezone ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
+								<div class="michiryu-sekki-map__story-region" data-mrs-map-stories>
 									<?php foreach ( $seasons as $season ) : ?>
-										<?php echo $this->render_map_marker( $season, $current, $options ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
+										<?php echo $this->render_map_stories( $season, $current, $timestamp_utc, $display_timezone ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
 									<?php endforeach; ?>
 								</div>
 							</div>
 						</div>
+						<div class="michiryu-sekki-map__details" data-mrs-map-details aria-live="polite">
+							<?php foreach ( $seasons as $season ) : ?>
+								<?php echo $this->render_map_detail( $season, $current, $current_ko, $options ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
+							<?php endforeach; ?>
+						</div>
 					</div>
-					<div class="michiryu-sekki-map__story-region" data-mrs-map-stories>
+				</div>
+			<?php else : ?>
+				<div class="michiryu-sekki-map__layout">
+					<div class="michiryu-sekki-map__main">
+						<div class="michiryu-sekki-map__main-top">
+							<?php echo $this->render_map_characters( $seasons, $current, $timestamp_utc, $display_timezone ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
+							<?php echo $this->render_map_viewport( $seasons, $current, $options, $map_url ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
+						</div>
+						<div class="michiryu-sekki-map__story-region" data-mrs-map-stories>
+							<?php foreach ( $seasons as $season ) : ?>
+								<?php echo $this->render_map_stories( $season, $current, $timestamp_utc, $display_timezone ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
+							<?php endforeach; ?>
+						</div>
+					</div>
+					<div class="michiryu-sekki-map__details" data-mrs-map-details aria-live="polite">
 						<?php foreach ( $seasons as $season ) : ?>
-							<?php echo $this->render_map_stories( $season, $current, $timestamp_utc, $display_timezone ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
+							<?php echo $this->render_map_detail( $season, $current, $current_ko, $options ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
 						<?php endforeach; ?>
 					</div>
 				</div>
-				<div class="michiryu-sekki-map__details" data-mrs-map-details aria-live="polite">
+			<?php endif; ?>
+		</section>
+		<?php
+
+		return ob_get_clean();
+	}
+
+	/**
+	 * Render the interactive map viewport.
+	 *
+	 * @param array<int,array<string,mixed>> $seasons Visible season records.
+	 * @param array<string,mixed>            $current Current season.
+	 * @param array<string,mixed>            $options Saved options.
+	 * @param string                         $map_url Map image URL.
+	 * @return string
+	 */
+	private function render_map_viewport( $seasons, $current, $options, $map_url ) {
+		ob_start();
+		?>
+		<div class="michiryu-sekki-map__viewport" data-mrs-map-viewport>
+			<div class="michiryu-sekki-map__canvas" data-mrs-map-canvas>
+				<?php if ( ! empty( $map_url ) ) : ?>
+					<img class="michiryu-sekki-map__image" src="<?php echo esc_url( $map_url ); ?>" alt="<?php esc_attr_e( 'Illustrated location map of Yuki no Sato with the 24 Sekki locations.', 'michiryu-sekki' ); ?>" loading="lazy" />
+				<?php endif; ?>
+				<?php echo $this->render_map_season_path( $seasons, $current ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
+				<div class="michiryu-sekki-map__markers" aria-label="<?php esc_attr_e( 'Sekki locations', 'michiryu-sekki' ); ?>">
 					<?php foreach ( $seasons as $season ) : ?>
-						<?php echo $this->render_map_detail( $season, $current, $current_ko, $options ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
+						<?php echo $this->render_map_marker( $season, $current, $options ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
 					<?php endforeach; ?>
 				</div>
 			</div>
-		</section>
+		</div>
 		<?php
 
 		return ob_get_clean();
