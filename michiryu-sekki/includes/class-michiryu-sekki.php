@@ -1095,14 +1095,20 @@ class MichiRyu_Sekki {
 	 */
 	public function sanitize_options( $input ) {
 		$defaults = $this->get_default_options();
+		$saved    = get_option( self::OPTION_NAME, array() );
+		$saved    = is_array( $saved ) ? wp_parse_args( $saved, $defaults ) : $defaults;
 		$input    = is_array( $input ) ? $input : array();
 		$output   = array();
 
 		$output['default_style'] = $this->normalize_style_value( $input['default_style'] ?? '', $defaults['default_style'] );
-		$output['default_plan']  = in_array( $input['default_plan'] ?? '', $this->plans, true ) ? $input['default_plan'] : $defaults['default_plan'];
+		$output['default_plan']  = in_array( $input['default_plan'] ?? '', $this->plans, true ) ? $input['default_plan'] : $saved['default_plan'];
 
-		foreach ( array( 'show_kanji', 'show_romanized', 'show_english', 'show_date_range', 'show_description', 'show_sekki_image', 'show_ko_icon', 'show_ikebana_materials', 'show_story_teaser', 'use_bundled_images', 'show_date_stamp', 'enable_map_link', 'show_map_in_widget', 'show_current_map_highlight' ) as $key ) {
+		foreach ( array( 'show_kanji', 'show_romanized', 'show_english', 'show_sekki_image', 'show_ko_icon', 'show_ikebana_materials', 'show_story_teaser', 'show_date_stamp' ) as $key ) {
 			$output[ $key ] = ! empty( $input[ $key ] );
+		}
+
+		foreach ( array( 'show_date_range', 'show_description', 'use_bundled_images', 'enable_map_link', 'show_map_in_widget', 'show_current_map_highlight' ) as $key ) {
+			$output[ $key ] = array_key_exists( $key, $input ) ? ! empty( $input[ $key ] ) : ! empty( $saved[ $key ] );
 		}
 
 		$image_styles = array( 'square', 'banner', 'circle', 'none' );
@@ -1113,19 +1119,19 @@ class MichiRyu_Sekki {
 		$read_more_link_behaviors = array( 'none', 'internal', 'external' );
 		$signature_positions = array( 'bottom-right', 'bottom-left', 'top-right', 'top-left' );
 		$signature_sizes     = array( 'small', 'medium', 'large' );
-		$signature_opacity   = isset( $input['signature_opacity'] ) ? (float) $input['signature_opacity'] : $defaults['signature_opacity'];
+		$signature_opacity   = isset( $input['signature_opacity'] ) ? (float) $input['signature_opacity'] : (float) $saved['signature_opacity'];
 
-		$output['custom_fallback_image_url'] = esc_url_raw( $input['custom_fallback_image_url'] ?? '' );
-		$output['image_style']               = in_array( $input['image_style'] ?? '', $image_styles, true ) ? $input['image_style'] : $defaults['image_style'];
-		$output['icon_style']                = in_array( $input['icon_style'] ?? '', $icon_styles, true ) ? $input['icon_style'] : $defaults['icon_style'];
-		$output['map_open_behavior']         = in_array( $input['map_open_behavior'] ?? '', $map_open_behaviors, true ) ? $input['map_open_behavior'] : $defaults['map_open_behavior'];
-		$output['reader_open_behavior']      = in_array( $input['reader_open_behavior'] ?? '', $reader_open_behaviors, true ) ? $input['reader_open_behavior'] : $defaults['reader_open_behavior'];
-		$output['map_progression_style']     = in_array( $input['map_progression_style'] ?? '', $map_progression_styles, true ) ? $input['map_progression_style'] : $defaults['map_progression_style'];
-		$output['read_more_link_behavior']   = in_array( $input['read_more_link_behavior'] ?? '', $read_more_link_behaviors, true ) ? $input['read_more_link_behavior'] : $defaults['read_more_link_behavior'];
-		$output['external_season_base_url']  = esc_url_raw( $input['external_season_base_url'] ?? '' );
+		$output['custom_fallback_image_url'] = array_key_exists( 'custom_fallback_image_url', $input ) ? esc_url_raw( $input['custom_fallback_image_url'] ) : $saved['custom_fallback_image_url'];
+		$output['image_style']               = in_array( $input['image_style'] ?? '', $image_styles, true ) ? $input['image_style'] : $saved['image_style'];
+		$output['icon_style']                = in_array( $input['icon_style'] ?? '', $icon_styles, true ) ? $input['icon_style'] : $saved['icon_style'];
+		$output['map_open_behavior']         = in_array( $input['map_open_behavior'] ?? '', $map_open_behaviors, true ) ? $input['map_open_behavior'] : $saved['map_open_behavior'];
+		$output['reader_open_behavior']      = in_array( $input['reader_open_behavior'] ?? '', $reader_open_behaviors, true ) ? $input['reader_open_behavior'] : $saved['reader_open_behavior'];
+		$output['map_progression_style']     = in_array( $input['map_progression_style'] ?? '', $map_progression_styles, true ) ? $input['map_progression_style'] : $saved['map_progression_style'];
+		$output['read_more_link_behavior']   = in_array( $input['read_more_link_behavior'] ?? '', $read_more_link_behaviors, true ) ? $input['read_more_link_behavior'] : $saved['read_more_link_behavior'];
+		$output['external_season_base_url']  = array_key_exists( 'external_season_base_url', $input ) ? esc_url_raw( $input['external_season_base_url'] ) : $saved['external_season_base_url'];
 		$output['map_page_url']              = esc_url_raw( $input['map_page_url'] ?? '' );
-		$output['signature_position']        = in_array( $input['signature_position'] ?? '', $signature_positions, true ) ? $input['signature_position'] : $defaults['signature_position'];
-		$output['signature_size']            = in_array( $input['signature_size'] ?? '', $signature_sizes, true ) ? $input['signature_size'] : $defaults['signature_size'];
+		$output['signature_position']        = in_array( $input['signature_position'] ?? '', $signature_positions, true ) ? $input['signature_position'] : $saved['signature_position'];
+		$output['signature_size']            = in_array( $input['signature_size'] ?? '', $signature_sizes, true ) ? $input['signature_size'] : $saved['signature_size'];
 		$output['signature_opacity']         = max( 0.5, min( 1.0, $signature_opacity ) );
 		$output['custom_css']                = wp_kses( $input['custom_css'] ?? '', array() );
 

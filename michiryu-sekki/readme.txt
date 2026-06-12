@@ -75,27 +75,6 @@ Optional for other sections or pages: [michiryu_story] [michiryu_sekki_map]
 * Show name fields, Sekki image, ikebana materials and theme, date stamp, and story teaser
 * Dedicated map page URL
 * Optional custom CSS
-* Default Seasonal Plan
-* Map progression style
-* Story reader behavior
-* Current season map highlight
-* Signature opacity
-
-Advanced display settings remain available for legacy widgets, older shortcodes, custom map page setups, and detailed image/icon controls.
-
-Advanced settings include:
-
-* Whether to show kanji, romanized names, English names, date ranges, descriptions, Sekki images, ko icons, and ikebana materials/theme
-* Whether to use bundled images
-* Whether to show the current date stamp over Sekki images
-* Signature position: bottom-right, bottom-left, top-right, or top-left
-* Signature size: small, medium, or large
-* Signature opacity: 0.5 to 1.0
-* Custom fallback image URL
-* Image style: square, banner, circle, or none
-* Icon style: outline, circle, or none
-* Map progression style: seasonal compass, slim seasonal timeline, or disabled
-* Optional custom CSS
 
 == Images ==
 
