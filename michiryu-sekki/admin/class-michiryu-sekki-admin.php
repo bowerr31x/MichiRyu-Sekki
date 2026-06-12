@@ -83,7 +83,7 @@ class MichiRyu_Sekki_Admin {
 
 			<div class="notice notice-info inline">
 				<p><strong><?php esc_html_e( 'Recommended setup', 'michiryu-sekki' ); ?></strong></p>
-				<p><?php esc_html_e( 'Use [michiryu_sekki] for the main experience. It shows the current Sekki, current Ko, story entry, and journey map handoff.', 'michiryu-sekki' ); ?></p>
+				<p><?php esc_html_e( 'Use', 'michiryu-sekki' ); ?> <code>[michiryu_sekki]</code> <?php esc_html_e( 'for the main experience. It shows the current Sekki, current Ko, story entry, and journey map handoff.', 'michiryu-sekki' ); ?></p>
 				<p><?php esc_html_e( 'Optional for other sections or pages:', 'michiryu-sekki' ); ?> <code>[michiryu_story]</code> <code>[michiryu_sekki_map]</code></p>
 			</div>
 
