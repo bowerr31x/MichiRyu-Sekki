@@ -79,12 +79,12 @@ class MichiRyu_Sekki_Admin {
 		?>
 		<div class="wrap">
 			<h1><?php esc_html_e( 'MichiRyu-Sekki-Calendar', 'michiryu-sekki' ); ?></h1>
-			<p><?php esc_html_e( 'Set up the seasonal journey, story reader, and map experience.', 'michiryu-sekki' ); ?></p>
+			<p><?php esc_html_e( 'Set up the seasonal journey and map experience.', 'michiryu-sekki' ); ?></p>
 
 			<div class="notice notice-info inline">
-				<p><strong><?php esc_html_e( 'Recommended journey setup', 'michiryu-sekki' ); ?></strong></p>
-				<p><?php esc_html_e( 'Use [michiryu_journey] for the main experience. It shows the current Sekki, current Ko, story entry, reading progress, and journey map handoff.', 'michiryu-sekki' ); ?></p>
-				<p><code>[michiryu_journey]</code> <code>[michiryu_story]</code> <code>[michiryu_sekki_map]</code></p>
+				<p><strong><?php esc_html_e( 'Recommended setup', 'michiryu-sekki' ); ?></strong></p>
+				<p><?php esc_html_e( 'Use [michiryu_sekki] for the main experience. It shows the current Sekki, current Ko, story entry, and journey map handoff.', 'michiryu-sekki' ); ?></p>
+				<p><?php esc_html_e( 'Optional for other sections or pages:', 'michiryu-sekki' ); ?> <code>[michiryu_story]</code> <code>[michiryu_sekki_map]</code></p>
 			</div>
 
 			<form method="post" action="options.php">

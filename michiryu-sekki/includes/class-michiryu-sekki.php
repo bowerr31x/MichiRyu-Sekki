@@ -1630,6 +1630,24 @@ class MichiRyu_Sekki {
 						</div>
 					</div>
 					<p><?php esc_html_e( 'MichiRyu uses these calendars as a way to notice nature, arrange seasonal materials, and tell stories about how small changes shape a whole year.', 'michiryu-sekki' ); ?></p>
+					<p>
+						<?php
+						printf(
+							wp_kses(
+								/* translators: %s: MichiRyu creator website link. */
+								__( 'Learn more from the creator at %s.', 'michiryu-sekki' ),
+								array(
+									'a' => array(
+										'href'   => array(),
+										'target' => array(),
+										'rel'    => array(),
+									),
+								)
+							),
+							'<a href="' . esc_url( 'https://michiryu.com' ) . '" target="_blank" rel="noopener noreferrer">michiryu.com</a>'
+						);
+						?>
+					</p>
 				</section>
 			</div>
 		</div>

@@ -1,5 +1,7 @@
 === MichiRyu-Sekki-Calendar ===
 Contributors: michiryu
+Plugin URI: https://michiryu.com
+Author URI: https://michiryu.com
 Tags: sekki, seasons, japan, shortcode, widget, block, ikebana
 Requires at least: 6.0
 Tested up to: 6.5
@@ -16,6 +18,8 @@ MichiRyu-Sekki-Calendar is a lightweight WordPress plugin for showing the curren
 
 The plugin includes display plans for minimal naming, standard seasonal context, ikebana material suggestions, visual banners, and educational text.
 
+Learn more about the creator at https://michiryu.com.
+
 == Usage ==
 
 Default shortcode:
@@ -28,7 +32,7 @@ Default shortcode:
 [michiryu_sekki signature_position="bottom-right"]
 [michiryu_sekki style="banner_tall" signature_size="small"]
 
-Seasonal journey entry:
+Optional seasonal journey entry:
 
 [michiryu_journey]
 [michiryu_journey variant="widget"]
@@ -61,6 +65,10 @@ Seasonal plan overrides:
 == Settings ==
 
 Go to MichiRyu-Sekki-Calendar > Sekki to set the core journey defaults:
+
+Recommended setup: use [michiryu_sekki] for the main experience. It shows the current Sekki, current Ko, story entry, and journey map handoff.
+
+Optional for other sections or pages: [michiryu_story] [michiryu_sekki_map]
 
 * Default display style
 * Show Ko microseason section

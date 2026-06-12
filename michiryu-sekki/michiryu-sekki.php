@@ -1,10 +1,11 @@
 <?php
 /**
  * Plugin Name: MichiRyu-Sekki-Calendar
- * Plugin URI:  https://example.com/michiryu-sekki
+ * Plugin URI:  https://michiryu.com
  * Description: Display the current Japanese 24 Sekki solar term with elegant seasonal cards, banners, widgets, and ikebana prompts.
  * Version:     1.2.19
  * Author:      MichiRyu
+ * Author URI:  https://michiryu.com
  * Text Domain: michiryu-sekki
  * Domain Path: /languages
  *
