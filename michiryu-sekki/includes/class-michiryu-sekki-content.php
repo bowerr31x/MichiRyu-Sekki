@@ -1,6 +1,6 @@
 <?php
 /**
- * Markdown story importer and JSON content cache.
+ * Markdown story importer and in-request content cache.
  *
  * @package MichiRyu_Sekki
  */
@@ -10,11 +10,24 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 /**
- * Builds and reads the story content cache.
+ * Builds and reads the story content model.
  */
 class MichiRyu_Sekki_Content {
 	const STORIES_DIR = 'stories';
-	const CACHE_FILE  = 'stories/cache/content.json';
+
+	/**
+	 * In-request content cache.
+	 *
+	 * @var array<string,mixed>|null
+	 */
+	private static $content_cache = null;
+
+	/**
+	 * In-request stories-by-Sekki cache.
+	 *
+	 * @var array<int,array<int,array<string,mixed>>>
+	 */
+	private static $stories_by_sekki = array();
 
 	/**
 	 * Return full runtime content.
@@ -22,17 +35,13 @@ class MichiRyu_Sekki_Content {
 	 * @return array<string,mixed>
 	 */
 	public static function get_content() {
-		self::ensure_cache();
-
-		$cache_path = MICHIRYU_SEKKI_PATH . self::CACHE_FILE;
-		if ( file_exists( $cache_path ) ) {
-			$decoded = json_decode( (string) file_get_contents( $cache_path ), true );
-			if ( is_array( $decoded ) ) {
-				return $decoded;
-			}
+		if ( null !== self::$content_cache ) {
+			return self::$content_cache;
 		}
 
-		return self::build_content();
+		self::$content_cache = self::build_content();
+
+		return self::$content_cache;
 	}
 
 	/**
@@ -52,10 +61,16 @@ class MichiRyu_Sekki_Content {
 	 * @return array<int,array<string,mixed>>
 	 */
 	public static function get_stories_for_sekki( $sekki_number ) {
+		$sekki_number = absint( $sekki_number );
+
+		if ( isset( self::$stories_by_sekki[ $sekki_number ] ) ) {
+			return self::$stories_by_sekki[ $sekki_number ];
+		}
+
 		$content = self::get_content();
 		$stories = is_array( $content['stories'] ?? null ) ? $content['stories'] : array();
 
-		return array_values(
+		self::$stories_by_sekki[ $sekki_number ] = array_values(
 			array_filter(
 				$stories,
 				function ( $story ) use ( $sekki_number ) {
@@ -63,35 +78,8 @@ class MichiRyu_Sekki_Content {
 				}
 			)
 		);
-	}
 
-	/**
-	 * Ensure the JSON cache exists and is fresh enough.
-	 */
-	public static function ensure_cache() {
-		$cache_path = MICHIRYU_SEKKI_PATH . self::CACHE_FILE;
-		$source_mtime = self::get_source_mtime();
-		$source_count = self::get_source_count();
-
-		if ( file_exists( $cache_path ) && filemtime( $cache_path ) >= $source_mtime ) {
-			$decoded = json_decode( (string) file_get_contents( $cache_path ), true );
-			$cached_stories = is_array( $decoded['stories'] ?? null ) ? count( $decoded['stories'] ) : 0;
-
-			if ( $cached_stories >= $source_count ) {
-				return;
-			}
-		}
-
-		$content = self::build_content();
-		$cache_dir = dirname( $cache_path );
-
-		if ( ! is_dir( $cache_dir ) ) {
-			wp_mkdir_p( $cache_dir );
-		}
-
-		if ( is_dir( $cache_dir ) && is_writable( $cache_dir ) ) {
-			file_put_contents( $cache_path, wp_json_encode( $content, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES ) );
-		}
+		return self::$stories_by_sekki[ $sekki_number ];
 	}
 
 	/**
@@ -134,7 +122,12 @@ class MichiRyu_Sekki_Content {
 	 * @return array<int,array<string,mixed>>
 	 */
 	private static function load_stories() {
-		$pattern = MICHIRYU_SEKKI_PATH . self::STORIES_DIR . '/Sekki_*/*.md';
+		$stories_dir = MICHIRYU_SEKKI_PATH . self::STORIES_DIR;
+		if ( ! is_readable( $stories_dir ) ) {
+			return array();
+		}
+
+		$pattern = $stories_dir . '/Sekki_*/*.md';
 		$files = glob( $pattern );
 		$stories = array();
 
@@ -162,7 +155,16 @@ class MichiRyu_Sekki_Content {
 	 * @return array<string,mixed>
 	 */
 	private static function parse_story_file( $file ) {
-		$raw = (string) file_get_contents( $file );
+		if ( ! is_readable( $file ) ) {
+			return array();
+		}
+
+		$raw = file_get_contents( $file );
+		if ( false === $raw ) {
+			return array();
+		}
+
+		$raw = (string) $raw;
 		if ( ! preg_match( '/^---\s*(.*?)\s*---\s*(.*)$/s', $raw, $matches ) ) {
 			return array();
 		}
@@ -271,8 +273,8 @@ class MichiRyu_Sekki_Content {
 		if ( ! empty( $front['character'] ) && is_array( $front['character'] ) && ! empty( $front['character']['name'] ) ) {
 			$name = trim( (string) $front['character']['name'] );
 			if ( false !== stripos( $name, ' and ' ) ) {
-			return array_values( array_filter( array_map( 'sanitize_title', preg_split( '/\s+and\s+/i', $name ) ) ) );
-		}
+				return array_values( array_filter( array_map( 'sanitize_title', preg_split( '/\s+and\s+/i', $name ) ) ) );
+			}
 			return array( sanitize_title( $name ) );
 		}
 
@@ -287,7 +289,8 @@ class MichiRyu_Sekki_Content {
 	 */
 	private static function load_characters( $stories ) {
 		$path = MICHIRYU_SEKKI_PATH . self::STORIES_DIR . '/characters.json';
-		$characters = file_exists( $path ) ? json_decode( (string) file_get_contents( $path ), true ) : array();
+		$raw = is_readable( $path ) ? file_get_contents( $path ) : false;
+		$characters = false !== $raw ? json_decode( (string) $raw, true ) : array();
 		return is_array( $characters ) ? $characters : array();
 	}
 
@@ -352,32 +355,4 @@ class MichiRyu_Sekki_Content {
 		return trim( preg_replace( '/\s+/', ' ', (string) $text ) );
 	}
 
-	/**
-	 * Get the newest source modification time.
-	 *
-	 * @return int
-	 */
-	private static function get_source_mtime() {
-		$paths = glob( MICHIRYU_SEKKI_PATH . self::STORIES_DIR . '/Sekki_*/*.md' );
-		$paths[] = MICHIRYU_SEKKI_PATH . self::STORIES_DIR . '/characters.json';
-		$mtime = 0;
-
-		foreach ( $paths as $path ) {
-			if ( file_exists( $path ) ) {
-				$mtime = max( $mtime, (int) filemtime( $path ) );
-			}
-		}
-
-		return $mtime;
-	}
-
-	/**
-	 * Count Markdown story sources.
-	 *
-	 * @return int
-	 */
-	private static function get_source_count() {
-		$paths = glob( MICHIRYU_SEKKI_PATH . self::STORIES_DIR . '/Sekki_*/*.md' );
-		return is_array( $paths ) ? count( $paths ) : 0;
-	}
 }

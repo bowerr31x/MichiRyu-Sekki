@@ -14,11 +14,29 @@ if ( ! defined( 'ABSPATH' ) ) {
  */
 class MichiRyu_Sekki_Data {
 	/**
+	 * In-request Sekki cache.
+	 *
+	 * @var array<int,array<string,mixed>>|null
+	 */
+	private static $seasons_cache = null;
+
+	/**
+	 * In-request Ko cache.
+	 *
+	 * @var array<int,array<string,mixed>>|null
+	 */
+	private static $ko_cache = null;
+
+	/**
 	 * Return all 24 Sekki.
 	 *
 	 * @return array<int,array<string,mixed>>
 	 */
 	public static function get_seasons() {
+		if ( null !== self::$seasons_cache ) {
+			return self::$seasons_cache;
+		}
+
 		$map_positions = array(
 			1  => array( 86.0, 75.8 ),
 			2  => array( 73.7, 94.7 ),
@@ -72,12 +90,14 @@ class MichiRyu_Sekki_Data {
 			array( 24, 'daikan', '大寒', 'Daikan', 'Greater Cold', '01-20', '02-03', 'Around January 20-February 3', 'The deepest cold comes just before spring begins again.', 'Deep cold', 'Pine, plum bud, camellia, winter branches, moss', 'Dense quiet with a hidden point of renewal', 'Sekki_24_Daikan.jpg', 'At cold’s depth, spring waits unseen.' ),
 		);
 
-		return array_map(
+		self::$seasons_cache = array_map(
 			function ( $row ) use ( $map_positions ) {
 				return self::format_season( $row, $map_positions[ (int) $row[0] ] ?? array( 50, 50 ) );
 			},
 			$raw
 		);
+
+		return self::$seasons_cache;
 	}
 
 	/**
@@ -86,6 +106,10 @@ class MichiRyu_Sekki_Data {
 	 * @return array<int,array<string,mixed>>
 	 */
 	public static function get_ko() {
+		if ( null !== self::$ko_cache ) {
+			return self::$ko_cache;
+		}
+
 		$names = array(
 			array( '東風解凍', 'Harukaze kori o toku', 'East Wind Melts Ice', 'EastWindMeltsIce' ),
 			array( '黄鶯睍睆', 'Kou kenkan su', 'Bush Warbler Sings', 'BushWarblerSings' ),
@@ -168,7 +192,9 @@ class MichiRyu_Sekki_Data {
 			$records[]           = self::format_ko( $ko_number, $parent_sekki_number, $name );
 		}
 
-		return $records;
+		self::$ko_cache = $records;
+
+		return self::$ko_cache;
 	}
 
 	/**

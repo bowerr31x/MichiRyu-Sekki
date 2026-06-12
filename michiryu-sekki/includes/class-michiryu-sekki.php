@@ -442,7 +442,14 @@ class MichiRyu_Sekki {
 							<p class="michiryu-sekki-journey__label"><?php esc_html_e( 'Current Sekki', 'michiryu-sekki' ); ?></p>
 							<h3><?php echo esc_html( $season['romaji'] ); ?></h3>
 							<p><?php echo esc_html( $season['description'] ); ?></p>
-							<p class="michiryu-sekki-journey__meta"><?php echo esc_html( sprintf( __( 'Next: %s', 'michiryu-sekki' ), $next['romaji'] ) ); ?></p>
+							<p class="michiryu-sekki-journey__meta">
+								<?php
+								printf(
+									esc_html__( 'Next: %s', 'michiryu-sekki' ),
+									esc_html( $next['romaji'] )
+								);
+								?>
+							</p>
 						</article>
 
 						<article class="michiryu-sekki-journey__card">
@@ -541,8 +548,8 @@ class MichiRyu_Sekki {
 								/* translators: 1: ko number, 2: ko English name, 3: ko date range. */
 								esc_html__( 'Ko %1$d: %2$s - %3$s', 'michiryu-sekki' ),
 								absint( $ko['ko_number'] ),
-								$ko['english_name'],
-								$ko['date_range']
+								esc_html( $ko['english_name'] ),
+								esc_html( $ko['date_range'] )
 							);
 							?>
 						</p>
@@ -759,7 +766,7 @@ class MichiRyu_Sekki {
 					/* translators: 1: ko number, 2: story title. */
 					__( 'Ko %1$d: %2$s', 'michiryu-sekki' ),
 					$ko_number,
-					$story['title'] ?? ''
+					esc_html( $story['title'] ?? '' )
 				);
 				?>
 				<a class="<?php echo esc_attr( implode( ' ', $classes ) ); ?>" href="<?php echo esc_url( $this->get_story_reader_url( $story ) ); ?>" data-mrs-story-progress-item data-story="<?php echo esc_attr( $story_id ); ?>" data-ko="<?php echo esc_attr( $ko_number ); ?>" data-status-label="<?php echo esc_attr( $label ); ?>" aria-label="<?php echo esc_attr( $label ); ?>" <?php echo $story_id === $current_story_id ? 'aria-current="step"' : ''; ?>>
@@ -895,7 +902,7 @@ class MichiRyu_Sekki {
 			return sprintf(
 				/* translators: %s: next season romanized name. */
 				__( 'Next Season: %s', 'michiryu-sekki' ),
-				$season['romaji'] ?? __( 'Next', 'michiryu-sekki' )
+				esc_html( $season['romaji'] ?? __( 'Next', 'michiryu-sekki' ) )
 			);
 		}
 
@@ -1068,6 +1075,7 @@ class MichiRyu_Sekki {
 			'show_story_teaser'       => true,
 			'use_bundled_images'      => true,
 			'show_date_stamp'         => true,
+			'show_creator_link'       => false,
 			'signature_position'      => 'bottom-right',
 			'signature_size'          => 'medium',
 			'signature_opacity'       => 1,
@@ -1103,7 +1111,7 @@ class MichiRyu_Sekki {
 		$output['default_style'] = $this->normalize_style_value( $input['default_style'] ?? '', $defaults['default_style'] );
 		$output['default_plan']  = in_array( $input['default_plan'] ?? '', $this->plans, true ) ? $input['default_plan'] : $saved['default_plan'];
 
-		foreach ( array( 'show_kanji', 'show_romanized', 'show_english', 'show_sekki_image', 'show_ko_icon', 'show_ikebana_materials', 'show_story_teaser', 'show_date_stamp' ) as $key ) {
+		foreach ( array( 'show_kanji', 'show_romanized', 'show_english', 'show_sekki_image', 'show_ko_icon', 'show_ikebana_materials', 'show_story_teaser', 'show_date_stamp', 'show_creator_link' ) as $key ) {
 			$output[ $key ] = ! empty( $input[ $key ] );
 		}
 
@@ -1600,7 +1608,7 @@ class MichiRyu_Sekki {
 			$output .= $this->render_map_modal( $options );
 		}
 
-		$output .= $this->render_learn_modal( $learn_id );
+		$output .= $this->render_learn_modal( $learn_id, $options );
 
 		return $output;
 	}
@@ -1608,10 +1616,11 @@ class MichiRyu_Sekki {
 	/**
 	 * Render the educational Sekki and ko explanation modal.
 	 *
-	 * @param string $learn_id Modal ID.
+	 * @param string              $learn_id Modal ID.
+	 * @param array<string,mixed> $options Saved options.
 	 * @return string
 	 */
-	private function render_learn_modal( $learn_id ) {
+	private function render_learn_modal( $learn_id, $options = array() ) {
 		$title_id = $learn_id . '-title';
 
 		ob_start();
@@ -1636,24 +1645,28 @@ class MichiRyu_Sekki {
 						</div>
 					</div>
 					<p><?php esc_html_e( 'MichiRyu uses these calendars as a way to notice nature, arrange seasonal materials, and tell stories about how small changes shape a whole year.', 'michiryu-sekki' ); ?></p>
-					<p>
-						<?php
-						printf(
-							wp_kses(
-								/* translators: %s: MichiRyu creator website link. */
-								__( 'Learn more from the creator at %s.', 'michiryu-sekki' ),
-								array(
-									'a' => array(
-										'href'   => array(),
-										'target' => array(),
-										'rel'    => array(),
-									),
-								)
-							),
-							'<a href="' . esc_url( 'https://michiryu.com' ) . '" target="_blank" rel="noopener noreferrer">michiryu.com</a>'
-						);
-						?>
-					</p>
+					<?php if ( ! empty( $options['show_creator_link'] ) ) : ?>
+						<p>
+							<?php
+							printf(
+								wp_kses(
+									/* translators: %s: MichiRyu creator website link. */
+									__( 'This experience was created by %s.', 'michiryu-sekki' ),
+									array(
+										'a' => array(
+											'href'   => array(),
+											'target' => array(),
+											'rel'    => array(),
+										),
+									)
+								),
+								'<a href="' . esc_url( 'https://michiryu.com' ) . '" target="_blank" rel="noopener noreferrer">' . esc_html__( 'MichiRyu.com', 'michiryu-sekki' ) . '</a>'
+							);
+							?>
+						</p>
+					<?php else : ?>
+						<p><?php esc_html_e( 'This experience was created by MichiRyu.com.', 'michiryu-sekki' ); ?></p>
+					<?php endif; ?>
 				</section>
 			</div>
 		</div>
@@ -1845,8 +1858,8 @@ class MichiRyu_Sekki {
 			/* translators: 1: season number, 2: romanized season name, 3: English season name. */
 			__( 'Sekki %1$d, %2$s, %3$s', 'michiryu-sekki' ),
 			absint( $season['sekki_number'] ),
-			$season['romaji'],
-			$season['english_name']
+			esc_html( $season['romaji'] ),
+			esc_html( $season['english_name'] )
 		);
 
 		if ( 'wheel' === $style ) {
@@ -1958,7 +1971,7 @@ class MichiRyu_Sekki {
 					$note       = $is_masaru ? sprintf(
 						/* translators: %s: story lesson. */
 						__( 'Experiences: %s', 'michiryu-sekki' ),
-						$story_group['lesson']
+						esc_html( $story_group['lesson'] )
 					) : $character['role'];
 					?>
 					<button class="michiryu-sekki-map__character<?php echo $story_group['is_initial'] ? ' is-visible' : ''; ?>" type="button" data-mrs-character data-season="<?php echo esc_attr( $story_group['season_slug'] ); ?>" data-story="<?php echo esc_attr( $story_group['story_id'] ); ?>" data-character="<?php echo esc_attr( $character_id ); ?>" aria-expanded="false">
@@ -2000,12 +2013,12 @@ class MichiRyu_Sekki {
 		$has_stories = ! empty( MichiRyu_Sekki_Content::get_stories_for_sekki( $season['sekki_number'] ) );
 		$tooltip    = sprintf(
 			"%s %s\n%s\n%s\n%s%s",
-			$season['romaji'],
-			$season['kanji'],
-			$season['english_name'],
-			$season['date_range'],
-			$season['phrase'],
-			$has_stories ? "\n" . __( 'Stories available', 'michiryu-sekki' ) : ''
+			esc_html( $season['romaji'] ),
+			esc_html( $season['kanji'] ),
+			esc_html( $season['english_name'] ),
+			esc_html( $season['date_range'] ),
+			esc_html( $season['phrase'] ),
+			$has_stories ? "\n" . esc_html__( 'Stories available', 'michiryu-sekki' ) : ''
 		);
 
 		return sprintf(
@@ -2016,7 +2029,7 @@ class MichiRyu_Sekki {
 			esc_attr( $season['map_y_percent'] ),
 			esc_attr( $season['slug'] ),
 			esc_attr( $tooltip ),
-			esc_attr( sprintf( __( '%1$s, %2$s, %3$s.', 'michiryu-sekki' ), $season['romaji'], $season['english_name'], strtolower( $season['date_range'] ) ) ),
+			esc_attr( sprintf( __( '%1$s, %2$s, %3$s.', 'michiryu-sekki' ), esc_html( $season['romaji'] ), esc_html( $season['english_name'] ), esc_html( strtolower( $season['date_range'] ) ) ) ),
 			$is_selected ? 'true' : 'false',
 			$is_current ? 'aria-current="date"' : '',
 			absint( $season['sekki_number'] ),
@@ -2349,7 +2362,7 @@ class MichiRyu_Sekki {
 			return array(
 				'label'       => sprintf(
 					$direction > 0 ? __( 'Next season: %s', 'michiryu-sekki' ) : __( 'Previous season: %s', 'michiryu-sekki' ),
-					$adjacent['romaji']
+					esc_html( $adjacent['romaji'] )
 				),
 				'season_slug' => (string) $adjacent['slug'],
 				'story_id'    => (string) $target_story['id'],
@@ -2359,7 +2372,7 @@ class MichiRyu_Sekki {
 		return array(
 			'label'       => sprintf(
 				$direction > 0 ? __( 'More stories coming with %s', 'michiryu-sekki' ) : __( 'Earlier stories coming with %s', 'michiryu-sekki' ),
-				$adjacent['romaji'] ?? ''
+				esc_html( $adjacent['romaji'] ?? '' )
 			),
 			'season_slug' => '',
 			'story_id'    => '',
