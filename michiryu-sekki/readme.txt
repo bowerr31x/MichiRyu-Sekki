@@ -10,93 +10,113 @@ Stable tag: 1.2.19
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
-Display the current Japanese 24 Sekki solar term with shortcode, widget, block, card, banner, optional 72 ko microseason display, and ikebana views.
+Display the current Japanese 24 Sekki season, current Ko microseason, story teaser, and seasonal map handoff.
 
 == Description ==
 
-MichiRyu-Sekki-Calendar is a lightweight WordPress plugin for showing the current Japanese 24 Sekki season. Sekki are best described as 24 solar terms: traditional divisions of the year based on the sun's movement, about 15 days each.
+MichiRyu-Sekki-Calendar displays the current Japanese 24 Sekki solar term in
+WordPress. The main shortcode can show the current Sekki, current Ko
+microseason, seasonal image, date stamp, story teaser, and journey map handoff.
 
-The plugin includes display plans for minimal naming, standard seasonal context, ikebana material suggestions, visual banners, and educational text.
+Sekki are 24 traditional divisions of the solar year. Each Sekki lasts about
+fifteen days and is further divided into three Ko microseasons.
 
-Learn more about the creator at https://michiryu.com.
+The plugin is designed for MichiRyu seasonal storytelling, ikebana study, and
+simple seasonal display on WordPress sites.
 
-== Usage ==
+== Shortcodes ==
 
-Default shortcode:
+Main seasonal experience:
 
 [michiryu_sekki]
-[michiryu_sekki show_ko="true"]
-[michiryu_sekki carousel="true"]
-[michiryu_sekki carousel="true" show_ko="true"]
-[michiryu_sekki show_date_stamp="true"]
-[michiryu_sekki signature_position="bottom-right"]
-[michiryu_sekki style="banner_tall" signature_size="small"]
 
-Optional seasonal journey entry:
+Optional journey entry:
 
 [michiryu_journey]
 [michiryu_journey variant="widget"]
 
-Stable story reader:
+Story reader:
 
 [michiryu_story]
 [michiryu_story ko="25"]
-[michiryu_story story="Sekki_09_Boshu_Ko_25_MantisHatch"]
 [michiryu_story sekki="boshu"]
 
-Display style overrides:
+Seasonal map:
+
+[michiryu_sekki_map]
+
+== Display Styles ==
+
+The main shortcode supports display style overrides:
 
 [michiryu_sekki style="text"]
 [michiryu_sekki style="small"]
 [michiryu_sekki style="standard_vertical"]
 [michiryu_sekki style="standard_horizontal"]
 [michiryu_sekki style="banner_tall"]
-[michiryu_sekki style="banner_narrow" show_ko="true"]
-
-Seasonal plan overrides:
-
-[michiryu_sekki plan="minimal"]
-[michiryu_sekki plan="standard"]
-[michiryu_sekki plan="ikebana"]
-[michiryu_sekki plan="banner"]
-[michiryu_sekki plan="educational"]
-[michiryu_sekki plan="educational" show_ko="true"]
+[michiryu_sekki style="banner_narrow"]
 
 == Settings ==
 
-Go to MichiRyu-Sekki-Calendar > Sekki to set the core journey defaults:
+Go to MichiRyu-Sekki-Calendar in WordPress Admin to set core defaults:
 
-Recommended setup: use [michiryu_sekki] for the main experience. It shows the current Sekki, current Ko, story entry, and journey map handoff.
+* Default display style for [michiryu_sekki], widgets, and blocks.
+* Show Ko microseason section.
+* Show Japanese kanji, romanized name, English name, Sekki image, ikebana
+  materials and theme, date stamp, and story teaser.
+* Dedicated map page URL.
+* Optional custom CSS.
+* Optional creator website link in the About panel. This public-facing link is off by default.
+
+Recommended setup: use [michiryu_sekki] for the main experience. It shows the
+current Sekki, current Ko, story entry, and journey map handoff.
 
 Optional for other sections or pages: [michiryu_story] [michiryu_sekki_map]
 
-* Default display style
-* Show Ko microseason section
-* Show name fields, Sekki image, ikebana materials and theme, date stamp, and story teaser
-* Dedicated map page URL
-* Optional custom CSS
+== Artwork and Story Content ==
 
-== Images ==
+The plugin includes original MichiRyu artwork, Yuki no Sato stories, maps,
+icons, names, branding, and written seasonal content. These creative materials
+are part of the MichiRyu-Sekki experience.
 
-Add Sekki artwork using this structure:
+Plugin PHP, JavaScript, and CSS code is licensed under GPLv2 or later.
 
-assets/images/sekki/Sekki_01_Risshun.jpg
-assets/images/sekki/Sekki_02_Usui.png
-...
-assets/images/sekki/Sekki_24_Daikan.jpg
+Original artwork, Yuki no Sato stories, maps, icons, names, branding, and
+written seasonal content are copyright Russell Bowers / MichiRyu unless
+explicitly stated otherwise. They are provided for normal use within the plugin
+experience and are not offered as standalone reusable creative assets.
 
-Add ko icons using this structure:
+See CONTENT-LICENSE for more information.
 
-assets/images/ko/KO_01_EastWindMeltsIce.svg
-assets/images/ko/KO_02_BushWarblerSings.svg
-...
-assets/images/ko/KO_72_HensBeginLaying.svg
+== Installation ==
 
-The plugin stores filenames in the data model, checks whether each file exists before rendering it, and falls back to text-only output when artwork is missing. Sekki artwork may be JPG, JPEG, or PNG as long as the basename matches, such as Sekki_01_Risshun.jpg or Sekki_01_Risshun.png.
+1. Upload the michiryu-sekki folder to wp-content/plugins, or install the plugin
+   ZIP through WordPress Admin.
+2. Activate MichiRyu-Sekki-Calendar.
+3. Add [michiryu_sekki] to a page, post, widget area, or block-supported location.
+4. Configure defaults under MichiRyu-Sekki-Calendar in WordPress Admin.
 
-== Future Structure ==
+== Frequently Asked Questions ==
 
-The data model includes the 72 ko micro-seasons and remains prepared for local seasonal notes, class and event integration, Boston ikebana seasonal material suggestions, and automatic current season inspiration.
+= What is the main shortcode? =
+
+Use [michiryu_sekki] for the primary seasonal experience.
+
+= Can I show only the story reader or map? =
+
+Yes. Use [michiryu_story] for the story reader and [michiryu_sekki_map] for the map.
+
+= Is the creator link required on the public site? =
+
+No. The About panel can show the plain text credit "created by MichiRyu.com"
+without a hyperlink. The public creator website link is optional and off by
+default.
+
+= Can I reuse the artwork or stories outside the plugin? =
+
+No separate reuse permission is granted by this plugin package. The creative
+content is provided for normal display as part of the MichiRyu-Sekki plugin
+experience unless a separate written permission or license says otherwise.
 
 == Changelog ==
 
@@ -125,22 +145,28 @@ The data model includes the 72 ko micro-seasons and remains prepared for local s
 * Let the reader's two-row Ko story path fill the available width instead of bunching to the left.
 
 = 1.2.10 =
-* Restore the journey card to a simple reading progress bar and keep the reader's Ko story path as a compact two-row navigation strip.
+* Restore the journey card to a simple reading progress bar and keep the
+  reader's Ko story path as a compact two-row navigation strip.
 
 = 1.2.9 =
-* Replace the abstract reading progress bar with a 72-step Ko story path that fills read stories and links each step to its reader.
+* Replace the abstract reading progress bar with a 72-step Ko story path that
+  fills read stories and links each step to its reader.
 
 = 1.2.8 =
 * Make Continue Journey resume from the last story read in this browser instead of jumping to the first unread story.
 
 = 1.2.7 =
-* Stack the current Ko under the current Sekki in the journey card, use Ko artwork in the reader when available, and add an admin setting for pop-out or inline story reader behavior.
+* Stack the current Ko under the current Sekki in the journey card, use Ko
+  artwork in the reader when available, and add an admin setting for pop-out or
+  inline story reader behavior.
 
 = 1.2.6 =
-* Add seasonal image with signature to the journey card, add a compact journey widget variant, and open journey stories in a pop-out reader.
+* Add seasonal image with signature to the journey card, add a compact journey
+  widget variant, and open journey stories in a pop-out reader.
 
 = 1.2.5 =
-* Change the journey card progress to personal stories-read progress and route Continue Journey to the next unread story.
+* Change the journey card progress to personal stories-read progress and route
+  Continue Journey to the next unread story.
 
 = 1.2.4 =
 * Simplify the admin settings screen around journey defaults and move legacy display controls into an Advanced section.
@@ -152,13 +178,18 @@ The data model includes the 72 ko micro-seasons and remains prepared for local s
 * Add local browser story progress, read-count progress display, and a Journey Map entry after the story reader.
 
 = 1.2.1 =
-* Connect the seasonal journey card to the story reader and add journey position, Previous Story, Next Ko or Next Season, and Continue Journey navigation.
+* Connect the seasonal journey card to the story reader and add journey
+  position, Previous Story, Next Ko or Next Season, and Continue Journey
+  navigation.
 
 = 1.2.0 =
-* Add a stable story reader shortcode with season context, Ko context, story body, character spotlight, ikebana reflection, and previous/next story navigation.
+* Add a stable story reader shortcode with season context, Ko context, story
+  body, character spotlight, ikebana reflection, and previous/next story
+  navigation.
 
 = 1.0.24 =
-* Add the first seasonal journey shortcode with current Sekki, current Ko, story teaser, progress placeholder, and Continue Journey placeholder.
+* Add the first seasonal journey shortcode with current Sekki, current Ko, story
+  teaser, progress placeholder, and Continue Journey placeholder.
 
 = 1.0.23 =
 * Center the active slim timeline item after the map opens and prevent duplicate carousel items from appearing active.
@@ -188,10 +219,12 @@ The data model includes the 72 ko micro-seasons and remains prepared for local s
 * Hide the slim timeline scrollbar and center the selected Sekki in the visible row.
 
 = 1.0.14 =
-* Adjust the seasonal compass so the selected Sekki label stays on the arc and Ko numbers sit outside the selected point.
+* Adjust the seasonal compass so the selected Sekki label stays on the arc and
+  Ko numbers sit outside the selected point.
 
 = 1.0.13 =
-* Refine the default map progression into a compact seasonal compass with a partial arc, selected-season label, and ko dots.
+* Refine the default map progression into a compact seasonal compass with a
+  partial arc, selected-season label, and ko dots.
 
 = 1.0.12 =
 * Add map progression controls with circular year wheel, slim timeline, or disabled admin option.
@@ -214,4 +247,6 @@ The data model includes the 72 ko micro-seasons and remains prepared for local s
 * Improve current-season carousel highlighting.
 
 = 1.0.0 =
-* Initial release.
+* Initial production release of the MichiRyu-Sekki seasonal display experience.
+* Includes the main Sekki shortcode, seasonal display settings, bundled
+  MichiRyu creative content, and GPLv2-or-later plugin code licensing.
