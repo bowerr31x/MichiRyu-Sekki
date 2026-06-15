@@ -1,5 +1,16 @@
 # AGENTS.md
 
+## MichiRyu-Sekki Project Rules
+
+1. Plugin code is GPL.
+2. Stories, artwork, maps, icons, PDFs, educational materials, and Yuki no Sato content are proprietary.
+3. Never add proprietary content to the plugin repository.
+4. All content must be accessed through a Content Provider.
+5. The plugin must function fully without any remote content source.
+6. Favor extensibility over hard-coded content.
+7. Maintain WordPress coding standards.
+8. Accessibility and mobile support are required for all user-facing features.
+
 ## Project Rules for Codex
 
 - Treat `michiryu-sekki/` as the WordPress plugin root.

@@ -954,12 +954,16 @@ class MichiRyu_Sekki {
 	 * @return string
 	 */
 	private function render_story_reader_journey_map( $options ) {
+		$description = MichiRyu_Sekki_Content::is_local_provider()
+			? __( 'See where this story sits in the seasonal cycle and explore nearby seasons.', 'michiryu-sekki' )
+			: __( 'See where this story sits in Yuki no Sato and explore nearby seasons.', 'michiryu-sekki' );
+
 		ob_start();
 		?>
 		<section class="michiryu-sekki-story-reader__map">
 			<div>
 				<h3><?php esc_html_e( 'Journey Map', 'michiryu-sekki' ); ?></h3>
-				<p><?php esc_html_e( 'See where this story sits in Yuki no Sato and explore nearby seasons.', 'michiryu-sekki' ); ?></p>
+				<p><?php echo esc_html( $description ); ?></p>
 			</div>
 			<a class="michiryu-sekki-story-reader__map-button" href="#michiryu-sekki-map" role="button" data-mrs-map-open><?php esc_html_e( 'Explore Journey Map', 'michiryu-sekki' ); ?></a>
 			<?php echo $this->render_map_modal( $options ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
@@ -1722,6 +1726,8 @@ class MichiRyu_Sekki {
 		$layout_arg   = sanitize_key( $args['layout'] ?? '' );
 		$layout       = 'default' === $layout_arg ? 'default' : ( $is_modal ? 'default' : 'page' );
 		$classes      = array( 'michiryu-sekki-map' );
+		$is_local_provider = MichiRyu_Sekki_Content::is_local_provider();
+		$map_subtitle = $is_local_provider ? __( 'Sekki Seasonal Map', 'michiryu-sekki' ) : __( 'Yuki no Sato Sekki Village Map', 'michiryu-sekki' );
 
 		if ( $is_modal ) {
 			$classes[] = 'michiryu-sekki-map--modal';
@@ -1748,7 +1754,7 @@ class MichiRyu_Sekki {
 			<div class="michiryu-sekki-map__header">
 				<div>
 					<h2 class="michiryu-sekki-map__title" id="<?php echo esc_attr( $title_id ); ?>"><?php esc_html_e( 'Explore Map', 'michiryu-sekki' ); ?></h2>
-					<p class="michiryu-sekki-map__subtitle"><?php esc_html_e( 'Yuki no Sato Sekki Village Map', 'michiryu-sekki' ); ?></p>
+					<p class="michiryu-sekki-map__subtitle"><?php echo esc_html( $map_subtitle ); ?></p>
 				</div>
 				<div class="michiryu-sekki-map__controls" aria-label="<?php esc_attr_e( 'Map controls', 'michiryu-sekki' ); ?>">
 					<button type="button" data-mrs-map-zoom="in" aria-label="<?php esc_attr_e( 'Zoom in', 'michiryu-sekki' ); ?>">+</button>
@@ -1817,12 +1823,16 @@ class MichiRyu_Sekki {
 	 * @return string
 	 */
 	private function render_map_viewport( $seasons, $current, $options, $map_url ) {
+		$map_alt = MichiRyu_Sekki_Content::is_local_provider()
+			? __( 'Seasonal map with the 24 Sekki locations.', 'michiryu-sekki' )
+			: __( 'Illustrated location map of Yuki no Sato with the 24 Sekki locations.', 'michiryu-sekki' );
+
 		ob_start();
 		?>
 		<div class="michiryu-sekki-map__viewport" data-mrs-map-viewport>
 			<div class="michiryu-sekki-map__canvas" data-mrs-map-canvas>
 				<?php if ( ! empty( $map_url ) ) : ?>
-					<img class="michiryu-sekki-map__image" src="<?php echo esc_url( $map_url ); ?>" alt="<?php esc_attr_e( 'Illustrated location map of Yuki no Sato with the 24 Sekki locations.', 'michiryu-sekki' ); ?>" loading="lazy" />
+					<img class="michiryu-sekki-map__image" src="<?php echo esc_url( $map_url ); ?>" alt="<?php echo esc_attr( $map_alt ); ?>" loading="lazy" />
 				<?php endif; ?>
 				<?php echo $this->render_map_season_path( $seasons, $current ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
 				<div class="michiryu-sekki-map__markers" aria-label="<?php esc_attr_e( 'Sekki locations', 'michiryu-sekki' ); ?>">
@@ -2491,18 +2501,7 @@ class MichiRyu_Sekki {
 	 * @return string
 	 */
 	private function get_map_image_url() {
-		$candidates = array(
-			'assets/images/map/yuki-no-sato-sekki-map.jpg',
-			'assets/images/YukiNoSato.png',
-		);
-
-		foreach ( $candidates as $relative ) {
-			if ( file_exists( MICHIRYU_SEKKI_PATH . $relative ) ) {
-				return MICHIRYU_SEKKI_URL . $relative;
-			}
-		}
-
-		return '';
+		return $this->get_provider_image_url( 'map' );
 	}
 
 	/**
@@ -2817,6 +2816,16 @@ class MichiRyu_Sekki {
 	private function get_asset_url( $kind, $filename, $fallback_url, $options ) {
 		$kind       = 'ko' === $kind ? 'ko' : 'sekki';
 		$filename   = basename( (string) $filename );
+		$provider_url = $this->get_provider_image_url( $kind . '/' . $filename );
+
+		if ( ! empty( $provider_url ) ) {
+			return $provider_url;
+		}
+
+		if ( MichiRyu_Sekki_Content::is_local_provider() ) {
+			return ! empty( $fallback_url ) ? esc_url_raw( $fallback_url ) : '';
+		}
+
 		$candidates = $this->get_asset_filename_candidates( $filename, $kind );
 
 		if ( ! empty( $options['use_bundled_images'] ) ) {
@@ -2832,6 +2841,33 @@ class MichiRyu_Sekki {
 
 		if ( ! empty( $fallback_url ) ) {
 			return esc_url_raw( $fallback_url );
+		}
+
+		return '';
+	}
+
+	/**
+	 * Resolve an image through the active content provider.
+	 *
+	 * @param string $id Image identifier.
+	 * @return string
+	 */
+	private function get_provider_image_url( $id ) {
+		$image = MichiRyu_Sekki_Content::get_provider()->get_image( $id );
+
+		if ( is_string( $image ) && '' !== $image ) {
+			if ( preg_match( '#^https?://#i', $image ) ) {
+				return esc_url_raw( $image );
+			}
+
+			$relative = ltrim( $image, '/' );
+			if ( file_exists( MICHIRYU_SEKKI_PATH . $relative ) ) {
+				return MICHIRYU_SEKKI_URL . $relative;
+			}
+		}
+
+		if ( is_array( $image ) && ! empty( $image['url'] ) && is_string( $image['url'] ) ) {
+			return esc_url_raw( $image['url'] );
 		}
 
 		return '';
