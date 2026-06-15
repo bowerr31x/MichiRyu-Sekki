@@ -28,7 +28,7 @@ The antler lay half-buried in snow.
 
 Perfectly intact.
 
-Masaru turned it over in his hands.
+Masaru-sensei turned it over in his hands.
 
 "It seems strange."
 
@@ -46,7 +46,7 @@ They are released because new growth will come.
 
 The old must make room for the new.
 
-Masaru carried that lesson with him throughout the day.
+Masaru-sensei carried that lesson with him throughout the day.
 
 People often cling to things long after they have served their purpose.
 

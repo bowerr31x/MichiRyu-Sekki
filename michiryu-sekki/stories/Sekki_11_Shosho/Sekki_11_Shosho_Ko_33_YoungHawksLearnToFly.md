@@ -28,7 +28,7 @@ Everyone knew it.
 
 The young man spent hours on the hills above the village staring toward distant mountain passes.
 
-One afternoon he brought Masaru to a rocky overlook.
+One afternoon he brought Masaru-sensei to a rocky overlook.
 
 "Look."
 
@@ -52,11 +52,11 @@ The bird rose.
 
 Toma watched silently.
 
-Neither he nor Masaru spoke until the hawk disappeared beyond the ridge.
+Neither he nor Masaru-sensei spoke until the hawk disappeared beyond the ridge.
 
 "It looked frightened."
 
-Masaru nodded.
+Masaru-sensei nodded.
 
 "So did you."
 
@@ -64,7 +64,7 @@ Toma laughed.
 
 The observation was fair.
 
-That evening Masaru arranged bamboo with a single feather found beneath the overlook.
+That evening Masaru-sensei arranged bamboo with a single feather found beneath the overlook.
 
 The feather carried movement.
 

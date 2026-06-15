@@ -32,7 +32,7 @@ She was gathering self-heal from a meadow beyond the pond.
 
 The small purple flowers had begun to fade.
 
-Masaru watched as she carefully cut stems and tied them into bundles.
+Masaru-sensei watched as she carefully cut stems and tied them into bundles.
 
 "Why collect them now?"
 
@@ -54,7 +54,7 @@ Yet their usefulness remained.
 
 Perhaps it had even increased.
 
-That afternoon Masaru arranged a broad lotus leaf with several stems of drying self-heal.
+That afternoon Masaru-sensei arranged a broad lotus leaf with several stems of drying self-heal.
 
 The lotus represented midsummer abundance.
 
@@ -64,7 +64,7 @@ Visitors admired the lotus first.
 
 Sayo admired the herb.
 
-Masaru appreciated both.
+Masaru-sensei appreciated both.
 
 The season contained them equally.
 

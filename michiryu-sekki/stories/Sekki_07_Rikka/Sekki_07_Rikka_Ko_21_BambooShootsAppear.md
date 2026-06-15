@@ -22,30 +22,30 @@ lesson: Growth can be astonishing when conditions are right.
 
 # Bamboo Shoots Appear
 
-Kiku arrived at Masaru's door carrying a basket.
+Kiku arrived at Masaru-sensei's door carrying a basket.
 Inside were bamboo shoots gathered from the grove before sunrise.
 "They weren't there last week," she said.
-Masaru laughed.
+Masaru-sensei laughed.
 "Perhaps you weren't looking."
 The cook shook her head.
 "No. They simply grew."
 Together they walked to the bamboo grove.
 Fresh shoots pushed through the forest floor in every direction.
 Some stood only a few inches high.
-Others already reached Masaru's knee.
+Others already reached Masaru-sensei's knee.
 The speed seemed impossible.
 Spring had unfolded slowly.
 Summer arrived with confidence.
 Kiku harvested several shoots for the evening meal.
 The grove smelled fresh and alive.
 Everywhere they looked, growth pressed upward.
-That afternoon Masaru paired a young bamboo shoot with water iris.
+That afternoon Masaru-sensei paired a young bamboo shoot with water iris.
 The arrangement emphasized vertical movement.
 Everything reached toward the sky.
 Everything seemed eager.
 When Kiku visited later, she laughed.
 "It looks like it's still growing."
-Masaru nodded.
+Masaru-sensei nodded.
 "That is exactly what I hoped."
 ## Ikebana Reflection
 Materials:

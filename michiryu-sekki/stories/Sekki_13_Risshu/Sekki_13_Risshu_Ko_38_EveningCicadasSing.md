@@ -30,7 +30,7 @@ Taku noticed.
 
 He noticed because there were fewer each evening.
 
-Masaru joined the old man beside the river as the sun disappeared behind the mountains.
+Masaru-sensei joined the old man beside the river as the sun disappeared behind the mountains.
 
 The cicadas sang.
 
@@ -42,7 +42,7 @@ The chorus felt thinner than before.
 
 "The season is changing," Taku said.
 
-Masaru listened carefully.
+Masaru-sensei listened carefully.
 
 The old man was right.
 
@@ -68,7 +68,7 @@ Transformation.
 
 Departure.
 
-That evening Masaru arranged susuki with the empty shell.
+That evening Masaru-sensei arranged susuki with the empty shell.
 
 The grass represented the coming season.
 

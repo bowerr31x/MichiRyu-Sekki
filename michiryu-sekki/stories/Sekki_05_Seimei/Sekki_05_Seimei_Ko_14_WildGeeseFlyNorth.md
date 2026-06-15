@@ -23,13 +23,13 @@ lesson: Gratitude is the proper companion to departure.
 # Wild Geese Fly North
 
 The sky was unusually clear.
-Masaru and Taku stood beside the river watching a line of geese disappear toward the northern mountains.
+Masaru-sensei and Taku stood beside the river watching a line of geese disappear toward the northern mountains.
 Neither spoke for several minutes.
 The birds moved steadily.
 Certain of their direction.
 Taku finally broke the silence.
 "When I was young, I thought leaving was the difficult part."
-Masaru glanced toward him.
+Masaru-sensei glanced toward him.
 "And now?"
 The old man smiled.
 "Now I think staying is harder."
@@ -39,10 +39,10 @@ Then they vanished.
 The river continued flowing.
 The mountains remained.
 Only the birds were gone.
-That afternoon Masaru arranged several willow branches in a tall container.
+That afternoon Masaru-sensei arranged several willow branches in a tall container.
 Most of the composition consisted of empty space.
 Visitors asked whether something was missing.
-Masaru answered carefully.
+Masaru-sensei answered carefully.
 "No."
 The emptiness was the point.
 The geese had left.

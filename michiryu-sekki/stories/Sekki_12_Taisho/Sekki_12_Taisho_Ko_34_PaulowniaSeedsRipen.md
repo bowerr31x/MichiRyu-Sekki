@@ -26,11 +26,11 @@ The air felt heavy long before the storm arrived.
 
 Even the birds seemed quieter.
 
-Masaru found Ren beneath a paulownia tree near the edge of the village.
+Masaru-sensei found Ren beneath a paulownia tree near the edge of the village.
 
 The scholar held one of the dried seed pods in his hand.
 
-"It looks finished," Masaru said.
+"It looks finished," Masaru-sensei said.
 
 Ren shook his head.
 
@@ -52,7 +52,7 @@ The rain had not yet fallen.
 
 Yet everything in the valley seemed to be waiting.
 
-Masaru carried a seed pod home and paired it with a broad summer leaf.
+Masaru-sensei carried a seed pod home and paired it with a broad summer leaf.
 
 The leaf represented the season's abundance.
 
@@ -62,7 +62,7 @@ Visitors admired the leaf.
 
 Ren admired the seeds.
 
-The difference made Masaru smile.
+The difference made Masaru-sensei smile.
 
 The future rarely draws attention until it arrives.
 

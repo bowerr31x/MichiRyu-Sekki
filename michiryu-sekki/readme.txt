@@ -6,7 +6,7 @@ Tags: sekki, seasons, japan, shortcode, widget, block, ikebana
 Requires at least: 6.0
 Tested up to: 6.5
 Requires PHP: 7.4
-Stable tag: 1.2.19
+Stable tag: 1.2.20
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -119,6 +119,10 @@ content is provided for normal display as part of the MichiRyu-Sekki plugin
 experience unless a separate written permission or license says otherwise.
 
 == Changelog ==
+
+= 1.2.20 =
+* Canonicalize Masaru-sensei as the Flower Teacher across interface character data and all 72 Ko stories.
+* Add the Yuki no Sato character bible for future story, illustration, and educational continuity.
 
 = 1.2.19 =
 * Test build with shorter narrow banner image and longer story preview.

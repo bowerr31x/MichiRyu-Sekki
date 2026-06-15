@@ -44,7 +44,7 @@ Then dozens.
 
 Soon the entire riverbank shimmered.
 
-Mei stood beside Masaru watching silently.
+Mei stood beside Masaru-sensei watching silently.
 
 As the village lantern maker, she spent most of the year creating light for others.
 
@@ -52,7 +52,7 @@ Tonight the insects had taken over her profession.
 
 "They're better at it than I am."
 
-Masaru laughed.
+Masaru-sensei laughed.
 
 "Only because they work together."
 
@@ -62,7 +62,7 @@ The darkness had not changed.
 
 Yet the entire landscape felt different.
 
-That evening Masaru created a low arrangement of grain and stream grass.
+That evening Masaru-sensei created a low arrangement of grain and stream grass.
 
 Large spaces remained between the materials.
 

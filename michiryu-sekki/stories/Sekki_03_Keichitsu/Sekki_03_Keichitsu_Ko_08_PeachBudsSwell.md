@@ -41,16 +41,16 @@ Sora pointed toward a peach branch.
 Tiny round buds lined every stem.
 "They aren't flowers."
 "Not yet," Sora replied.
-Masaru had been watching from farther down the path.
+Masaru-sensei had been watching from farther down the path.
 He approached the tree and smiled.
 The younger sister had noticed something important.
 The buds carried more promise than certainty.
 The flowers existed.
 They simply had not arrived.
-That afternoon Masaru arranged a peach branch covered entirely in buds.
+That afternoon Masaru-sensei arranged a peach branch covered entirely in buds.
 Visitors seemed disappointed.
 "Why not wait until it blooms?"
-Masaru shook his head.
+Masaru-sensei shook his head.
 "Because this is today's season."
 The arrangement celebrated what was becoming, not what had already become.
 ## Ikebana Reflection

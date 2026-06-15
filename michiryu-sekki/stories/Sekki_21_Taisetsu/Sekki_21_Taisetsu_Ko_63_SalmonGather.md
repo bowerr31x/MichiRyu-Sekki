@@ -40,7 +40,7 @@ Every obstacle demanded effort.
 
 Still they continued.
 
-Masaru watched quietly.
+Masaru-sensei watched quietly.
 
 The salmon appeared exhausted.
 
@@ -62,7 +62,7 @@ The journey was difficult.
 
 Yet the destination remained clear.
 
-That afternoon Masaru arranged pine beside a curved river branch.
+That afternoon Masaru-sensei arranged pine beside a curved river branch.
 
 The branch guided the eye upward through the composition.
 

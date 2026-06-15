@@ -11,8 +11,8 @@ image: Sekki_24_Daikan.jpg
 icon: KO_70_ButterburBudsAppear.svg
 location: 69
 character:
-  name: Masaru
-  role: Seasonal Observer
+  name: Masaru-sensei
+  role: Flower Teacher
 arrangement_materials:
   - Pine
   - Butterbur Bud
@@ -28,7 +28,7 @@ Snow lingered in shaded places.
 
 The river moved slowly beneath thin sheets of ice.
 
-Even the pine in Masaru's garden seemed to hold its breath.
+Even the pine in Masaru-sensei's garden seemed to hold its breath.
 
 While clearing a path after a light snowfall, he noticed something unusual beside a stone.
 
@@ -44,7 +44,7 @@ The fields slept beneath snow.
 
 Yet here was proof that spring had already begun preparing its return.
 
-Masaru knelt beside the bud for a long time.
+Masaru-sensei knelt beside the bud for a long time.
 
 No flowers.
 
@@ -60,7 +60,7 @@ The butterbur represented emergence.
 
 Visitors often focused on the pine.
 
-Masaru understood.
+Masaru-sensei understood.
 
 The bud was easy to miss.
 
@@ -79,4 +79,4 @@ Renewal often begins beneath our notice.
 
 ## Character Spotlight
 
-Masaru has spent the year observing the seasons and the villagers of Yuki no Sato. The more he learns, the more he realizes nature rarely announces its greatest changes loudly.
+Masaru-sensei has spent the year observing the seasons and the villagers of Yuki no Sato. The more he learns, the more he realizes nature rarely announces its greatest changes loudly.

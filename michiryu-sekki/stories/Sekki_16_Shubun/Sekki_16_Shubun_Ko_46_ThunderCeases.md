@@ -36,7 +36,7 @@ No one noticed immediately.
 
 The absence arrived gradually.
 
-Masaru realized it while helping Sister Rei prepare the temple grounds for the equinox.
+Masaru-sensei realized it while helping Sister Rei prepare the temple grounds for the equinox.
 
 The morning felt unusually quiet.
 
@@ -54,7 +54,7 @@ Sister Rei paused beside a cluster.
 
 "People often think peace is something new."
 
-Masaru looked toward the mountains.
+Masaru-sensei looked toward the mountains.
 
 "What is it then?"
 

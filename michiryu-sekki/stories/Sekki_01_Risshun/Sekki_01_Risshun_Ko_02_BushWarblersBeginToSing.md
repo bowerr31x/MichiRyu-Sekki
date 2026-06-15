@@ -22,19 +22,19 @@ lesson: Presence does not require visibility.
 
 # Bush Warblers Begin to Sing
 
-Several days after the first camellia opened, Masaru crossed the footbridge near the lower stream and heard shouting from the reeds.
+Several days after the first camellia opened, Masaru-sensei crossed the footbridge near the lower stream and heard shouting from the reeds.
 
 "I heard it!"
 
 Kenji emerged from the brush with wet boots and flushed cheeks.
 
-"Heard what?" Masaru asked.
+"Heard what?" Masaru-sensei asked.
 
 "The bush warbler."
 
 The boy pointed toward a tangled thicket of alder and bamboo.
 
-Masaru stood quietly.
+Masaru-sensei stood quietly.
 
 For a moment there was only wind.
 
@@ -50,7 +50,7 @@ The song came again.
 
 Still invisible.
 
-Masaru sat on a nearby stone.
+Masaru-sensei sat on a nearby stone.
 
 "Do you know why people love the bush warbler?"
 
@@ -62,7 +62,7 @@ The boy frowned.
 
 "It won't come out."
 
-Masaru smiled.
+Masaru-sensei smiled.
 
 "It doesn't need to."
 
@@ -74,7 +74,7 @@ For the first time Kenji stopped searching.
 
 The two listened together.
 
-That afternoon Masaru returned to his studio.
+That afternoon Masaru-sensei returned to his studio.
 
 Instead of using an open camellia flower, he selected a branch covered with tightly closed buds.
 
@@ -82,7 +82,7 @@ Beside it he placed a slender alder branch that extended beyond the edge of the 
 
 Visitors asked why the flower had not opened.
 
-Masaru pointed toward the buds.
+Masaru-sensei pointed toward the buds.
 
 "The season has already begun."
 

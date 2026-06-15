@@ -22,11 +22,11 @@ lesson: Spring arrives before the weather.
 
 # East Wind Melts the Ice
 
-The winter sun had not yet reached the bottom of the valley when Masaru stepped onto the river path.
+The winter sun had not yet reached the bottom of the valley when Masaru-sensei stepped onto the river path.
 
 Frost silvered the reeds and a thin sheet of ice still covered the slow water beneath the bridge. Most of the villagers spoke of winter as if it would last forever. The mountains certainly looked that way.
 
-As Masaru approached Hana's cottage, he noticed something unexpected.
+As Masaru-sensei approached Hana's cottage, he noticed something unexpected.
 
 A single white camellia had opened beside her gate.
 
@@ -34,7 +34,7 @@ Hana was already outside sweeping snow from the path.
 
 "There is still ice on the river," she laughed when she saw him studying the flower.
 
-Masaru touched one of the petals.
+Masaru-sensei touched one of the petals.
 
 "The season arrives before the weather."
 
@@ -44,7 +44,7 @@ Hana watched him quietly.
 
 "You always find spring before the rest of us."
 
-Masaru smiled.
+Masaru-sensei smiled.
 
 "The flower found it first."
 
@@ -77,4 +77,4 @@ Spring arrives before the weather.
 
 ## Character Spotlight
 
-Hana is the oldest resident of Yuki no Sato. Widowed many years ago, she lives beside the river crossing and sweeps the path outside her home every morning regardless of season. The villagers believe she notices changes in people the same way Masaru notices changes in nature.
+Hana is the oldest resident of Yuki no Sato. Widowed many years ago, she lives beside the river crossing and sweeps the path outside her home every morning regardless of season. The villagers believe she notices changes in people the same way Masaru-sensei notices changes in nature.

@@ -30,7 +30,7 @@ Not enough to flood the paths.
 
 Just enough to remind everyone that autumn was nearing its end.
 
-Masaru found Gen repairing a fence around the orchard.
+Masaru-sensei found Gen repairing a fence around the orchard.
 
 Rainwater dripped from his hat.
 
@@ -60,7 +60,7 @@ The rain fell steadily all afternoon.
 
 By evening the repaired section of fence stood strong and straight.
 
-Masaru returned home carrying a persimmon leaf darkened by rain.
+Masaru-sensei returned home carrying a persimmon leaf darkened by rain.
 
 He arranged it beside a bare branch gathered from the orchard.
 

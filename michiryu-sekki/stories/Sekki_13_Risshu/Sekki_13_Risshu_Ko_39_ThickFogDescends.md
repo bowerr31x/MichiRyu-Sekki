@@ -32,7 +32,7 @@ The river disappeared.
 
 Even the road through the village seemed uncertain.
 
-Masaru climbed the hillside looking for Kenta.
+Masaru-sensei climbed the hillside looking for Kenta.
 
 The shepherd was exactly where he expected him to be.
 
@@ -64,7 +64,7 @@ Every sound felt closer.
 
 Every step felt more deliberate.
 
-That afternoon Masaru arranged susuki and river reed.
+That afternoon Masaru-sensei arranged susuki and river reed.
 
 Large areas of empty space surrounded the materials.
 
@@ -74,7 +74,7 @@ Intentionally so.
 
 Visitors searched for what was missing.
 
-Masaru smiled.
+Masaru-sensei smiled.
 
 They were having the same experience as the valley.
 

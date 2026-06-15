@@ -27,13 +27,13 @@ Not because the grain changed quickly.
 Because it changed slowly.
 The young farmer stopped beside a stand of wheat and rubbed a head of grain between his fingers.
 "Not yet."
-Masaru had heard him say the same thing yesterday.
+Masaru-sensei had heard him say the same thing yesterday.
 And the day before.
 And the day before that.
 "How do you know?"
 Yori held out the grain.
 "It feels different."
-Masaru examined it.
+Masaru-sensei examined it.
 The difference seemed tiny.
 Yet Yori could feel it immediately.
 The wheat was filling.
@@ -43,7 +43,7 @@ But not ready.
 The distinction mattered.
 Many people confuse fullness with completion.
 The season did not.
-That afternoon Masaru arranged ripening grain with simple field grasses.
+That afternoon Masaru-sensei arranged ripening grain with simple field grasses.
 The grain bowed slightly under its own weight.
 Visitors admired its abundance.
 Yori noticed something else.

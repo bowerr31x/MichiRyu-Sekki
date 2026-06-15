@@ -24,7 +24,7 @@ lesson: Letting go is part of belonging.
 
 The sky felt larger than usual.
 
-Masaru noticed it while crossing the bridge.
+Masaru-sensei noticed it while crossing the bridge.
 
 The swallows were gone.
 
@@ -36,7 +36,7 @@ Simply fewer each day until one morning the air above the village seemed empty.
 
 Ren stood beside the river watching the northern sky.
 
-"You always notice when they arrive," Masaru said.
+"You always notice when they arrive," Masaru-sensei said.
 
 The scholar nodded.
 
@@ -58,7 +58,7 @@ Ren smiled.
 
 "Leaving doesn't mean something wasn't important."
 
-Masaru considered the words.
+Masaru-sensei considered the words.
 
 The birds belonged to the village.
 
@@ -70,7 +70,7 @@ The empty branch created more emotion than any flower.
 
 Visitors often asked what was missing.
 
-Masaru answered carefully.
+Masaru-sensei answered carefully.
 
 "Nothing."
 

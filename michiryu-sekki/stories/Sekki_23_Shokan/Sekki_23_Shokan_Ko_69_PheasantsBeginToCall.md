@@ -24,11 +24,11 @@ lesson: Important messages often arrive quietly.
 
 The morning was colder than usual.
 
-Masaru crossed the snowy garden before sunrise and found Taku sitting beneath the pine tree.
+Masaru-sensei crossed the snowy garden before sunrise and found Taku sitting beneath the pine tree.
 
 The old man was listening.
 
-To what, Masaru wasn't sure.
+To what, Masaru-sensei wasn't sure.
 
 Then it came.
 
@@ -48,7 +48,7 @@ Taku smiled.
 
 "Most people spend their lives waiting to be heard."
 
-Masaru looked toward the mountains.
+Masaru-sensei looked toward the mountains.
 
 "The pheasant doesn't seem worried about that."
 
@@ -58,7 +58,7 @@ The elder laughed.
 
 The lesson stayed with him.
 
-That afternoon Masaru arranged pine with winter grass gathered from the hillside.
+That afternoon Masaru-sensei arranged pine with winter grass gathered from the hillside.
 
 The arrangement felt quiet.
 

@@ -40,7 +40,7 @@ Wind rattled shutters.
 
 The road disappeared beneath flowing water.
 
-Masaru opened the door of his studio and waved them inside.
+Masaru-sensei opened the door of his studio and waved them inside.
 
 For an hour they sat together listening to thunder.
 
@@ -56,7 +56,7 @@ Conversation drifted.
 
 The room felt calm.
 
-Masaru realized that shelter is not merely a roof.
+Masaru-sensei realized that shelter is not merely a roof.
 
 It is people.
 

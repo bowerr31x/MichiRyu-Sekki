@@ -24,7 +24,7 @@ lesson: Growth begins long before harvest.
 
 Spring rain had fallen for three straight days.
 The paddies reflected the gray sky like polished mirrors.
-Masaru found Yuna standing ankle-deep in water near the terraces.
+Masaru-sensei found Yuna standing ankle-deep in water near the terraces.
 Most people looked at the fields and saw mud.
 Yuna saw a future harvest.
 The first reeds had begun appearing along the irrigation channels.
@@ -34,7 +34,7 @@ Yuna knelt and touched one gently.
 "The rice?"
 She shook her head.
 "The reeds."
-Masaru looked surprised.
+Masaru-sensei looked surprised.
 "Then why do you care so much about them?"
 Yuna smiled.
 "Because they tell me the water is ready."

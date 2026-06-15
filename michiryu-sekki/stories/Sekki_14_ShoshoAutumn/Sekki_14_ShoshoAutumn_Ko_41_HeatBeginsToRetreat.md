@@ -34,7 +34,7 @@ The air finally cooled after sunset.
 
 For the first time in weeks, the village slept comfortably.
 
-Masaru met her beside the river as she finished inspecting the grain.
+Masaru-sensei met her beside the river as she finished inspecting the grain.
 
 The harvest was approaching.
 
@@ -46,7 +46,7 @@ It was the breeze.
 
 "Summer finally remembered it cannot stay forever."
 
-Masaru laughed.
+Masaru-sensei laughed.
 
 The river moved calmly beside them.
 
@@ -60,7 +60,7 @@ No sudden shift.
 
 Only the gradual retreat of heat.
 
-That evening Masaru arranged ripening grain with river reeds.
+That evening Masaru-sensei arranged ripening grain with river reeds.
 
 The composition felt lighter than the previous weeks.
 

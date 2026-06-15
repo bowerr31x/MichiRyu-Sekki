@@ -26,13 +26,13 @@ The valley disappeared overnight.
 
 A pale mist settled across the fields and river until even familiar landmarks seemed distant.
 
-Masaru walked slowly through the village.
+Masaru-sensei walked slowly through the village.
 
 The world felt smaller.
 
 Near the communal washing area he found Mika hanging laundry despite the fog.
 
-"You can barely see the river," Masaru said.
+"You can barely see the river," Masaru-sensei said.
 
 Mika laughed.
 
@@ -58,7 +58,7 @@ Along the edge of the path, willow branches softened the outline of the fog.
 
 Drops of water clung to every stem.
 
-Masaru gathered several branches and a patch of moss from a stone beside the stream.
+Masaru-sensei gathered several branches and a patch of moss from a stone beside the stream.
 
 His arrangement that afternoon was simple.
 
@@ -70,7 +70,7 @@ Large areas of empty space.
 
 Visitors commented that it felt unfinished.
 
-Masaru shook his head.
+Masaru-sensei shook his head.
 
 "It is complete."
 

@@ -28,7 +28,7 @@ The oppressive heat of summer had begun to loosen its grip.
 
 Morning breezes carried a hint of coolness, and the long grasses beside the river moved more freely.
 
-Masaru found Nami gathering cotton near the southern edge of the village.
+Masaru-sensei found Nami gathering cotton near the southern edge of the village.
 
 The white fibers seemed impossibly soft.
 
@@ -36,7 +36,7 @@ She held a cotton boll in one hand and a rough work glove in the other.
 
 "Most people think soft things are weak," she said.
 
-Masaru looked at the cloth wrapped around her basket.
+Masaru-sensei looked at the cloth wrapped around her basket.
 
 The fabric had survived years of use.
 

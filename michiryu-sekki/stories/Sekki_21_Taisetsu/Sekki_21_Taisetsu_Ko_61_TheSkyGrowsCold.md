@@ -24,7 +24,7 @@ lesson: The work that supports others is often done quietly.
 
 The snow field beyond the village seemed endless.
 
-Masaru followed the path that wound past the old tree and climbed toward the open valley.
+Masaru-sensei followed the path that wound past the old tree and climbed toward the open valley.
 
 The air felt sharper than it had only days before.
 
@@ -40,7 +40,7 @@ No one expected praise.
 
 Yet every traveler would benefit from his effort.
 
-Masaru stopped beside him.
+Masaru-sensei stopped beside him.
 
 "The storm ended yesterday."
 
@@ -58,7 +58,7 @@ The world appeared still.
 
 Yet beneath that stillness the village continued functioning because people like Isao quietly carried responsibility.
 
-That afternoon Masaru arranged snow-covered grass with a winter reed.
+That afternoon Masaru-sensei arranged snow-covered grass with a winter reed.
 
 The arrangement felt simple.
 

@@ -30,7 +30,7 @@ Tiny crystals covered the grass beside the river.
 
 The rooftops shimmered silver.
 
-Masaru found Gen walking through his persimmon orchard before sunrise.
+Masaru-sensei found Gen walking through his persimmon orchard before sunrise.
 
 The orchard keeper stopped beside a tree heavy with fruit.
 
@@ -38,7 +38,7 @@ He brushed frost from one of the persimmons.
 
 "It has begun."
 
-Masaru looked around.
+Masaru-sensei looked around.
 
 The valley still seemed peaceful.
 
@@ -60,7 +60,7 @@ The harvest was near.
 
 The season had arrived exactly as it should.
 
-That afternoon Masaru arranged a persimmon branch with frost-touched grass.
+That afternoon Masaru-sensei arranged a persimmon branch with frost-touched grass.
 
 The fruit carried warmth.
 

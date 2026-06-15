@@ -36,7 +36,7 @@ Others walked toward the cemetery beyond the river.
 
 The autumn equinox was a time for remembering.
 
-Masaru found Hana carrying flowers toward her husband's grave.
+Masaru-sensei found Hana carrying flowers toward her husband's grave.
 
 The old woman moved slowly but confidently.
 
@@ -58,7 +58,7 @@ Life continuing.
 
 "People think remembrance is about the past," Hana said.
 
-Masaru listened.
+Masaru-sensei listened.
 
 "It is also about gratitude."
 
@@ -72,7 +72,7 @@ Because it acknowledged a journey.
 
 Visitors often became quiet while viewing it.
 
-Masaru understood why.
+Masaru-sensei understood why.
 
 The arrangement asked them to remember.
 

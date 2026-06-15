@@ -26,7 +26,7 @@ Aki heard the bird before she saw it.
 
 The wagtail darted along the riverbank, stopping only long enough to wag its tail before racing forward again.
 
-Masaru watched her chase it from stone to stone.
+Masaru-sensei watched her chase it from stone to stone.
 
 The bird never stayed still.
 
@@ -40,7 +40,7 @@ By midday she finally stopped beside a large rock and laughed.
 
 "I don't think it wants to be caught."
 
-Masaru smiled.
+Masaru-sensei smiled.
 
 "Perhaps it only wants to be followed."
 
@@ -54,7 +54,7 @@ The bird seemed happier.
 
 So did she.
 
-That evening Masaru arranged river grass and a small feather found beside the stream.
+That evening Masaru-sensei arranged river grass and a small feather found beside the stream.
 
 The arrangement carried movement despite remaining still.
 

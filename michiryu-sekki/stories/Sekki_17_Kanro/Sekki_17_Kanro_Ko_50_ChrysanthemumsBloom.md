@@ -32,7 +32,7 @@ Sister Rei knelt among the flowers, removing damaged leaves and spent blooms.
 
 The work was meticulous.
 
-Masaru watched for a while before asking a question.
+Masaru-sensei watched for a while before asking a question.
 
 "Why spend so much time on details no one will notice?"
 
@@ -58,7 +58,7 @@ Not dramatic.
 
 Simply confident.
 
-That afternoon Masaru arranged a single chrysanthemum beside a simple branch.
+That afternoon Masaru-sensei arranged a single chrysanthemum beside a simple branch.
 
 Nothing else.
 

@@ -34,13 +34,13 @@ Birdsong became less frequent.
 
 Even the mountain streams seemed softer beneath their blankets of snow.
 
-Masaru joined Goro on a winter walk through the forest.
+Masaru-sensei joined Goro on a winter walk through the forest.
 
 The woodcutter pointed toward a rocky hillside.
 
 "The bears have settled in."
 
-Masaru imagined the animals resting deep within hidden dens.
+Masaru-sensei imagined the animals resting deep within hidden dens.
 
 The idea felt strange.
 
@@ -66,7 +66,7 @@ Yet life continued.
 
 Preparation happened in silence.
 
-That afternoon Masaru arranged a pine branch beside a snow-covered twig.
+That afternoon Masaru-sensei arranged a pine branch beside a snow-covered twig.
 
 The arrangement carried very little movement.
 

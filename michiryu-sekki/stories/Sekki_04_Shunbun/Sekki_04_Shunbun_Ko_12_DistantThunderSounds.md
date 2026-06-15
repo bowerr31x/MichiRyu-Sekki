@@ -26,9 +26,9 @@ The blossoms were still beautiful.
 Perhaps even more beautiful than before.
 Yet Nobu knew they would soon be gone.
 The retired teacher sat beside the river listening to sounds most people ignored.
-When Masaru joined him, Nobu looked toward the mountains.
+When Masaru-sensei joined him, Nobu looked toward the mountains.
 "Thunder."
-Masaru listened.
+Masaru-sensei listened.
 At first he heard nothing.
 Then, far beyond the valley, a low rumble.
 The storm remained invisible.
@@ -42,11 +42,11 @@ By evening clouds appeared above the western ridge.
 Wind moved through the branches.
 Petals filled the air.
 For a few minutes it seemed to snow pink and white.
-Masaru gathered several fallen blossoms and carried them home.
+Masaru-sensei gathered several fallen blossoms and carried them home.
 Instead of arranging fresh flowers, he arranged petals.
 Visitors found the choice surprising.
 "Why not use the blossoms while they are still perfect?"
-Masaru looked toward the window.
+Masaru-sensei looked toward the window.
 "Because this is today's season."
 The petals told a different story.
 Not about blooming.

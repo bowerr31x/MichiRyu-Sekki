@@ -24,7 +24,7 @@ lesson: Quiet does not mean lifeless.
 
 The coldest morning of the year arrived without warning.
 
-The basin in Masaru's garden stood rimmed with ice.
+The basin in Masaru-sensei's garden stood rimmed with ice.
 
 The stream beyond the house had nearly disappeared beneath a frozen surface.
 
@@ -50,7 +50,7 @@ Saburo tapped the frozen basin.
 
 "People trust what they can see too much."
 
-Masaru laughed.
+Masaru-sensei laughed.
 
 The craftsman was right.
 
@@ -60,7 +60,7 @@ The stream seemed asleep.
 
 In reality it was preparing.
 
-That afternoon Masaru arranged pine with several unopened plum buds.
+That afternoon Masaru-sensei arranged pine with several unopened plum buds.
 
 The buds remained tightly closed.
 
@@ -68,7 +68,7 @@ Visitors questioned their inclusion.
 
 "They are not blooming."
 
-"No," Masaru replied.
+"No," Masaru-sensei replied.
 
 "But they are becoming."
 

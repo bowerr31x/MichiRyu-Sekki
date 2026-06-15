@@ -22,7 +22,7 @@ lesson: The smallest details often reveal the greatest beauty.
 
 # Dew Forms on Grass
 
-Masaru rose before sunrise.
+Masaru-sensei rose before sunrise.
 
 The valley remained quiet beneath a pale layer of mist.
 
@@ -52,7 +52,7 @@ Sayo smiled.
 
 "The world becomes generous when we slow down."
 
-Masaru stood quietly.
+Masaru-sensei stood quietly.
 
 The web seemed more beautiful than many flowers.
 

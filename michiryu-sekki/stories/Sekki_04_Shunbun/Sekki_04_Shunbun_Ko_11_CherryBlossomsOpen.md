@@ -29,7 +29,7 @@ Merchants delayed opening their shops.
 Even Daichi left his fields for a few hours.
 Everyone had come for the same reason.
 The blossoms would not last.
-Masaru walked slowly beneath the trees.
+Masaru-sensei walked slowly beneath the trees.
 Petals drifted into the water and floated downstream.
 People pointed upward.
 Laughed.
@@ -38,14 +38,14 @@ Shared stories.
 Shared silence.
 The cherry trees belonged to no one.
 Yet everyone felt they belonged to them.
-That afternoon Masaru made the simplest arrangement of the year.
+That afternoon Masaru-sensei made the simplest arrangement of the year.
 A single flowering branch.
 Nothing more.
 The branch needed no help.
 The season was already complete.
 When visitors entered his studio they spent less time looking at the arrangement than they usually did.
 Instead they looked through the window toward the blossoms outside.
-Masaru considered that a success.
+Masaru-sensei considered that a success.
 Some arrangements point beyond themselves.
 ## Ikebana Reflection
 Materials:

@@ -26,11 +26,11 @@ The first frozen puddle appeared beside the road leading out of the village.
 
 Toma discovered it before sunrise.
 
-By the time Masaru arrived, the young man had already broken the thin ice several times with a stick.
+By the time Masaru-sensei arrived, the young man had already broken the thin ice several times with a stick.
 
 "It keeps coming back."
 
-Masaru laughed.
+Masaru-sensei laughed.
 
 "So does winter."
 
@@ -52,7 +52,7 @@ The young man kicked a stone into the frost.
 
 "I feel stuck."
 
-Masaru pointed toward the hills.
+Masaru-sensei pointed toward the hills.
 
 "The mountains aren't going anywhere."
 
@@ -60,7 +60,7 @@ The answer annoyed Toma at first.
 
 Later it comforted him.
 
-That afternoon Masaru arranged frosted grass with a bare branch.
+That afternoon Masaru-sensei arranged frosted grass with a bare branch.
 
 The arrangement felt still.
 

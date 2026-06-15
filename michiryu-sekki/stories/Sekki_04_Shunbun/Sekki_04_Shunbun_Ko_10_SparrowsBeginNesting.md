@@ -25,13 +25,13 @@ lesson: Every home begins one piece at a time.
 The cherry branch hanging above the river had begun to open.
 Not fully.
 Just enough.
-Masaru noticed it while crossing the bridge and saw another kind of activity nearby.
+Masaru-sensei noticed it while crossing the bridge and saw another kind of activity nearby.
 Sparrows.
 One after another they darted through the air carrying bits of straw, grass, and twigs.
 Nearby, Emi stood watching.
 She had married only weeks before and recently moved into her husband's home on the eastern side of the village.
 "Busy creatures," she said.
-Masaru nodded.
+Masaru-sensei nodded.
 "They seem to know exactly what they're doing."
 Emi laughed softly.
 "I wish I felt the same."
@@ -41,14 +41,14 @@ One blade of grass.
 One feather.
 One twig.
 Yet the nest grew.
-Masaru watched the birds for nearly an hour.
+Masaru-sensei watched the birds for nearly an hour.
 That afternoon he arranged a flowering cherry branch with several strands of dried grass gathered from beneath the bridge.
 The arrangement looked incomplete.
 Almost fragile.
 Like a nest in its earliest stage.
 When Emi visited later she smiled.
 "It isn't finished."
-"No," Masaru said.
+"No," Masaru-sensei said.
 "Neither is your new life."
 For the first time since her wedding, that uncertainty felt comforting.
 ## Ikebana Reflection

@@ -28,7 +28,7 @@ Nobu noticed them before anyone else.
 
 The retired teacher stood beside the river with his hands folded behind his back, watching the sky.
 
-Masaru followed his gaze.
+Masaru-sensei followed his gaze.
 
 A long V-shaped formation crossed above the valley.
 
@@ -48,13 +48,13 @@ Nobu smiled.
 
 "I think they are remembering."
 
-The answer lingered in Masaru's mind.
+The answer lingered in Masaru-sensei's mind.
 
 The geese did not seem uncertain.
 
 They belonged to the sky as naturally as fish belonged to water.
 
-That afternoon Masaru arranged a chrysanthemum with several stems of autumn grass.
+That afternoon Masaru-sensei arranged a chrysanthemum with several stems of autumn grass.
 
 The grasses leaned toward open space.
 

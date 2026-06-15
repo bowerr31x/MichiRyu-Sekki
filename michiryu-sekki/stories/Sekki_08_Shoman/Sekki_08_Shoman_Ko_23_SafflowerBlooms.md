@@ -27,13 +27,13 @@ Yellow.
 Orange.
 Red.
 The colors shifted depending on the light.
-Masaru watched her sorting baskets of safflower blossoms beside the stream.
+Masaru-sensei watched her sorting baskets of safflower blossoms beside the stream.
 The flowers themselves seemed modest.
 Few villagers paid them much attention.
 Yet Nami transformed them into color.
 She dipped cloth into steaming vats while explaining each step.
 "The flower isn't the color."
-Masaru looked confused.
+Masaru-sensei looked confused.
 "It becomes the color."
 The distinction mattered.
 Potential and realization.
@@ -42,12 +42,12 @@ The same lesson appeared throughout the village during Shōman.
 The grain was filling.
 The fields looked richer every day.
 The future harvest could already be imagined.
-That afternoon Masaru arranged safflower with young grain.
+That afternoon Masaru-sensei arranged safflower with young grain.
 The composition celebrated things not yet fully revealed.
 Visitors saw flowers.
 Nami saw dye.
 Farmers saw grain.
-Masaru saw the season itself.
+Masaru-sensei saw the season itself.
 Everything was becoming more than it had been.
 ## Ikebana Reflection
 Materials:

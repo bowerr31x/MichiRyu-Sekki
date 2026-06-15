@@ -27,7 +27,7 @@ Sunlight poured into the valley.
 Children emerged from houses as if released from captivity.
 Aki was first.
 "Come quickly!"
-She ran so fast that Masaru nearly lost sight of her.
+She ran so fast that Masaru-sensei nearly lost sight of her.
 At the edge of the rice terraces she stopped and pointed.
 A rainbow stretched across the entire valley.
 Bright.
@@ -35,7 +35,7 @@ Temporary.
 Impossible to ignore.
 Aki stared upward.
 "Where does it end?"
-Masaru smiled.
+Masaru-sensei smiled.
 "Would it matter if you knew?"
 The girl thought about this.
 "No."
@@ -46,7 +46,7 @@ Merchants reopened their shops.
 Yet for a few minutes everyone looked up.
 The rainbow belonged to no one.
 Yet everyone shared it.
-Later that day Masaru arranged wildflowers gathered from several different places around the village.
+Later that day Masaru-sensei arranged wildflowers gathered from several different places around the village.
 No single flower dominated.
 Together they created something larger than themselves.
 Like the colors of the rainbow.
@@ -54,7 +54,7 @@ Like the village.
 Like the season.
 As evening approached, the rainbow disappeared.
 Aki looked disappointed.
-Masaru handed her a single flower.
+Masaru-sensei handed her a single flower.
 "Some things are beautiful because they stay."
 He pointed toward the empty sky.
 "And some things are beautiful because they don't."

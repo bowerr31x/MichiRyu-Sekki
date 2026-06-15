@@ -26,7 +26,7 @@ The longest night of the year had arrived.
 
 Snow covered the garden outside Aya's home, and the only light came from the warm glow of a single window.
 
-Masaru stopped by after sunset.
+Masaru-sensei stopped by after sunset.
 
 Inside, the room smelled of tea and citrus.
 
@@ -34,7 +34,7 @@ Aya was preparing a simple meal while snow drifted quietly beyond the paper scre
 
 Near the doorway, a shallow tray held several tiny green shoots.
 
-Masaru knelt beside them.
+Masaru-sensei knelt beside them.
 
 "They survived?"
 
@@ -56,7 +56,7 @@ Outside, darkness ruled the valley.
 
 Inside, life had already started preparing for spring.
 
-That evening Masaru arranged pine beside a single green sprout.
+That evening Masaru-sensei arranged pine beside a single green sprout.
 
 The pine represented endurance.
 

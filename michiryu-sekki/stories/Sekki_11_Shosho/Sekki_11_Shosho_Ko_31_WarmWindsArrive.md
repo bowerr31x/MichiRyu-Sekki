@@ -26,7 +26,7 @@ The wind arrived before the heat.
 
 At dawn, the bamboo grove behind the village whispered with movement.
 
-Masaru followed the sound and found Saburo already at work.
+Masaru-sensei followed the sound and found Saburo already at work.
 
 The bamboo craftsman sat beneath the grove splitting stalks into thin strips for basket weaving.
 
@@ -50,13 +50,13 @@ He shook his head.
 
 The lesson seemed simple.
 
-Yet Masaru knew many people who had broken themselves trying to remain rigid.
+Yet Masaru-sensei knew many people who had broken themselves trying to remain rigid.
 
 The bamboo grove understood something they did not.
 
 The wind would always come.
 
-That afternoon Masaru arranged several bamboo stems with summer grasses gathered along the stream.
+That afternoon Masaru-sensei arranged several bamboo stems with summer grasses gathered along the stream.
 
 The composition leaned slightly.
 
@@ -66,7 +66,7 @@ Saburo laughed when he heard this.
 
 "The arrangement is listening to the wind."
 
-Masaru liked that answer.
+Masaru-sensei liked that answer.
 
 ## Ikebana Reflection
 

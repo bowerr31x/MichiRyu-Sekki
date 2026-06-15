@@ -30,11 +30,11 @@ The cicadas still filled the valley with sound.
 
 Yet Kenta insisted autumn had arrived.
 
-Masaru found him on the hillside above the village watching the grasslands.
+Masaru-sensei found him on the hillside above the village watching the grasslands.
 
 "Feel that?" Kenta asked.
 
-Masaru felt nothing unusual.
+Masaru-sensei felt nothing unusual.
 
 The shepherd smiled.
 
@@ -52,7 +52,7 @@ Yet somehow the entire landscape felt different afterward.
 
 "The wind has changed."
 
-Masaru looked across the valley.
+Masaru-sensei looked across the valley.
 
 The fields remained green.
 
@@ -64,7 +64,7 @@ But Kenta was right.
 
 Something had shifted.
 
-That afternoon Masaru arranged susuki grass with a weathered branch from the hillside.
+That afternoon Masaru-sensei arranged susuki grass with a weathered branch from the hillside.
 
 The arrangement seemed to lean into empty space.
 
@@ -74,7 +74,7 @@ Like the season.
 
 Visitors often asked where autumn was.
 
-Masaru pointed to the movement.
+Masaru-sensei pointed to the movement.
 
 Not the material.
 

@@ -22,13 +22,13 @@ lesson: The cycle continues through ordinary moments.
 
 # Hens Begin Laying
 
-A few days later, Rin arrived at Masaru's door carrying a basket.
+A few days later, Rin arrived at Masaru-sensei's door carrying a basket.
 
 Inside rested a single egg.
 
 "The first one."
 
-Masaru smiled.
+Masaru-sensei smiled.
 
 The child held the basket carefully, as though carrying treasure.
 
@@ -48,7 +48,7 @@ The butterbur knew.
 
 The plum tree knew.
 
-Rin led Masaru to the edge of the garden.
+Rin led Masaru-sensei to the edge of the garden.
 
 There, beside the snow-covered path, one plum blossom had opened.
 
@@ -64,7 +64,7 @@ For a long time neither spoke.
 
 Words seemed unnecessary.
 
-That afternoon Masaru created the final arrangement of the year.
+That afternoon Masaru-sensei created the final arrangement of the year.
 
 Pine.
 
@@ -78,7 +78,7 @@ The blossom carried spring.
 
 Together they formed a bridge between endings and beginnings.
 
-As evening settled over Yuki no Sato, Masaru looked toward the river.
+As evening settled over Yuki no Sato, Masaru-sensei looked toward the river.
 
 Tomorrow he would visit Hana.
 

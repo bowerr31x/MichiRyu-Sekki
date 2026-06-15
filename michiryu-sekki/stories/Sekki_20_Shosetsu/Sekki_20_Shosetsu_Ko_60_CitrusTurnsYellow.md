@@ -30,7 +30,7 @@ The river reflected more shadow than light.
 
 Yet Aya's house felt brighter than ever.
 
-Masaru arrived to find baskets of citrus fruit stacked near the hearth.
+Masaru-sensei arrived to find baskets of citrus fruit stacked near the hearth.
 
 Their color seemed to carry sunlight into the room.
 
@@ -52,7 +52,7 @@ The citrus answered.
 
 The balance felt natural.
 
-That afternoon Masaru arranged a small citrus branch beside an evergreen cutting.
+That afternoon Masaru-sensei arranged a small citrus branch beside an evergreen cutting.
 
 The composition felt cheerful despite its simplicity.
 

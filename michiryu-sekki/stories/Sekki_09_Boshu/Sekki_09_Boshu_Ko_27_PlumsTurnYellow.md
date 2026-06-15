@@ -22,7 +22,7 @@ lesson: The season must be honored before it passes.
 
 # Plums Turn Yellow
 
-The scent reached Masaru before the orchard came into view.
+The scent reached Masaru-sensei before the orchard came into view.
 
 Sweet.
 
@@ -48,7 +48,7 @@ Preserves.
 
 Meals for months yet to come.
 
-Masaru watched her work.
+Masaru-sensei watched her work.
 
 "You spend summer preparing for winter."
 
@@ -66,7 +66,7 @@ Everything seemed to be preparing.
 
 Nothing stood still.
 
-That afternoon Masaru arranged a fruiting plum branch beside heavy grain stems.
+That afternoon Masaru-sensei arranged a fruiting plum branch beside heavy grain stems.
 
 The grain bent beneath its own weight.
 

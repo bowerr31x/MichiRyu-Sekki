@@ -32,7 +32,7 @@ The valley seemed frozen in place.
 
 Yet Mika knew better.
 
-While preparing dinner one evening, she told Masaru about the wheat beneath the snow.
+While preparing dinner one evening, she told Masaru-sensei about the wheat beneath the snow.
 
 "You cannot see it."
 
@@ -56,7 +56,7 @@ The child saw winter.
 
 Mika saw spring hidden inside it.
 
-That evening Masaru arranged pine beside a single wheat shoot.
+That evening Masaru-sensei arranged pine beside a single wheat shoot.
 
 The shoot seemed fragile.
 

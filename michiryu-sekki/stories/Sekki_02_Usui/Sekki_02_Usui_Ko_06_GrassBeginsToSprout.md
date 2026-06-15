@@ -28,15 +28,15 @@ To most villagers, winter remained.
 
 But Daichi disagreed.
 
-Masaru found him kneeling beside a terrace wall, studying the soil.
+Masaru-sensei found him kneeling beside a terrace wall, studying the soil.
 
-"What are you looking at?" Masaru asked.
+"What are you looking at?" Masaru-sensei asked.
 
 Daichi pointed toward a patch of earth no larger than his hand.
 
 A tiny green blade had emerged.
 
-Masaru almost missed it.
+Masaru-sensei almost missed it.
 
 "Only one?"
 
@@ -54,7 +54,7 @@ Yet it changed everything.
 
 Because once one appeared, more would follow.
 
-Masaru gathered a single grass shoot and several willow stems.
+Masaru-sensei gathered a single grass shoot and several willow stems.
 
 Back at his studio he created one of the smallest arrangements of the year.
 

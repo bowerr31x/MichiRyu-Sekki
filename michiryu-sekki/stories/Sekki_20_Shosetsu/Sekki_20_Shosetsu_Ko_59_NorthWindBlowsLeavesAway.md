@@ -28,7 +28,7 @@ By morning the trees stood nearly bare.
 
 Leaves that had clung stubbornly to branches for weeks now covered the ground.
 
-Masaru met Goro along a path beside the field.
+Masaru-sensei met Goro along a path beside the field.
 
 The woodcutter carried an armful of firewood.
 
@@ -40,7 +40,7 @@ Goro watched it settle.
 
 "Now we can see the tree."
 
-Masaru looked upward.
+Masaru-sensei looked upward.
 
 The branches stretched against the pale sky.
 
@@ -58,7 +58,7 @@ Form.
 
 Essence.
 
-That afternoon Masaru arranged a single fallen leaf beside a bare branch.
+That afternoon Masaru-sensei arranged a single fallen leaf beside a bare branch.
 
 The arrangement felt unusually sparse.
 

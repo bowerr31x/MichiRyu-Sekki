@@ -34,7 +34,7 @@ Its body was no longer than a grain of rice.
 
 Its front legs were folded as though in prayer.
 
-Masaru crouched beside him.
+Masaru-sensei crouched beside him.
 
 "It looks fierce."
 
@@ -48,7 +48,7 @@ Around it the grain swayed in the summer breeze.
 
 Everything about the creature suggested confidence despite its size.
 
-Masaru thought about that as they continued walking.
+Masaru-sensei thought about that as they continued walking.
 
 Many villagers admired the grain.
 
@@ -56,7 +56,7 @@ Few noticed the small lives hidden among it.
 
 Yet the fields belonged to both.
 
-That afternoon Masaru arranged heavy grain stems with a few strands of wild grass.
+That afternoon Masaru-sensei arranged heavy grain stems with a few strands of wild grass.
 
 The arrangement seemed simple until one noticed a tiny curve hidden among the lines.
 

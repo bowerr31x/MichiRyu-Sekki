@@ -30,7 +30,7 @@ The fields had emptied.
 
 The river seemed quieter than before.
 
-Masaru met Goro near the edge of the forest where the woodcutter spent most mornings gathering fuel for the village.
+Masaru-sensei met Goro near the edge of the forest where the woodcutter spent most mornings gathering fuel for the village.
 
 The trees stood bare against the gray sky.
 
@@ -42,7 +42,7 @@ Goro stopped and smiled.
 
 "Most flowers choose easier seasons."
 
-Masaru touched one of the blossoms.
+Masaru-sensei touched one of the blossoms.
 
 The flower seemed unconcerned with comfort.
 
@@ -56,7 +56,7 @@ Many villagers postponed important things until circumstances improved.
 
 Nature rarely waited.
 
-That afternoon Masaru arranged camellia beside a weathered branch from the forest.
+That afternoon Masaru-sensei arranged camellia beside a weathered branch from the forest.
 
 The branch carried the memory of hardship.
 

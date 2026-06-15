@@ -23,11 +23,11 @@ lesson: Sometimes we must leave to understand where we belong.
 # Swallows Return
 
 The first swallow arrived before sunrise.
-Masaru spotted it circling above the village square while opening the shutters of his studio.
+Masaru-sensei spotted it circling above the village square while opening the shutters of his studio.
 By midday there were six.
 By evening there were dozens.
 The birds moved through the air as if they had never left.
-Near the tea house Masaru encountered Ren, the traveling scholar.
+Near the tea house Masaru-sensei encountered Ren, the traveling scholar.
 A canvas satchel hung over his shoulder, covered with notes and maps gathered from distant villages.
 "You've returned."
 Ren smiled.
@@ -39,13 +39,13 @@ The scholar watched it carefully.
 Ren considered the question.
 The swallow emerged again.
 "That every creature needs a place to return to."
-That afternoon Masaru gathered a fresh spring branch and several unfurling fern shoots.
+That afternoon Masaru-sensei gathered a fresh spring branch and several unfurling fern shoots.
 The arrangement reached upward while also curving inward.
 Movement and return.
 Departure and homecoming.
 When Ren visited that evening he stood quietly before the arrangement.
 "It feels familiar."
-Masaru nodded.
+Masaru-sensei nodded.
 "Exactly."
 ## Ikebana Reflection
 Materials:

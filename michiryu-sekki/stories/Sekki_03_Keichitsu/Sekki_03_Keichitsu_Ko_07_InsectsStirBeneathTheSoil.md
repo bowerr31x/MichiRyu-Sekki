@@ -23,13 +23,13 @@ lesson: Life often begins before it is noticed.
 # Insects Stir Beneath the Soil
 
 The stone wall separating Daichi's rice terraces had survived another winter, but several rocks had shifted with the frost.
-Masaru found the farmer kneeling in the morning sun, carefully resetting stones one at a time.
+Masaru-sensei found the farmer kneeling in the morning sun, carefully resetting stones one at a time.
 As Daichi lifted a flat rock, he paused.
 "Look."
 Beneath the stone, tiny insects scattered through the dark soil.
 Some disappeared into cracks.
 Others remained still, as if uncertain whether winter had truly ended.
-Masaru knelt beside him.
+Masaru-sensei knelt beside him.
 Only a few days earlier the ground had been frozen.
 Now life moved beneath every surface.
 The insects were not impressive.
@@ -38,7 +38,7 @@ No beautiful colors.
 Yet their appearance changed the meaning of the entire season.
 Winter had lost its hold.
 The earth was awake.
-That afternoon Masaru carried home a small moss-covered stone and several blades of newly emerged grass.
+That afternoon Masaru-sensei carried home a small moss-covered stone and several blades of newly emerged grass.
 The arrangement was simple.
 Visitors focused on the stone.
 Few noticed the tiny grass.

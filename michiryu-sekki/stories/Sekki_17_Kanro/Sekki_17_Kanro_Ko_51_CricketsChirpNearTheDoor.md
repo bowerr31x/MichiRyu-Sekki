@@ -38,7 +38,7 @@ Mei did.
 
 The insects had become part of the season's rhythm.
 
-One evening Masaru stopped by with tea.
+One evening Masaru-sensei stopped by with tea.
 
 Neither spoke much.
 
@@ -48,7 +48,7 @@ After a while Mei laughed.
 
 "They're better conversationalists than some villagers."
 
-Masaru could not disagree.
+Masaru-sensei could not disagree.
 
 The sound seemed to belong exactly where it was.
 

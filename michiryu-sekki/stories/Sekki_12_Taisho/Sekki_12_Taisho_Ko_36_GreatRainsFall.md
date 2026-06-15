@@ -28,7 +28,7 @@ By morning several paths had disappeared beneath muddy water.
 
 Villagers gathered with shovels and tools to clear debris.
 
-Saburo was already working when Masaru arrived.
+Saburo was already working when Masaru-sensei arrived.
 
 The bamboo craftsman stood knee-deep in water removing branches caught against a bridge.
 
@@ -58,13 +58,13 @@ Saburo picked up a reed flattened by the flood.
 
 "It survived."
 
-Masaru examined it.
+Masaru-sensei examined it.
 
 The stem bent sharply but remained intact.
 
 Much like the bamboo Saburo worked with every day.
 
-That evening Masaru arranged the reed beside a bamboo stem.
+That evening Masaru-sensei arranged the reed beside a bamboo stem.
 
 The two materials seemed to lean toward one another.
 
@@ -78,7 +78,7 @@ Saburo disagreed.
 
 "Recovery."
 
-Masaru thought about that for a long time.
+Masaru-sensei thought about that for a long time.
 
 The distinction mattered.
 

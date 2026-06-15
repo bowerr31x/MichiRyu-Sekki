@@ -22,7 +22,7 @@ lesson: Understanding often comes from comparison.
 
 # Crow-Dipper Grass Dries
 
-Kenji carried a handful of dried grass into Masaru's studio.
+Kenji carried a handful of dried grass into Masaru-sensei's studio.
 
 The stems looked unremarkable.
 
@@ -36,7 +36,7 @@ The boy dropped them onto the worktable.
 
 "Why would anyone keep this?"
 
-Masaru smiled.
+Masaru-sensei smiled.
 
 "Why indeed?"
 
@@ -58,7 +58,7 @@ Until then he had imagined that seasons affected everything equally.
 
 The river taught otherwise.
 
-That afternoon Masaru arranged a broad lotus leaf beside several stems of dried grass.
+That afternoon Masaru-sensei arranged a broad lotus leaf beside several stems of dried grass.
 
 The contrast was striking.
 
@@ -72,7 +72,7 @@ Without one, the other lost meaning.
 
 Kenji stared at the arrangement.
 
-For the first time he understood why Masaru sometimes chose damaged, faded, or drying material.
+For the first time he understood why Masaru-sensei sometimes chose damaged, faded, or drying material.
 
 Every season contained opposites.
 

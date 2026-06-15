@@ -40,11 +40,11 @@ The children fell silent.
 The damage suddenly became evidence.
 The leaf had not been ruined.
 It had been used.
-Masaru watched the conversation unfold.
+Masaru-sensei watched the conversation unfold.
 Later that day he selected several young leaves for an arrangement.
 One was perfect.
 The other carried small bite marks.
-When visitors questioned the damaged leaf, Masaru told them about the caterpillar.
+When visitors questioned the damaged leaf, Masaru-sensei told them about the caterpillar.
 The arrangement changed immediately.
 What first appeared flawed became meaningful.
 The leaf told a larger story.

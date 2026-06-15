@@ -1,8 +1,8 @@
 {
   "masaru": {
-    "name": "Masaru",
-    "role": "The protagonist.",
-    "bio": "A quiet practitioner of flower arranging who walks the village daily observing nature.",
+    "name": "Masaru-sensei",
+    "role": "Masaru-sensei, the Flower Teacher.",
+    "bio": "A respected flower teacher who walks the village daily observing nature.",
     "represents": "Observation",
     "portrait_file": "Character_Masaru.svg"
   },

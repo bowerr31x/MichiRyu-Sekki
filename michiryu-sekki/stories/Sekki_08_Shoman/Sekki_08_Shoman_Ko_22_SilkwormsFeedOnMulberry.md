@@ -26,7 +26,7 @@ The room above Aya's workshop sounded like rain.
 Not heavy rain.
 Soft rain.
 Thousands of tiny mouths feeding on mulberry leaves.
-Masaru sat beside the elderly woman while she spread fresh leaves across woven trays.
+Masaru-sensei sat beside the elderly woman while she spread fresh leaves across woven trays.
 The silkworms immediately began eating.
 "They never seem to stop," he said.
 Aya smiled.
@@ -42,7 +42,7 @@ Kimonos.
 Wedding garments.
 Festival banners.
 An entire future hidden within creatures no larger than a finger.
-Masaru watched the worms for a long time.
+Masaru-sensei watched the worms for a long time.
 Nothing dramatic happened.
 No sudden change.
 Only steady work.

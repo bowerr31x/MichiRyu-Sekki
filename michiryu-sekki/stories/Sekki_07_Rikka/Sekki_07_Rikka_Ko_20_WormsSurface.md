@@ -23,30 +23,30 @@ lesson: Much of what sustains beauty remains unseen.
 # Worms Surface
 
 A night of steady rain left the village paths damp and fragrant.
-Masaru found Osamu working in the iris garden before sunrise.
+Masaru-sensei found Osamu working in the iris garden before sunrise.
 The gardener carried a basket and moved slowly between the planting beds.
-"What are you looking for?" Masaru asked.
+"What are you looking for?" Masaru-sensei asked.
 Osamu pointed toward the soil.
 Worms.
 Dozens of them had emerged after the rain.
 Most people stepped around them without a second thought.
 Osamu knelt beside one.
 "The flowers would not exist without them."
-Masaru watched quietly.
+Masaru-sensei watched quietly.
 The worms loosened the soil.
 They carried nutrients downward.
 They worked without recognition.
 Without praise.
 Without flowers of their own.
 Yet every iris depended on them.
-That afternoon Masaru selected the strongest iris bloom from Osamu's garden.
+That afternoon Masaru-sensei selected the strongest iris bloom from Osamu's garden.
 Beside it he placed several fresh fern fronds.
 The iris received all the attention.
 The ferns quietly supported the composition.
 Just as the worms quietly supported the garden.
 Visitors admired the flower.
 Osamu admired the ferns.
-Masaru understood why.
+Masaru-sensei understood why.
 ## Ikebana Reflection
 Materials:
 - Water Iris

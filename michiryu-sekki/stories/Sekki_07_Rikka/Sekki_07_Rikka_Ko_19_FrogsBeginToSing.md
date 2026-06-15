@@ -25,7 +25,7 @@ lesson: Every creature speaks in its own season.
 The marsh beside the river had become impossible to ignore.
 Every evening it seemed louder.
 The frogs had returned.
-Masaru followed the sound one warm evening and found Haru sitting perfectly still on a flat stone near the water's edge.
+Masaru-sensei followed the sound one warm evening and found Haru sitting perfectly still on a flat stone near the water's edge.
 Most children ran through the marsh.
 Haru listened to it.
 The chorus rose and fell like waves.
@@ -34,7 +34,7 @@ Another answered.
 Soon dozens joined together.
 The marsh had become an orchestra.
 "What are they saying?" Haru asked.
-Masaru smiled.
+Masaru-sensei smiled.
 "They are announcing summer."
 The boy considered this.
 "They're very loud."
@@ -43,7 +43,7 @@ The answer seemed to satisfy him.
 Along the edge of the water, the first water irises had begun to bloom.
 Their leaves rose confidently from the marsh.
 Unlike the tentative flowers of spring, these seemed certain of their place.
-That afternoon Masaru arranged iris and marsh grass in a shallow suiban.
+That afternoon Masaru-sensei arranged iris and marsh grass in a shallow suiban.
 The arrangement felt upright and confident.
 Like a frog calling across the water.
 Like summer itself.

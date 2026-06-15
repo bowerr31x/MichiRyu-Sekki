@@ -38,7 +38,7 @@ The fisherman pointed toward a newly opened lotus blossom.
 
 "People admire the flower."
 
-Masaru nodded.
+Masaru-sensei nodded.
 
 "They rarely admire the mud."
 
@@ -54,7 +54,7 @@ The pond never changed.
 
 The lesson never changed.
 
-That afternoon Masaru arranged a single lotus blossom and one broad leaf.
+That afternoon Masaru-sensei arranged a single lotus blossom and one broad leaf.
 
 Nothing else.
 
@@ -66,7 +66,7 @@ When visitors entered the studio they immediately noticed the blossom.
 
 Only later did they ask where it had come from.
 
-"The pond," Masaru answered.
+"The pond," Masaru-sensei answered.
 
 Most of them imagined the flower.
 

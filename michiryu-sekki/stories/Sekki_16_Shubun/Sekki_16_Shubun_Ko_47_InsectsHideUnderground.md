@@ -32,7 +32,7 @@ Just quieter.
 
 The buzzing insects that filled summer afternoons were disappearing one by one.
 
-Masaru joined the boy beside a field near the river.
+Masaru-sensei joined the boy beside a field near the river.
 
 Together they listened.
 
@@ -50,7 +50,7 @@ The world seemed to be folding inward.
 
 "Why?"
 
-Masaru thought for a moment.
+Masaru-sensei thought for a moment.
 
 "To survive."
 
@@ -62,7 +62,7 @@ Not every season is meant for activity.
 
 Not every season is meant for growth.
 
-That afternoon Masaru arranged higanbana beside several stems of dry grass.
+That afternoon Masaru-sensei arranged higanbana beside several stems of dry grass.
 
 The flowers appeared energetic.
 

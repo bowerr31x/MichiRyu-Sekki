@@ -22,7 +22,7 @@ lesson: Small things often endure where larger things cannot.
 
 # Parsley Flourishes
 
-The garden behind Masaru's house seemed frozen.
+The garden behind Masaru-sensei's house seemed frozen.
 
 Snow covered the stepping stones.
 
@@ -36,7 +36,7 @@ Parsley.
 
 The herb had survived the cold.
 
-Masaru knelt beside it in surprise.
+Masaru-sensei knelt beside it in surprise.
 
 Most plants had retreated underground.
 
@@ -52,7 +52,7 @@ Sayo smiled.
 
 "Some things are strongest because they remain small."
 
-The answer reminded Masaru of several villagers.
+The answer reminded Masaru-sensei of several villagers.
 
 People who quietly continued their work while others received attention.
 

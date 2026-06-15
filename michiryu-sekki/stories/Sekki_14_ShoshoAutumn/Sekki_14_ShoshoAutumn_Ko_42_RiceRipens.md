@@ -34,7 +34,7 @@ Weeks earlier he had worried over storms.
 
 Now he worried about harvest timing.
 
-Masaru smiled.
+Masaru-sensei smiled.
 
 The concerns changed.
 
@@ -44,7 +44,7 @@ Together they walked through the fields.
 
 The grain bowed beneath its own weight.
 
-The sight reminded Masaru of villagers bowing during festivals.
+The sight reminded Masaru-sensei of villagers bowing during festivals.
 
 Abundance carried its own humility.
 
@@ -74,7 +74,7 @@ Then he nodded.
 
 "We should thank the field."
 
-Masaru thought that was exactly right.
+Masaru-sensei thought that was exactly right.
 
 ## Ikebana Reflection
 

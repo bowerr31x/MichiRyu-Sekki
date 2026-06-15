@@ -32,7 +32,7 @@ Ivy climbed stone walls in winding ribbons.
 
 Even familiar places seemed transformed.
 
-Masaru met Chiyo on a hillside overlooking the valley.
+Masaru-sensei met Chiyo on a hillside overlooking the valley.
 
 The peony grower carried a basket but had stopped gathering materials.
 
@@ -44,7 +44,7 @@ Finally Chiyo spoke.
 
 "People always talk about spring."
 
-Masaru smiled.
+Masaru-sensei smiled.
 
 "And autumn?"
 
@@ -60,7 +60,7 @@ Summer expanded.
 
 Autumn fulfilled.
 
-That afternoon Masaru arranged a persimmon branch with a twisting autumn vine.
+That afternoon Masaru-sensei arranged a persimmon branch with a twisting autumn vine.
 
 The composition felt complete.
 

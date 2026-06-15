@@ -30,7 +30,7 @@ Everyone in Yuki no Sato had.
 
 But she had never witnessed the moment rain became snow.
 
-Masaru found her standing beside the stream, staring at the sky.
+Masaru-sensei found her standing beside the stream, staring at the sky.
 
 Drops of rain fell steadily around them.
 
@@ -60,7 +60,7 @@ A few survived.
 
 The child laughed every time one landed successfully.
 
-That afternoon Masaru arranged dried grass with several snow berries gathered near the edge of the field.
+That afternoon Masaru-sensei arranged dried grass with several snow berries gathered near the edge of the field.
 
 The arrangement felt quiet.
 

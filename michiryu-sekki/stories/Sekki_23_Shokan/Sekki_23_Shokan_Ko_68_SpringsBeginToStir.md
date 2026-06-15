@@ -38,7 +38,7 @@ Drip.
 
 Pause.
 
-Masaru found Saburo repairing the bamboo spout early one morning.
+Masaru-sensei found Saburo repairing the bamboo spout early one morning.
 
 The craftsman removed a section worn by years of flowing water.
 
@@ -60,7 +60,7 @@ Without it, the winter silence would have felt empty.
 
 With it, the silence felt alive.
 
-That afternoon Masaru arranged pine beside a reed gathered near the basin.
+That afternoon Masaru-sensei arranged pine beside a reed gathered near the basin.
 
 The composition carried very little movement.
 

@@ -28,7 +28,7 @@ Every morning new lotus blossoms opened across the water.
 
 Sister Rei walked the pond's edge before sunrise, removing fallen leaves and clearing debris.
 
-Masaru often joined her.
+Masaru-sensei often joined her.
 
 The work seemed endless.
 
@@ -36,7 +36,7 @@ Every day the pond changed.
 
 Every day it needed attention.
 
-One morning Masaru asked if she ever became tired of the routine.
+One morning Masaru-sensei asked if she ever became tired of the routine.
 
 Sister Rei smiled.
 
@@ -52,7 +52,7 @@ Most people waited for important moments.
 
 Sister Rei paid attention to ordinary ones.
 
-That afternoon Masaru arranged lotus with bamboo.
+That afternoon Masaru-sensei arranged lotus with bamboo.
 
 The lotus represented stillness.
 
@@ -62,7 +62,7 @@ Together they created balance.
 
 Visitors called the arrangement peaceful.
 
-Masaru thought of Sister Rei waking before dawn.
+Masaru-sensei thought of Sister Rei waking before dawn.
 
 Peace, he realized, required participation.
 

@@ -25,14 +25,14 @@ lesson: Some work requires faith before results appear.
 The village gathered in the paddies before sunrise.
 Bundles of young rice seedlings waited beside the flooded terraces.
 The planting season had begun.
-Masaru joined Yuna and several other farmers as they worked their way across the field.
+Masaru-sensei joined Yuna and several other farmers as they worked their way across the field.
 Each seedling looked fragile.
 Almost too fragile.
 The water rippled around their legs.
 The mountains reflected in the flooded terraces.
 Hours passed.
 Rows slowly appeared.
-"What if some don't survive?" Masaru asked.
+"What if some don't survive?" Masaru-sensei asked.
 Yuna laughed.
 "Some won't."
 The answer surprised him.
@@ -40,7 +40,7 @@ The answer surprised him.
 "Of course."
 The farmer pushed another seedling into the mud.
 "If we waited for certainty, nothing would ever grow."
-That afternoon Masaru arranged a peony bloom with several young rice seedlings.
+That afternoon Masaru-sensei arranged a peony bloom with several young rice seedlings.
 The flower dominated the composition.
 The seedlings looked small and vulnerable.
 Yet everyone who visited understood which element represented the future.

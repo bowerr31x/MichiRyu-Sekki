@@ -26,17 +26,17 @@ The cold returned after the warbler's song.
 
 Snow dusted the northern hills, and the river once again wore a thin skin of ice.
 
-Masaru found Jiro sitting beside the water near the old ferry landing.
+Masaru-sensei found Jiro sitting beside the water near the old ferry landing.
 
 The fisherman held a rod across his knees.
 
 The line was not in the water.
 
-"What are you watching?" Masaru asked.
+"What are you watching?" Masaru-sensei asked.
 
 Jiro pointed toward the center of the stream.
 
-At first Masaru saw nothing.
+At first Masaru-sensei saw nothing.
 
 The ice reflected the pale sky.
 
@@ -52,7 +52,7 @@ Slowly circling beneath the frozen water.
 
 "The mountains have not received the message."
 
-Masaru laughed softly.
+Masaru-sensei laughed softly.
 
 The two men sat together without speaking.
 
@@ -76,7 +76,7 @@ Jiro nodded.
 
 The old fisherman understood that certainty did not require proof.
 
-That afternoon Masaru gathered a flowering camellia branch and a willow switch bent by winter storms.
+That afternoon Masaru-sensei gathered a flowering camellia branch and a willow switch bent by winter storms.
 
 The willow curved through the arrangement like a current beneath water.
 
@@ -98,7 +98,7 @@ Finally he smiled.
 
 "The fish are there."
 
-Masaru bowed.
+Masaru-sensei bowed.
 
 Neither man felt the need to explain further.
 

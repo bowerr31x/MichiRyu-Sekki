@@ -36,7 +36,7 @@ Near the edge of the stone path, several slender green leaves pushed through the
 
 Narcissus.
 
-Masaru noticed them while helping Hana stack firewood.
+Masaru-sensei noticed them while helping Hana stack firewood.
 
 The leaves were easy to miss.
 
@@ -46,7 +46,7 @@ Hana never did.
 
 "They always arrive when people need them."
 
-Masaru smiled.
+Masaru-sensei smiled.
 
 "Flowers?"
 
@@ -60,7 +60,7 @@ Winter had only begun.
 
 Yet spring had already left a message.
 
-That afternoon Masaru arranged narcissus leaves beside a camellia blossom.
+That afternoon Masaru-sensei arranged narcissus leaves beside a camellia blossom.
 
 The composition joined present beauty with future beauty.
 

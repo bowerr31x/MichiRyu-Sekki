@@ -28,11 +28,11 @@ By morning, water dripped steadily from every roof in Yuki no Sato.
 
 Snowbanks that had stood unchanged for weeks now slumped beside the road.
 
-Masaru found Kenji standing on the bridge, launching small bark boats into the swollen stream.
+Masaru-sensei found Kenji standing on the bridge, launching small bark boats into the swollen stream.
 
 Each boat rushed beneath the bridge and disappeared around the bend.
 
-"You'll never see them again," Masaru said.
+"You'll never see them again," Masaru-sensei said.
 
 Kenji grinned.
 
@@ -48,7 +48,7 @@ Now they moved with the rain.
 
 The branches bent but did not break.
 
-Masaru clipped several slender willow stems.
+Masaru-sensei clipped several slender willow stems.
 
 Back in his studio he paired them with the final camellia blossom from Risshun.
 

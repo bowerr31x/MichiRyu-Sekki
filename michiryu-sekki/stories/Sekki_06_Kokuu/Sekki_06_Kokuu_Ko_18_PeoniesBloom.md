@@ -26,7 +26,7 @@ By the end of Grain Rain, Chiyo's garden had transformed.
 The peonies opened almost overnight.
 Large blossoms leaned over stone paths and crowded the edges of the garden.
 Visitors arrived from neighboring villages to admire them.
-Masaru found Chiyo trimming healthy flowers.
+Masaru-sensei found Chiyo trimming healthy flowers.
 "You are cutting the best ones."
 "I know."
 The answer seemed strange.
@@ -36,13 +36,13 @@ Chiyo handed him the blossom.
 The gardener continued pruning.
 The garden looked less full afterward.
 Yet somehow more beautiful.
-Masaru carried the flower home.
+Masaru-sensei carried the flower home.
 That evening he arranged a single peony with a simple spring branch.
 Nothing else.
 The blossom required no competition.
 Its beauty filled the room.
 Visitors asked why he had not used more flowers.
-Masaru remembered Chiyo's garden.
+Masaru-sensei remembered Chiyo's garden.
 Sometimes abundance is not about quantity.
 Sometimes abundance is knowing what to leave out.
 ## Ikebana Reflection
