@@ -1106,6 +1106,7 @@ class MichiRyu_Sekki {
 			'content_import_ack_copyright' => false,
 			'content_import_accept_license' => false,
 			'content_import_ack_privacy' => false,
+			'content_library_url'     => '',
 			'content_update_mode'      => 'manual',
 		);
 	}
@@ -1153,6 +1154,7 @@ class MichiRyu_Sekki {
 		$output['map_progression_style']     = in_array( $input['map_progression_style'] ?? '', $map_progression_styles, true ) ? $input['map_progression_style'] : $saved['map_progression_style'];
 		$output['read_more_link_behavior']   = in_array( $input['read_more_link_behavior'] ?? '', $read_more_link_behaviors, true ) ? $input['read_more_link_behavior'] : $saved['read_more_link_behavior'];
 		$output['content_update_mode']       = in_array( $input['content_update_mode'] ?? '', $content_update_modes, true ) ? $input['content_update_mode'] : $saved['content_update_mode'];
+		$output['content_library_url']       = array_key_exists( 'content_library_url', $input ) ? esc_url_raw( $input['content_library_url'] ) : $saved['content_library_url'];
 		$output['external_season_base_url']  = array_key_exists( 'external_season_base_url', $input ) ? esc_url_raw( $input['external_season_base_url'] ) : $saved['external_season_base_url'];
 		$output['map_page_url']              = esc_url_raw( $input['map_page_url'] ?? '' );
 		$output['signature_position']        = in_array( $input['signature_position'] ?? '', $signature_positions, true ) ? $input['signature_position'] : $saved['signature_position'];

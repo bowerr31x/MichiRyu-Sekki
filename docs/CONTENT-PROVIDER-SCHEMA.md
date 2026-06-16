@@ -74,6 +74,33 @@ When the `file` provider is requested, the admin Content Provider Status panel
 shows the configured path, whether it is a valid external directory, and the
 configured content URL.
 
+## Imported Provider
+
+The GPL plugin also includes an imported provider for admin-approved remote
+content imports. The administrator enters a remote content URL in
+MichiRyu -> Content Library, accepts the required content acknowledgements, and
+clicks Connect and Import Content.
+
+The remote URL must expose:
+
+```text
+featured-content.json
+images.json
+images/...
+```
+
+After import, the plugin stores the local copy under:
+
+```text
+wp-content/uploads/michiryu-sekki-content/
+├── featured-content.json
+├── images.json
+└── images/
+```
+
+When imported content exists and no stronger provider is configured, the plugin
+uses the imported provider instead of making ongoing remote requests.
+
 ## Required Interface
 
 Custom providers must implement `MichiRyu_Sekki_Content_Provider_Interface`.

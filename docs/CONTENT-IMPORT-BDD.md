@@ -53,14 +53,27 @@ Then Manual updates only is selected by default
 And monthly update checks are available only as an opt-in option
 And every-Sekki update checks are available only as an opt-in option
 
-## Scenario: Import Action Is Disabled Before Import Implementation
+## Scenario: Administrator Imports From A Remote Content URL
 
-Given the future content import service is not implemented
+Given the administrator has entered a remote content URL
+And the administrator has saved all import acknowledgements
 When the administrator opens the MichiRyu Content Library settings
-Then the consent acknowledgements can be reviewed and saved
-And the content update mode can be selected
-And the Connect and Import Content action is disabled
-And the screen explains that import is not enabled yet
+Then the Connect and Import Content action is enabled
+When the administrator starts the import
+Then the plugin downloads featured-content.json and images.json
+And the plugin downloads referenced images
+And the plugin stores the imported content under the local WordPress uploads
+directory
+And the imported content provider can render the local copy without constant
+remote requests
+
+## Scenario: Import Action Is Disabled Until Ready
+
+Given the administrator has not entered a remote content URL
+Or the administrator has not saved all import acknowledgements
+When the administrator opens the MichiRyu Content Library settings
+Then the Connect and Import Content action is disabled
+And the screen explains what is required before importing
 
 ## Scenario: MichiRyu Service Is Unavailable
 

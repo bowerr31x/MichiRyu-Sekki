@@ -115,6 +115,10 @@ class MichiRyu_Sekki_Content {
 					MichiRyu_Sekki_File_Content_Provider::get_configured_content_url()
 				);
 			}
+		} elseif ( 'imported' === $provider_key || ( 'local' === $provider_key && MichiRyu_Sekki_Imported_Content_Provider::has_imported_content() ) ) {
+			if ( MichiRyu_Sekki_Imported_Content_Provider::has_imported_content() ) {
+				$provider = new MichiRyu_Sekki_Imported_Content_Provider();
+			}
 		}
 
 		/**

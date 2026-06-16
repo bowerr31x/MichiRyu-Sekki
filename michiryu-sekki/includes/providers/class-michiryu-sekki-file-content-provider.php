@@ -137,7 +137,10 @@ class MichiRyu_Sekki_File_Content_Provider extends MichiRyu_Sekki_Local_Content_
 		$id     = trim( (string) $id, '/' );
 
 		if ( ! is_array( $images ) || empty( $images[ $id ] ) ) {
-			return '';
+			$id = $this->find_alternate_image_id( $id, $images );
+			if ( '' === $id ) {
+				return '';
+			}
 		}
 
 		return $this->resolve_image_value( $images[ $id ] );
@@ -230,5 +233,33 @@ class MichiRyu_Sekki_File_Content_Provider extends MichiRyu_Sekki_Local_Content_
 		return array(
 			'url' => $this->content_url . '/' . $image,
 		);
+	}
+
+	/**
+	 * Find an image id with a different common file extension.
+	 *
+	 * @param string              $id Requested image id.
+	 * @param array<string,mixed> $images Image mappings.
+	 * @return string
+	 */
+	private function find_alternate_image_id( $id, $images ) {
+		$extension = strtolower( pathinfo( $id, PATHINFO_EXTENSION ) );
+		if ( '' === $extension ) {
+			return '';
+		}
+
+		$base = substr( $id, 0, -1 * ( strlen( $extension ) + 1 ) );
+		foreach ( array( 'png', 'jpg', 'jpeg', 'webp', 'svg' ) as $alternate_extension ) {
+			if ( $extension === $alternate_extension ) {
+				continue;
+			}
+
+			$alternate_id = $base . '.' . $alternate_extension;
+			if ( ! empty( $images[ $alternate_id ] ) ) {
+				return $alternate_id;
+			}
+		}
+
+		return '';
 	}
 }

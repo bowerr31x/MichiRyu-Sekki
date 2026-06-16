@@ -35,6 +35,7 @@ class MichiRyu_Sekki_Admin {
 	public function init() {
 		add_action( 'admin_menu', array( $this, 'add_menu' ) );
 		add_action( 'admin_init', array( $this, 'register_settings' ) );
+		add_action( 'admin_post_michiryu_sekki_import_content', array( $this, 'handle_content_import' ) );
 	}
 
 	/**
@@ -88,20 +89,28 @@ class MichiRyu_Sekki_Admin {
 			</div>
 
 			<?php $this->render_provider_status(); ?>
+			<?php $this->render_import_notice(); ?>
 
 			<form method="post" action="options.php">
 				<?php settings_fields( 'michiryu_sekki_settings' ); ?>
 
 				<h2><?php esc_html_e( 'MichiRyu Content Library', 'michiryu-sekki' ); ?></h2>
-				<p><?php esc_html_e( 'These settings prepare the future admin-approved content import workflow. The plugin will not download MichiRyu content until an import feature is added and an administrator explicitly starts it.', 'michiryu-sekki' ); ?></p>
+				<p><?php esc_html_e( 'Connect to a remote MichiRyu content folder, then import its stories and images into this WordPress site. The site will use the local imported copy after import.', 'michiryu-sekki' ); ?></p>
 				<table class="form-table" role="presentation">
+					<tr>
+						<th scope="row"><label for="michiryu-sekki-content-library-url"><?php esc_html_e( 'Remote content URL', 'michiryu-sekki' ); ?></label></th>
+						<td>
+							<input id="michiryu-sekki-content-library-url" type="url" class="large-text" name="<?php echo esc_attr( MichiRyu_Sekki::OPTION_NAME ); ?>[content_library_url]" value="<?php echo esc_attr( $options['content_library_url'] ); ?>" placeholder="https://example.com/michiryu-content" />
+							<p class="description"><?php esc_html_e( 'This URL must expose featured-content.json, images.json, and the referenced image files.', 'michiryu-sekki' ); ?></p>
+						</td>
+					</tr>
 					<tr>
 						<th scope="row"><?php esc_html_e( 'Import consent', 'michiryu-sekki' ); ?></th>
 						<td>
 							<?php $this->render_checkbox_field( 'content_import_ack_copyright', __( 'I understand this will download MichiRyu copyrighted content to this site.', 'michiryu-sekki' ), $options['content_import_ack_copyright'] ); ?>
 							<?php $this->render_checkbox_field( 'content_import_accept_license', __( 'I agree to use the content under the MichiRyu Content License.', 'michiryu-sekki' ), $options['content_import_accept_license'] ); ?>
 							<?php $this->render_checkbox_field( 'content_import_ack_privacy', __( 'I understand no personal visitor data is transmitted.', 'michiryu-sekki' ), $options['content_import_ack_privacy'] ); ?>
-							<p class="description"><?php esc_html_e( 'All acknowledgements will be required before a future MichiRyu content import can run.', 'michiryu-sekki' ); ?></p>
+							<p class="description"><?php esc_html_e( 'Save settings after changing these acknowledgements, then run the import.', 'michiryu-sekki' ); ?></p>
 						</td>
 					</tr>
 					<tr>
@@ -114,8 +123,7 @@ class MichiRyu_Sekki_Admin {
 					<tr>
 						<th scope="row"><?php esc_html_e( 'Import action', 'michiryu-sekki' ); ?></th>
 						<td>
-							<button type="button" class="button" disabled="disabled"><?php esc_html_e( 'Connect and Import Content', 'michiryu-sekki' ); ?></button>
-							<p class="description"><?php esc_html_e( 'Import is not enabled yet. The plugin continues to use basic local content or the configured provider.', 'michiryu-sekki' ); ?></p>
+							<p class="description"><?php esc_html_e( 'Save this settings form before importing if you changed the URL, consent, or update mode.', 'michiryu-sekki' ); ?></p>
 						</td>
 					</tr>
 				</table>
@@ -156,8 +164,40 @@ class MichiRyu_Sekki_Admin {
 
 				<?php submit_button(); ?>
 			</form>
+			<?php $this->render_import_form( $options ); ?>
 		</div>
 		<?php
+	}
+
+	/**
+	 * Handle remote content import.
+	 */
+	public function handle_content_import() {
+		if ( ! current_user_can( 'manage_options' ) ) {
+			wp_die( esc_html__( 'You do not have permission to import MichiRyu content.', 'michiryu-sekki' ) );
+		}
+
+		check_admin_referer( 'michiryu_sekki_import_content' );
+
+		$options = $this->plugin->get_options();
+		$has_consent = ! empty( $options['content_import_ack_copyright'] )
+			&& ! empty( $options['content_import_accept_license'] )
+			&& ! empty( $options['content_import_ack_privacy'] );
+
+		if ( ! $has_consent ) {
+			$result = array(
+				'success' => false,
+				'message' => __( 'All import acknowledgements must be saved before importing content.', 'michiryu-sekki' ),
+			);
+		} else {
+			$importer = new MichiRyu_Sekki_Content_Importer();
+			$result = $importer->import( $options['content_library_url'] ?? '' );
+		}
+
+		set_transient( $this->get_import_notice_key(), $result, MINUTE_IN_SECONDS );
+
+		wp_safe_redirect( admin_url( 'admin.php?page=michiryu&michiryu_import=1' ) );
+		exit;
 	}
 
 	/**
@@ -184,6 +224,52 @@ class MichiRyu_Sekki_Admin {
 			</tbody>
 		</table>
 		<p class="description"><?php esc_html_e( 'The plugin package contains GPL software only. Proprietary stories, artwork, maps, icons, PDFs, educational materials, and Yuki no Sato content must come from a separate provider.', 'michiryu-sekki' ); ?></p>
+		<?php
+	}
+
+	/**
+	 * Render import result notice.
+	 */
+	private function render_import_notice() {
+		if ( empty( $_GET['michiryu_import'] ) ) { // phpcs:ignore WordPress.Security.NonceVerification.Recommended
+			return;
+		}
+
+		$notice = get_transient( $this->get_import_notice_key() );
+		delete_transient( $this->get_import_notice_key() );
+
+		if ( ! is_array( $notice ) || empty( $notice['message'] ) ) {
+			return;
+		}
+
+		$class = ! empty( $notice['success'] ) ? 'notice-success' : 'notice-error';
+		?>
+		<div class="notice <?php echo esc_attr( $class ); ?> inline">
+			<p><?php echo esc_html( $notice['message'] ); ?></p>
+		</div>
+		<?php
+	}
+
+	/**
+	 * Render the import action form.
+	 *
+	 * @param array<string,mixed> $options Saved options.
+	 */
+	private function render_import_form( $options ) {
+		$has_consent = ! empty( $options['content_import_ack_copyright'] )
+			&& ! empty( $options['content_import_accept_license'] )
+			&& ! empty( $options['content_import_ack_privacy'] );
+		$has_url = ! empty( $options['content_library_url'] );
+		$disabled = ! $has_consent || ! $has_url;
+		?>
+		<form method="post" action="<?php echo esc_url( admin_url( 'admin-post.php' ) ); ?>" style="margin-top: 1em;">
+			<input type="hidden" name="action" value="michiryu_sekki_import_content" />
+			<?php wp_nonce_field( 'michiryu_sekki_import_content' ); ?>
+			<?php submit_button( __( 'Connect and Import Content', 'michiryu-sekki' ), 'secondary', 'submit', false, $disabled ? array( 'disabled' => 'disabled' ) : array() ); ?>
+			<?php if ( $disabled ) : ?>
+				<p class="description"><?php esc_html_e( 'Enter a remote content URL, check all acknowledgements, and save settings before importing.', 'michiryu-sekki' ); ?></p>
+			<?php endif; ?>
+		</form>
 		<?php
 	}
 
@@ -221,6 +307,18 @@ class MichiRyu_Sekki_Admin {
 			$rows[] = array(
 				'label' => __( 'File content URL', 'michiryu-sekki' ),
 				'value' => $file_status['url_label'],
+			);
+		}
+
+		$import_status = MichiRyu_Sekki_Content_Importer::get_status();
+		if ( ! empty( $import_status ) ) {
+			$rows[] = array(
+				'label' => __( 'Imported content URL', 'michiryu-sekki' ),
+				'value' => $import_status['remote_url'] ?? __( 'Unknown', 'michiryu-sekki' ),
+			);
+			$rows[] = array(
+				'label' => __( 'Last content import', 'michiryu-sekki' ),
+				'value' => $import_status['imported_at'] ?? __( 'Unknown', 'michiryu-sekki' ),
 			);
 		}
 
@@ -348,6 +446,15 @@ class MichiRyu_Sekki_Admin {
 		}
 
 		return is_array( $image ) && ! empty( $image['url'] );
+	}
+
+	/**
+	 * Return the current user's import notice transient key.
+	 *
+	 * @return string
+	 */
+	private function get_import_notice_key() {
+		return 'michiryu_sekki_import_notice_' . get_current_user_id();
 	}
 
 	/**
