@@ -3,7 +3,7 @@
  * Plugin Name: MichiRyu-Sekki-Calendar
  * Plugin URI:  https://michiryu.com
  * Description: Display the current Japanese 24 Sekki solar term with elegant seasonal cards, banners, widgets, and ikebana prompts.
- * Version:     1.2.20
+ * Version:     1.3.0
  * Author:      MichiRyu
  * Author URI:  https://michiryu.com
  * License:     GPL-2.0-or-later
@@ -18,7 +18,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-define( 'MICHIRYU_SEKKI_VERSION', '1.2.20' );
+define( 'MICHIRYU_SEKKI_VERSION', '1.3.0' );
 define( 'MICHIRYU_SEKKI_FILE', __FILE__ );
 define( 'MICHIRYU_SEKKI_PATH', plugin_dir_path( __FILE__ ) );
 define( 'MICHIRYU_SEKKI_URL', plugin_dir_url( __FILE__ ) );

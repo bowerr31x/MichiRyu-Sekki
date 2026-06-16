@@ -11,6 +11,15 @@
 	margin: 16px 0;
 }
 
+.michiryu-sekki-admin__callout {
+	background: #fcf9e8;
+	border-left: 3px solid #dba617;
+	display: inline-block;
+	font-weight: 600;
+	margin-right: 4px;
+	padding: 2px 7px;
+}
+
 .michiryu-sekki-admin__section {
 	background: #fff;
 	border: 1px solid #c3c4c7;

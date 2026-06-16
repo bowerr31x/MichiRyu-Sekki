@@ -108,9 +108,9 @@ class MichiRyu_Sekki_Admin {
 
 			<div class="notice notice-info inline michiryu-sekki-admin__notice">
 				<p><strong><?php esc_html_e( 'Recommended setup', 'michiryu-sekki' ); ?></strong></p>
-				<p><?php esc_html_e( 'Use', 'michiryu-sekki' ); ?> <code>[michiryu_sekki]</code> <?php esc_html_e( 'for the main seasonal display. Story, image, character, and map enhancements appear when a content provider supplies them.', 'michiryu-sekki' ); ?></p>
-				<p><?php esc_html_e( 'For the full Yuki no Sato experience, import Basic MichiRyu Content after saving the content acknowledgements. The plugin still works without imported content, but imported content adds the seasonal stories, character details, map image, and visual references.', 'michiryu-sekki' ); ?></p>
-				<p><?php esc_html_e( 'Optional provider-backed sections or pages:', 'michiryu-sekki' ); ?> <code>[michiryu_story]</code> <code>[michiryu_sekki_map]</code></p>
+				<p><?php esc_html_e( 'Use', 'michiryu-sekki' ); ?> <code>[michiryu_sekki]</code> <?php esc_html_e( 'for the main seasonal display.', 'michiryu-sekki' ); ?></p>
+				<p><span class="michiryu-sekki-admin__callout"><?php esc_html_e( 'For the full experience', 'michiryu-sekki' ); ?></span> <?php esc_html_e( 'import Basic MichiRyu Content after saving the content acknowledgements. The plugin still works without imported content, but stories, character details, Sekki images, the Yuki no Sato map, and story/map shortcodes require imported content.', 'michiryu-sekki' ); ?></p>
+				<p><?php esc_html_e( 'Optional sections after content import:', 'michiryu-sekki' ); ?> <code>[michiryu_story]</code> <code>[michiryu_sekki_map]</code></p>
 			</div>
 
 			<?php $this->render_provider_status(); ?>
@@ -637,7 +637,7 @@ class MichiRyu_Sekki_Admin {
 		);
 		$diagnostics = array(
 			array(
-				'label' => __( 'Provider key', 'michiryu-sekki' ),
+				'label' => __( 'Requested provider key', 'michiryu-sekki' ),
 				'value' => $provider_key,
 			),
 			array(
@@ -669,7 +669,7 @@ class MichiRyu_Sekki_Admin {
 			);
 			$diagnostics[] = array(
 				'label' => __( 'Last content import', 'michiryu-sekki' ),
-				'value' => $import_status['imported_at'] ?? __( 'Unknown', 'michiryu-sekki' ),
+				'value' => $this->format_import_date( $import_status['imported_at'] ?? '' ),
 			);
 			$diagnostics[] = array(
 				'label' => __( 'Imported storage', 'michiryu-sekki' ),

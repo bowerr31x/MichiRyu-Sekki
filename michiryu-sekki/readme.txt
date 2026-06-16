@@ -6,7 +6,7 @@ Tags: sekki, seasons, japan, shortcode, widget, block, ikebana
 Requires at least: 6.0
 Tested up to: 6.5
 Requires PHP: 7.4
-Stable tag: 1.2.20
+Stable tag: 1.3.0
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -67,16 +67,19 @@ Go to MichiRyu-Sekki-Calendar in WordPress Admin to set core defaults:
 * Dedicated map page URL.
 * Optional custom CSS.
 * Optional creator website link in the About panel. This public-facing link is off by default.
-* Content Provider Status showing the active provider, content counts, file provider path status, and whether map or signature images are supplied.
-* Optional file content provider for testing a separate private content library without bundling proprietary content in the plugin.
-* Future admin-approved MichiRyu Content Library import model with local WordPress storage.
-* Admin settings for future content import consent and manual or opt-in update checks.
+* Content Provider Status showing the active source, content counts, and whether map or signature images are supplied.
+* Admin-approved Basic MichiRyu Content import with local WordPress storage.
+* Advanced custom content source settings for support, testing, and self-hosted content libraries.
+* Manual content updates by default, with opt-in update settings reserved for future automation.
 
 Recommended setup: use [michiryu_sekki] for the main experience. It shows the
-current Sekki and current Ko, with story and map features available when a
-content provider supplies them.
+current Sekki and current Ko.
 
-Optional for other sections or pages: [michiryu_story] [michiryu_sekki_map]
+For the full Yuki no Sato experience, import Basic MichiRyu Content from the
+admin screen. Story, character, image, and map features require imported
+content.
+
+Optional after content import: [michiryu_story] [michiryu_sekki_map]
 
 == Content Providers and Licensing ==
 
@@ -121,6 +124,15 @@ No proprietary artwork or stories are included in this plugin package. Content
 provided by a separate Content Provider follows that provider's license terms.
 
 == Changelog ==
+
+= 1.3.0 =
+* Add admin-approved Basic MichiRyu Content import through the protected MichiRyu Content API.
+* Store imported stories, characters, image references, map images, and signature images locally in WordPress uploads.
+* Keep proprietary MichiRyu content outside the GPL plugin package and document the content-provider separation model.
+* Add a clearer admin settings layout with content status, import summary, content actions, and developer diagnostics.
+* Add a future premium license token scaffold without changing the current basic import flow.
+* Point the built-in Basic Import flow to the branded MichiRyu API endpoint.
+* Add helper packages and documentation for the external content API and static content lockdown.
 
 = 1.2.20 =
 * Add the Content Provider architecture for separating GPL plugin software from proprietary content.
