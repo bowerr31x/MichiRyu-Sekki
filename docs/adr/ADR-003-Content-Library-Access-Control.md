@@ -15,8 +15,9 @@ MichiRyu-Sekki shall keep the public GPL plugin separate from the hosted
 MichiRyu Content Library and shall move content access control to the server
 side.
 
-The current static hosted content folder may remain public during testing, but
-it is not the long-term protection model.
+The current static hosted content folder may remain public during transition,
+but it is not the long-term protection model. Basic Import should use the
+hardened content API manifest once the endpoint passes hosted import tests.
 
 Basic MichiRyu content may use a shared or hidden basic access token as a soft
 gate for import requests. This token is a convenience control only, because any
@@ -54,8 +55,8 @@ Rationale:
 
 Consequences:
 
-- The current public static folder should not be locked down until a protected
-  endpoint is available.
+- The current public static folder should not be locked down until the
+  protected endpoint remains stable in hosted testing.
 - Basic shared tokens are not strong security and must not be used for valuable
   premium content.
 - Premium imports require a server component that can validate license tokens

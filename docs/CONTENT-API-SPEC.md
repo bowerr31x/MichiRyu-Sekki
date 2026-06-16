@@ -147,12 +147,12 @@ The current plugin importer already supports:
 
 Current operating decision:
 
-- Basic Import uses the stable static folder:
-  `https://www.bowerr31x.com/michiryu-content`
-- Protected API/token imports are tested through Advanced content settings:
+- Basic Import uses the hardened protected API manifest:
   `https://www.bowerr31x.com/michiryu-content-api/index.php?route=manifest`
-- The plugin's Basic Import default should not switch to the API endpoint until
-  the endpoint is hardened and ready to replace the static folder.
+- Advanced content settings remain available for support, testing, and
+  self-hosted content libraries.
+- The current built-in basic token is a soft gate only. It is acceptable for
+  basic import testing but must not be used as premium-content protection.
 
 Future plugin changes may add:
 
@@ -162,12 +162,11 @@ Future plugin changes may add:
 
 ## Migration Path
 
-1. Keep the current static hosted folder public while testing.
-2. Build and test `michiryu-content-api` against the same content directory.
-3. Test the protected API endpoint through Advanced content settings.
-4. Add token validation for the basic endpoint.
-5. Confirm token-based import works.
-6. Point the plugin basic content URL to the API endpoint when hardened.
-7. Add premium token validation and premium manifests later.
-8. Lock down or remove public access to the static folder only after the API
+1. Build and test `michiryu-content-api` against the same content directory. ✓
+2. Test the protected API endpoint through Advanced content settings. ✓
+3. Add token validation for the basic endpoint. ✓
+4. Confirm token-based import works. ✓
+5. Point the plugin basic content URL to the API endpoint when hardened. ✓
+6. Add premium token validation and premium manifests later.
+7. Lock down or remove public access to the static folder only after the API
    endpoint is stable.

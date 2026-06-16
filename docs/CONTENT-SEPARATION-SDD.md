@@ -388,7 +388,7 @@ Default basic access token
 Current default basic content library URL:
 
 ```text
-https://www.bowerr31x.com/michiryu-content
+https://www.bowerr31x.com/michiryu-content-api/index.php?route=manifest
 ```
 
 These defaults are used only to import the basic MichiRyu content package into
@@ -448,8 +448,8 @@ The plugin must not expose license tokens on frontend pages.
 
 ## Hosted Content Protection
 
-The current hosted content library may remain publicly reachable while the
-import workflow is being tested.
+The static hosted content library may remain publicly reachable during
+transition, but it is no longer the preferred basic import path.
 
 Long term, the project should move from direct public static file access toward
 a server-side content endpoint that can validate access before serving manifests
@@ -477,17 +477,24 @@ The server endpoint should:
 * Preserve the plugin's local-import model after content is downloaded.
 
 The current static folder should not be locked down until the protected endpoint
-exists, because doing so would break the working import path.
+remains stable in hosted testing, because the API still reads from that same
+content directory.
 
 Current operating decision:
 
 ```text
-Basic Import -> https://www.bowerr31x.com/michiryu-content
-Advanced Custom Import -> protected API manifest endpoint
+Basic Import -> protected API manifest endpoint
+Advanced Custom Import -> custom manifest endpoint or static folder
 ```
 
-The Basic Import default should remain on the stable static folder until the API
-endpoint is hardened enough to become the default source.
+The built-in Basic Import action now uses the hardened API manifest endpoint:
+
+```text
+https://www.bowerr31x.com/michiryu-content-api/index.php?route=manifest
+```
+
+The prior static folder path remains useful as a fallback and for server-side
+content storage, but should not be treated as the long-term public access model.
 
 See:
 
@@ -856,13 +863,14 @@ The project is considered compliant when:
 3. Store imported content locally in WordPress. ✓
 4. Use manual content updates by default. ✓
 5. Add optional content access token support. ✓
-6. Add opt-in update checks.
-7. Provide import status, error handling, re-import controls, and remove-imported-content controls.
+6. Point the built-in Basic Import action to the protected API manifest. ✓
+7. Provide import status, error handling, re-import controls, and remove-imported-content controls. ✓
+8. Add opt-in update checks.
 
 **Phase 3 (Future)**
 
-1. Hide basic content URL behind a simple Import Basic MichiRyu Content action.
-2. Keep custom URL/token controls as advanced settings.
+1. Hide basic content URL behind a simple Import Basic MichiRyu Content action. ✓
+2. Keep custom URL/token controls as advanced settings. ✓
 3. Add user-specific premium license token support.
 4. Add server-side entitlement validation for premium manifests.
 5. Add community content providers.

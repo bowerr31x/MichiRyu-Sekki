@@ -96,7 +96,7 @@ class MichiRyu_Sekki_Admin {
 				<?php settings_fields( 'michiryu_sekki_settings' ); ?>
 
 				<h2><?php esc_html_e( 'MichiRyu Content Library', 'michiryu-sekki' ); ?></h2>
-				<p><?php esc_html_e( 'Import MichiRyu stories and images into this WordPress site. The site will use the local imported copy after import.', 'michiryu-sekki' ); ?></p>
+				<p><?php esc_html_e( 'Import MichiRyu stories and images into this WordPress site. The site will use the local imported copy after import, so visitors do not depend on remote content requests.', 'michiryu-sekki' ); ?></p>
 				<table class="form-table" role="presentation">
 					<tr>
 						<th scope="row"><?php esc_html_e( 'Import consent', 'michiryu-sekki' ); ?></th>
@@ -129,14 +129,14 @@ class MichiRyu_Sekki_Admin {
 							<th scope="row"><label for="michiryu-sekki-content-library-url"><?php esc_html_e( 'Custom remote content URL', 'michiryu-sekki' ); ?></label></th>
 							<td>
 								<input id="michiryu-sekki-content-library-url" type="url" class="large-text" name="<?php echo esc_attr( MichiRyu_Sekki::OPTION_NAME ); ?>[content_library_url]" value="<?php echo esc_attr( $options['content_library_url'] ); ?>" placeholder="https://example.com/michiryu-content" />
-								<p class="description"><?php esc_html_e( 'For testing or self-hosted content libraries. This URL must expose featured-content.json, images.json, and the referenced image files.', 'michiryu-sekki' ); ?></p>
+								<p class="description"><?php esc_html_e( 'For testing, support, or self-hosted content libraries. Use a manifest endpoint or a folder that exposes featured-content.json, images.json, and referenced image files.', 'michiryu-sekki' ); ?></p>
 							</td>
 						</tr>
 						<tr>
 							<th scope="row"><label for="michiryu-sekki-content-access-token"><?php esc_html_e( 'Custom content access token', 'michiryu-sekki' ); ?></label></th>
 							<td>
 								<input id="michiryu-sekki-content-access-token" type="password" class="regular-text" autocomplete="off" name="<?php echo esc_attr( MichiRyu_Sekki::OPTION_NAME ); ?>[content_access_token]" value="<?php echo esc_attr( $options['content_access_token'] ); ?>" />
-								<p class="description"><?php esc_html_e( 'Optional. When present, custom import requests send this as an Authorization bearer token.', 'michiryu-sekki' ); ?></p>
+								<p class="description"><?php esc_html_e( 'Optional. Custom import requests send this as an Authorization bearer token. Future premium libraries will use license-specific tokens here.', 'michiryu-sekki' ); ?></p>
 							</td>
 						</tr>
 					</table>
@@ -393,7 +393,7 @@ class MichiRyu_Sekki_Admin {
 	 * @return string
 	 */
 	private function get_basic_content_url( $options ) {
-		$default_content_url = 'https://www.bowerr31x.com/michiryu-content';
+		$default_content_url = 'https://www.bowerr31x.com/michiryu-content-api/index.php?route=manifest';
 		$content_url = defined( 'MICHIRYU_SEKKI_BASIC_CONTENT_URL' ) ? MICHIRYU_SEKKI_BASIC_CONTENT_URL : $default_content_url;
 		$content_url = '' !== trim( (string) $content_url ) ? $content_url : ( $options['content_library_url'] ?? '' );
 
@@ -412,7 +412,8 @@ class MichiRyu_Sekki_Admin {
 	 * @return string
 	 */
 	private function get_basic_content_token( $options ) {
-		$content_token = defined( 'MICHIRYU_SEKKI_BASIC_CONTENT_TOKEN' ) ? MICHIRYU_SEKKI_BASIC_CONTENT_TOKEN : '';
+		$default_content_token = 'michiryu-basic-test';
+		$content_token         = defined( 'MICHIRYU_SEKKI_BASIC_CONTENT_TOKEN' ) ? MICHIRYU_SEKKI_BASIC_CONTENT_TOKEN : $default_content_token;
 		$content_token = '' !== trim( (string) $content_token ) ? $content_token : ( $options['content_access_token'] ?? '' );
 
 		/**
