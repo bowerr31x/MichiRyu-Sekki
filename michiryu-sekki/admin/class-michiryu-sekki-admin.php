@@ -207,7 +207,7 @@ class MichiRyu_Sekki_Admin {
 		$status = $this->get_provider_status();
 		?>
 		<h2><?php esc_html_e( 'Content Provider Status', 'michiryu-sekki' ); ?></h2>
-		<div class="notice <?php echo $status['is_local'] ? 'notice-success' : 'notice-warning'; ?> inline">
+		<div class="notice <?php echo esc_attr( $status['notice_class'] ); ?> inline">
 			<p>
 				<strong><?php echo esc_html( $status['label'] ); ?></strong>
 				<?php echo esc_html( $status['message'] ); ?>
@@ -262,14 +262,44 @@ class MichiRyu_Sekki_Admin {
 		$has_url = ! empty( $options['content_library_url'] );
 		$disabled = ! $has_consent || ! $has_url;
 		?>
-		<form method="post" action="<?php echo esc_url( admin_url( 'admin-post.php' ) ); ?>" style="margin-top: 1em;">
+		<form method="post" action="<?php echo esc_url( admin_url( 'admin-post.php' ) ); ?>" style="margin-top: 1em;" data-michiryu-content-import-form>
 			<input type="hidden" name="action" value="michiryu_sekki_import_content" />
 			<?php wp_nonce_field( 'michiryu_sekki_import_content' ); ?>
-			<?php submit_button( __( 'Connect and Import Content', 'michiryu-sekki' ), 'secondary', 'submit', false, $disabled ? array( 'disabled' => 'disabled' ) : array() ); ?>
+			<?php submit_button( __( 'Connect and Import Content', 'michiryu-sekki' ), 'secondary', 'submit', false, $disabled ? array( 'disabled' => 'disabled' ) : array( 'data-importing-label' => esc_attr__( 'Importing content...', 'michiryu-sekki' ) ) ); ?>
+			<span class="spinner" data-michiryu-content-import-spinner></span>
+			<p class="description" data-michiryu-content-import-message hidden><?php esc_html_e( 'Importing content. This may take up to a minute while images are copied into WordPress.', 'michiryu-sekki' ); ?></p>
+			<p class="description"><?php esc_html_e( 'The import downloads the content package once, stores a local copy in WordPress uploads, and may take a minute when images are included.', 'michiryu-sekki' ); ?></p>
 			<?php if ( $disabled ) : ?>
 				<p class="description"><?php esc_html_e( 'Enter a remote content URL, check all acknowledgements, and save settings before importing.', 'michiryu-sekki' ); ?></p>
 			<?php endif; ?>
 		</form>
+		<script>
+			(function () {
+				var form = document.querySelector( '[data-michiryu-content-import-form]' );
+				if ( ! form ) {
+					return;
+				}
+
+				form.addEventListener( 'submit', function () {
+					var submit = form.querySelector( '[type="submit"]' );
+					var spinner = form.querySelector( '[data-michiryu-content-import-spinner]' );
+					var message = form.querySelector( '[data-michiryu-content-import-message]' );
+
+					if ( submit ) {
+						submit.value = submit.getAttribute( 'data-importing-label' ) || submit.value;
+						submit.disabled = true;
+					}
+
+					if ( spinner ) {
+						spinner.classList.add( 'is-active' );
+					}
+
+					if ( message ) {
+						message.hidden = false;
+					}
+				} );
+			}());
+		</script>
 		<?php
 	}
 
@@ -283,8 +313,13 @@ class MichiRyu_Sekki_Admin {
 		$content = MichiRyu_Sekki_Content::get_content();
 		$provider_key = MichiRyu_Sekki_Content::get_provider_key();
 		$is_local = MichiRyu_Sekki_Content::is_local_provider();
+		$is_imported = $provider instanceof MichiRyu_Sekki_Imported_Content_Provider;
 		$file_status = $this->get_file_provider_status( $provider_key );
 		$rows = array(
+			array(
+				'label' => __( 'Active source', 'michiryu-sekki' ),
+				'value' => $this->get_active_source_label( $provider_key, $is_local, $is_imported ),
+			),
 			array(
 				'label' => __( 'Provider key', 'michiryu-sekki' ),
 				'value' => $provider_key,
@@ -319,6 +354,14 @@ class MichiRyu_Sekki_Admin {
 			$rows[] = array(
 				'label' => __( 'Last content import', 'michiryu-sekki' ),
 				'value' => $import_status['imported_at'] ?? __( 'Unknown', 'michiryu-sekki' ),
+			);
+			$rows[] = array(
+				'label' => __( 'Imported storage', 'michiryu-sekki' ),
+				'value' => MichiRyu_Sekki_Imported_Content_Provider::get_content_path(),
+			);
+			$rows[] = array(
+				'label' => __( 'Imported image references', 'michiryu-sekki' ),
+				'value' => isset( $import_status['images'] ) ? (string) $import_status['images'] : __( 'Unknown', 'michiryu-sekki' ),
 			);
 		}
 
@@ -358,8 +401,9 @@ class MichiRyu_Sekki_Admin {
 
 		return array(
 			'is_local' => $is_local,
-			'label'    => $this->get_provider_status_label( $provider_key, $is_local, $file_status ),
-			'message'  => $this->get_provider_status_message( $provider_key, $is_local, $file_status ),
+			'notice_class' => $this->get_provider_notice_class( $is_local, $is_imported ),
+			'label'    => $this->get_provider_status_label( $provider_key, $is_local, $is_imported, $file_status ),
+			'message'  => $this->get_provider_status_message( $provider_key, $is_local, $is_imported, $file_status ),
 			'rows'     => $rows,
 		);
 	}
@@ -399,12 +443,17 @@ class MichiRyu_Sekki_Admin {
 	 *
 	 * @param string              $provider_key Provider key.
 	 * @param bool                $is_local Whether the active provider is local.
+	 * @param bool                $is_imported Whether the imported provider is active.
 	 * @param array<string,mixed> $file_status File provider status.
 	 * @return string
 	 */
-	private function get_provider_status_label( $provider_key, $is_local, $file_status ) {
+	private function get_provider_status_label( $provider_key, $is_local, $is_imported, $file_status ) {
 		if ( 'file' === $provider_key && $is_local ) {
 			return __( 'File provider requested; local fallback active.', 'michiryu-sekki' );
+		}
+
+		if ( $is_imported ) {
+			return __( 'Imported content provider active.', 'michiryu-sekki' );
 		}
 
 		return $is_local ? __( 'GPL-safe local provider active.', 'michiryu-sekki' ) : __( 'External content provider active.', 'michiryu-sekki' );
@@ -415,17 +464,53 @@ class MichiRyu_Sekki_Admin {
 	 *
 	 * @param string              $provider_key Provider key.
 	 * @param bool                $is_local Whether the active provider is local.
+	 * @param bool                $is_imported Whether the imported provider is active.
 	 * @param array<string,mixed> $file_status File provider status.
 	 * @return string
 	 */
-	private function get_provider_status_message( $provider_key, $is_local, $file_status ) {
+	private function get_provider_status_message( $provider_key, $is_local, $is_imported, $file_status ) {
 		if ( 'file' === $provider_key && empty( $file_status['is_valid'] ) ) {
 			return __( 'Configure MICHIRYU_SEKKI_CONTENT_PATH with a readable external directory to activate file content.', 'michiryu-sekki' );
+		}
+
+		if ( $is_imported ) {
+			return __( 'The plugin is using the local WordPress copy created by the last content import.', 'michiryu-sekki' );
 		}
 
 		return $is_local
 			? __( 'The plugin is using factual calendar data without proprietary content.', 'michiryu-sekki' )
 			: __( 'Confirm that any supplied content is licensed separately from the GPL plugin.', 'michiryu-sekki' );
+	}
+
+	/**
+	 * Return notice class for provider status.
+	 *
+	 * @param bool $is_local Whether the local provider is active.
+	 * @param bool $is_imported Whether the imported provider is active.
+	 * @return string
+	 */
+	private function get_provider_notice_class( $is_local, $is_imported ) {
+		return $is_local || $is_imported ? 'notice-success' : 'notice-warning';
+	}
+
+	/**
+	 * Return a friendly active source label.
+	 *
+	 * @param string $provider_key Provider key.
+	 * @param bool   $is_local Whether the local provider is active.
+	 * @param bool   $is_imported Whether the imported provider is active.
+	 * @return string
+	 */
+	private function get_active_source_label( $provider_key, $is_local, $is_imported ) {
+		if ( $is_imported ) {
+			return __( 'Imported WordPress copy', 'michiryu-sekki' );
+		}
+
+		if ( 'file' === $provider_key && ! $is_local ) {
+			return __( 'External file provider', 'michiryu-sekki' );
+		}
+
+		return __( 'Basic local calendar', 'michiryu-sekki' );
 	}
 
 	/**
