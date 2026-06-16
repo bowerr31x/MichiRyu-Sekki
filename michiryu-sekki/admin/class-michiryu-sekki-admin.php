@@ -95,22 +95,8 @@ class MichiRyu_Sekki_Admin {
 				<?php settings_fields( 'michiryu_sekki_settings' ); ?>
 
 				<h2><?php esc_html_e( 'MichiRyu Content Library', 'michiryu-sekki' ); ?></h2>
-				<p><?php esc_html_e( 'Connect to a remote MichiRyu content folder, then import its stories and images into this WordPress site. The site will use the local imported copy after import.', 'michiryu-sekki' ); ?></p>
+				<p><?php esc_html_e( 'Import MichiRyu stories and images into this WordPress site. The site will use the local imported copy after import.', 'michiryu-sekki' ); ?></p>
 				<table class="form-table" role="presentation">
-					<tr>
-						<th scope="row"><label for="michiryu-sekki-content-library-url"><?php esc_html_e( 'Remote content URL', 'michiryu-sekki' ); ?></label></th>
-						<td>
-							<input id="michiryu-sekki-content-library-url" type="url" class="large-text" name="<?php echo esc_attr( MichiRyu_Sekki::OPTION_NAME ); ?>[content_library_url]" value="<?php echo esc_attr( $options['content_library_url'] ); ?>" placeholder="https://example.com/michiryu-content" />
-							<p class="description"><?php esc_html_e( 'This URL must expose featured-content.json, images.json, and the referenced image files.', 'michiryu-sekki' ); ?></p>
-						</td>
-					</tr>
-					<tr>
-						<th scope="row"><label for="michiryu-sekki-content-access-token"><?php esc_html_e( 'Content access token', 'michiryu-sekki' ); ?></label></th>
-						<td>
-							<input id="michiryu-sekki-content-access-token" type="password" class="regular-text" autocomplete="off" name="<?php echo esc_attr( MichiRyu_Sekki::OPTION_NAME ); ?>[content_access_token]" value="<?php echo esc_attr( $options['content_access_token'] ); ?>" />
-							<p class="description"><?php esc_html_e( 'Optional. When present, import requests send this as an Authorization bearer token.', 'michiryu-sekki' ); ?></p>
-						</td>
-					</tr>
 					<tr>
 						<th scope="row"><?php esc_html_e( 'Import consent', 'michiryu-sekki' ); ?></th>
 						<td>
@@ -130,10 +116,30 @@ class MichiRyu_Sekki_Admin {
 					<tr>
 						<th scope="row"><?php esc_html_e( 'Import action', 'michiryu-sekki' ); ?></th>
 						<td>
-							<p class="description"><?php esc_html_e( 'Save this settings form before importing if you changed the URL, consent, or update mode.', 'michiryu-sekki' ); ?></p>
+							<p class="description"><?php esc_html_e( 'Save this settings form before importing if you changed consent, update mode, or advanced content settings.', 'michiryu-sekki' ); ?></p>
 						</td>
 					</tr>
 				</table>
+
+				<details>
+					<summary><?php esc_html_e( 'Advanced content settings', 'michiryu-sekki' ); ?></summary>
+					<table class="form-table" role="presentation">
+						<tr>
+							<th scope="row"><label for="michiryu-sekki-content-library-url"><?php esc_html_e( 'Custom remote content URL', 'michiryu-sekki' ); ?></label></th>
+							<td>
+								<input id="michiryu-sekki-content-library-url" type="url" class="large-text" name="<?php echo esc_attr( MichiRyu_Sekki::OPTION_NAME ); ?>[content_library_url]" value="<?php echo esc_attr( $options['content_library_url'] ); ?>" placeholder="https://example.com/michiryu-content" />
+								<p class="description"><?php esc_html_e( 'For testing or self-hosted content libraries. This URL must expose featured-content.json, images.json, and the referenced image files.', 'michiryu-sekki' ); ?></p>
+							</td>
+						</tr>
+						<tr>
+							<th scope="row"><label for="michiryu-sekki-content-access-token"><?php esc_html_e( 'Custom content access token', 'michiryu-sekki' ); ?></label></th>
+							<td>
+								<input id="michiryu-sekki-content-access-token" type="password" class="regular-text" autocomplete="off" name="<?php echo esc_attr( MichiRyu_Sekki::OPTION_NAME ); ?>[content_access_token]" value="<?php echo esc_attr( $options['content_access_token'] ); ?>" />
+								<p class="description"><?php esc_html_e( 'Optional. When present, custom import requests send this as an Authorization bearer token.', 'michiryu-sekki' ); ?></p>
+							</td>
+						</tr>
+					</table>
+				</details>
 
 				<h2><?php esc_html_e( 'Core Settings', 'michiryu-sekki' ); ?></h2>
 				<table class="form-table" role="presentation">
@@ -171,7 +177,7 @@ class MichiRyu_Sekki_Admin {
 
 				<?php submit_button(); ?>
 			</form>
-			<?php $this->render_import_form( $options ); ?>
+			<?php $this->render_import_forms( $options ); ?>
 		</div>
 		<?php
 	}
@@ -198,7 +204,15 @@ class MichiRyu_Sekki_Admin {
 			);
 		} else {
 			$importer = new MichiRyu_Sekki_Content_Importer();
-			$result = $importer->import( $options['content_library_url'] ?? '', $options['content_access_token'] ?? '' );
+			$import_type = sanitize_key( $_POST['michiryu_import_type'] ?? 'basic' ); // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized
+			if ( 'custom' === $import_type ) {
+				$result = $importer->import( $options['content_library_url'] ?? '', $options['content_access_token'] ?? '' );
+			} else {
+				$result = $importer->import(
+					$this->get_basic_content_url( $options ),
+					$this->get_basic_content_token( $options )
+				);
+			}
 		}
 
 		set_transient( $this->get_import_notice_key(), $result, MINUTE_IN_SECONDS );
@@ -258,56 +272,104 @@ class MichiRyu_Sekki_Admin {
 	}
 
 	/**
-	 * Render the import action form.
+	 * Render import action forms.
 	 *
 	 * @param array<string,mixed> $options Saved options.
 	 */
-	private function render_import_form( $options ) {
+	private function render_import_forms( $options ) {
 		$has_consent = ! empty( $options['content_import_ack_copyright'] )
 			&& ! empty( $options['content_import_accept_license'] )
 			&& ! empty( $options['content_import_ack_privacy'] );
-		$has_url = ! empty( $options['content_library_url'] );
-		$disabled = ! $has_consent || ! $has_url;
+		$has_basic_url = '' !== $this->get_basic_content_url( $options );
+		$has_custom_url = ! empty( $options['content_library_url'] );
+		$basic_disabled = ! $has_consent || ! $has_basic_url;
+		$custom_disabled = ! $has_consent || ! $has_custom_url;
 		?>
 		<form method="post" action="<?php echo esc_url( admin_url( 'admin-post.php' ) ); ?>" style="margin-top: 1em;" data-michiryu-content-import-form>
 			<input type="hidden" name="action" value="michiryu_sekki_import_content" />
+			<input type="hidden" name="michiryu_import_type" value="basic" />
 			<?php wp_nonce_field( 'michiryu_sekki_import_content' ); ?>
-			<?php submit_button( __( 'Connect and Import Content', 'michiryu-sekki' ), 'secondary', 'submit', false, $disabled ? array( 'disabled' => 'disabled' ) : array( 'data-importing-label' => esc_attr__( 'Importing content...', 'michiryu-sekki' ) ) ); ?>
+			<?php submit_button( __( 'Import Basic MichiRyu Content', 'michiryu-sekki' ), 'primary', 'submit', false, $basic_disabled ? array( 'disabled' => 'disabled' ) : array( 'data-importing-label' => esc_attr__( 'Importing content...', 'michiryu-sekki' ) ) ); ?>
 			<span class="spinner" data-michiryu-content-import-spinner></span>
 			<p class="description" data-michiryu-content-import-message hidden><?php esc_html_e( 'Importing content. This may take up to a minute while images are copied into WordPress.', 'michiryu-sekki' ); ?></p>
 			<p class="description"><?php esc_html_e( 'The import downloads the content package once, stores a local copy in WordPress uploads, and may take a minute when images are included.', 'michiryu-sekki' ); ?></p>
-			<?php if ( $disabled ) : ?>
-				<p class="description"><?php esc_html_e( 'Enter a remote content URL, check all acknowledgements, and save settings before importing.', 'michiryu-sekki' ); ?></p>
+			<?php if ( $basic_disabled ) : ?>
+				<p class="description"><?php esc_html_e( 'Check all acknowledgements and save settings before importing. If no default basic library is configured, add a custom URL in Advanced content settings.', 'michiryu-sekki' ); ?></p>
+			<?php endif; ?>
+		</form>
+		<form method="post" action="<?php echo esc_url( admin_url( 'admin-post.php' ) ); ?>" style="margin-top: 0.75em;" data-michiryu-content-import-form>
+			<input type="hidden" name="action" value="michiryu_sekki_import_content" />
+			<input type="hidden" name="michiryu_import_type" value="custom" />
+			<?php wp_nonce_field( 'michiryu_sekki_import_content' ); ?>
+			<?php submit_button( __( 'Import Custom Content Library', 'michiryu-sekki' ), 'secondary', 'submit', false, $custom_disabled ? array( 'disabled' => 'disabled' ) : array( 'data-importing-label' => esc_attr__( 'Importing custom content...', 'michiryu-sekki' ) ) ); ?>
+			<span class="spinner" data-michiryu-content-import-spinner></span>
+			<p class="description" data-michiryu-content-import-message hidden><?php esc_html_e( 'Importing custom content. This may take up to a minute while images are copied into WordPress.', 'michiryu-sekki' ); ?></p>
+			<?php if ( $custom_disabled ) : ?>
+				<p class="description"><?php esc_html_e( 'Enter a custom remote content URL, check all acknowledgements, and save settings before importing custom content.', 'michiryu-sekki' ); ?></p>
 			<?php endif; ?>
 		</form>
 		<script>
 			(function () {
-				var form = document.querySelector( '[data-michiryu-content-import-form]' );
-				if ( ! form ) {
-					return;
-				}
+				document.querySelectorAll( '[data-michiryu-content-import-form]' ).forEach( function ( form ) {
+					form.addEventListener( 'submit', function () {
+						var submit = form.querySelector( '[type="submit"]' );
+						var spinner = form.querySelector( '[data-michiryu-content-import-spinner]' );
+						var message = form.querySelector( '[data-michiryu-content-import-message]' );
 
-				form.addEventListener( 'submit', function () {
-					var submit = form.querySelector( '[type="submit"]' );
-					var spinner = form.querySelector( '[data-michiryu-content-import-spinner]' );
-					var message = form.querySelector( '[data-michiryu-content-import-message]' );
+						if ( submit ) {
+							submit.value = submit.getAttribute( 'data-importing-label' ) || submit.value;
+							submit.disabled = true;
+						}
 
-					if ( submit ) {
-						submit.value = submit.getAttribute( 'data-importing-label' ) || submit.value;
-						submit.disabled = true;
-					}
+						if ( spinner ) {
+							spinner.classList.add( 'is-active' );
+						}
 
-					if ( spinner ) {
-						spinner.classList.add( 'is-active' );
-					}
-
-					if ( message ) {
-						message.hidden = false;
-					}
+						if ( message ) {
+							message.hidden = false;
+						}
+					} );
 				} );
 			}());
 		</script>
 		<?php
+	}
+
+	/**
+	 * Return the default/basic content library URL.
+	 *
+	 * @param array<string,mixed> $options Saved options.
+	 * @return string
+	 */
+	private function get_basic_content_url( $options ) {
+		$default_content_url = 'https://www.bowerr31x.com/michiryu-content';
+		$content_url = defined( 'MICHIRYU_SEKKI_BASIC_CONTENT_URL' ) ? MICHIRYU_SEKKI_BASIC_CONTENT_URL : $default_content_url;
+		$content_url = '' !== trim( (string) $content_url ) ? $content_url : ( $options['content_library_url'] ?? '' );
+
+		/**
+		 * Filters the basic MichiRyu content library URL.
+		 *
+		 * @param string $content_url Default content URL.
+		 */
+		return rtrim( esc_url_raw( apply_filters( 'michiryu_sekki_basic_content_url', $content_url ) ), '/' );
+	}
+
+	/**
+	 * Return the default/basic content access token.
+	 *
+	 * @param array<string,mixed> $options Saved options.
+	 * @return string
+	 */
+	private function get_basic_content_token( $options ) {
+		$content_token = defined( 'MICHIRYU_SEKKI_BASIC_CONTENT_TOKEN' ) ? MICHIRYU_SEKKI_BASIC_CONTENT_TOKEN : '';
+		$content_token = '' !== trim( (string) $content_token ) ? $content_token : ( $options['content_access_token'] ?? '' );
+
+		/**
+		 * Filters the basic MichiRyu content access token.
+		 *
+		 * @param string $content_token Default content token.
+		 */
+		return sanitize_text_field( apply_filters( 'michiryu_sekki_basic_content_token', $content_token ) );
 	}
 
 	/**

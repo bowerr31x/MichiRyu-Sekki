@@ -58,7 +58,7 @@ And every-Sekki update checks are available only as an opt-in option
 Given the administrator has entered a remote content URL
 And the administrator has saved all import acknowledgements
 When the administrator opens the MichiRyu Content Library settings
-Then the Connect and Import Content action is enabled
+Then the custom content import action is enabled
 When the administrator starts the import
 Then the plugin downloads featured-content.json and images.json
 And the plugin downloads referenced images
@@ -66,6 +66,17 @@ And the plugin stores the imported content under the local WordPress uploads
 directory
 And the imported content provider can render the local copy without constant
 remote requests
+
+## Scenario: Administrator Imports Basic MichiRyu Content
+
+Given the administrator has saved all import acknowledgements
+And a basic MichiRyu content library URL is available through a default setting
+or configured advanced URL
+When the administrator opens the MichiRyu Content Library settings
+Then the primary action is Import Basic MichiRyu Content
+And the remote URL and token controls are contained in Advanced content settings
+When the administrator starts the basic import
+Then the plugin imports the basic content package into local WordPress storage
 
 ## Scenario: Administrator Imports With An Access Token
 
@@ -84,7 +95,7 @@ views
 Given the administrator has not entered a remote content URL
 Or the administrator has not saved all import acknowledgements
 When the administrator opens the MichiRyu Content Library settings
-Then the Connect and Import Content action is disabled
+Then the import action is disabled
 And the screen explains what is required before importing
 
 ## Scenario: MichiRyu Service Is Unavailable

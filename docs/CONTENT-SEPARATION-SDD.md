@@ -385,6 +385,12 @@ Default content library URL
 Default basic access token
 ```
 
+Current default basic content library URL:
+
+```text
+https://www.bowerr31x.com/michiryu-content
+```
+
 These defaults are used only to import the basic MichiRyu content package into
 the site. After import, the site uses its local WordPress copy.
 

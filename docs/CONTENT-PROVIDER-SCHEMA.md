@@ -77,9 +77,10 @@ configured content URL.
 ## Imported Provider
 
 The GPL plugin also includes an imported provider for admin-approved remote
-content imports. The administrator enters a remote content URL in
-MichiRyu -> Content Library, accepts the required content acknowledgements, and
-clicks Connect and Import Content.
+content imports. The administrator opens MichiRyu -> Content Library, accepts
+the required content acknowledgements, and clicks Import Basic MichiRyu Content.
+Custom remote URLs and access tokens remain available in Advanced content
+settings for testing, support, and self-hosted content libraries.
 
 The remote URL must expose:
 
@@ -99,6 +100,30 @@ If a hosted content library requires a token, it should apply the same
 authorization rule to `featured-content.json`, `images.json`, and referenced
 image files. Tokens are used only during import and are not needed for normal
 frontend rendering after content has been copied into WordPress.
+
+The default basic import source may be supplied by constants or filters:
+
+```php
+define( 'MICHIRYU_SEKKI_BASIC_CONTENT_URL', 'https://www.bowerr31x.com/michiryu-content' );
+define( 'MICHIRYU_SEKKI_BASIC_CONTENT_TOKEN', 'optional-basic-token' );
+```
+
+The current built-in basic content URL is:
+
+```text
+https://www.bowerr31x.com/michiryu-content
+```
+
+Filters:
+
+```text
+michiryu_sekki_basic_content_url
+michiryu_sekki_basic_content_token
+```
+
+If no default basic source is configured, the basic import action may fall back
+to the saved advanced/custom content URL for testing and self-hosted content
+libraries.
 
 After import, the plugin stores the local copy under:
 
