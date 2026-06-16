@@ -42,8 +42,8 @@ This package should be deployed separately from the WordPress plugin.
 Temporary current-host shape:
 
 ```text
-https://www.bowerr31x.com/michiryu-content/michiryu-content-api/index.php?route=manifest
-https://www.bowerr31x.com/michiryu-content/michiryu-content-api/index.php?route=file&path=images/map/yuki-no-sato-sekki-map.jpg
+https://www.bowerr31x.com/michiryu-content-api/index.php?route=manifest
+https://www.bowerr31x.com/michiryu-content-api/index.php?route=file&path=images/map/yuki-no-sato-sekki-map.jpg
 ```
 
 Preferred future host:
@@ -150,7 +150,7 @@ Current operating decision:
 - Basic Import uses the stable static folder:
   `https://www.bowerr31x.com/michiryu-content`
 - Protected API/token imports are tested through Advanced content settings:
-  `https://www.bowerr31x.com/michiryu-content/michiryu-content-api/index.php?route=manifest`
+  `https://www.bowerr31x.com/michiryu-content-api/index.php?route=manifest`
 - The plugin's Basic Import default should not switch to the API endpoint until
   the endpoint is hardened and ready to replace the static folder.
 

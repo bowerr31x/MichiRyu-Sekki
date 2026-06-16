@@ -465,7 +465,7 @@ https://content.michiryu.com/premium/manifest
 Temporary endpoint direction if hosted under the current account:
 
 ```text
-https://www.bowerr31x.com/michiryu-content/michiryu-content-api/index.php?route=manifest
+https://www.bowerr31x.com/michiryu-content-api/index.php?route=manifest
 ```
 
 The server endpoint should:
