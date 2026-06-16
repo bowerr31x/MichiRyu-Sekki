@@ -224,6 +224,7 @@ class MichiRyu_Sekki_Admin {
 			<section class="michiryu-sekki-admin__section">
 				<h2><?php esc_html_e( 'Content Actions', 'michiryu-sekki' ); ?></h2>
 				<p><?php esc_html_e( 'Save settings first if you changed consent, update mode, or advanced content settings.', 'michiryu-sekki' ); ?></p>
+				<?php $this->render_import_summary(); ?>
 				<?php $this->render_import_forms( $options ); ?>
 				<?php $this->render_remove_imported_content_form(); ?>
 			</section>
@@ -255,11 +256,12 @@ class MichiRyu_Sekki_Admin {
 			$importer = new MichiRyu_Sekki_Content_Importer();
 			$import_type = sanitize_key( $_POST['michiryu_import_type'] ?? 'basic' ); // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized
 			if ( 'custom' === $import_type ) {
-				$result = $importer->import( $options['content_library_url'] ?? '', $options['content_access_token'] ?? '' );
+				$result = $importer->import( $options['content_library_url'] ?? '', $options['content_access_token'] ?? '', 'custom' );
 			} else {
 				$result = $importer->import(
 					$this->get_basic_content_url( $options ),
-					$this->get_basic_content_token( $options )
+					$this->get_basic_content_token( $options ),
+					'basic'
 				);
 			}
 		}
@@ -344,6 +346,73 @@ class MichiRyu_Sekki_Admin {
 		?>
 		<div class="notice <?php echo esc_attr( $class ); ?> inline">
 			<p><?php echo esc_html( $notice['message'] ); ?></p>
+		</div>
+		<?php
+	}
+
+	/**
+	 * Render last import summary.
+	 */
+	private function render_import_summary() {
+		$import_status = MichiRyu_Sekki_Content_Importer::get_status();
+		$local_active = MichiRyu_Sekki_Imported_Content_Provider::has_imported_content();
+
+		if ( empty( $import_status ) ) {
+			?>
+			<div class="michiryu-sekki-admin__import-summary">
+				<h3><?php esc_html_e( 'Last content import', 'michiryu-sekki' ); ?></h3>
+				<p><?php esc_html_e( 'No MichiRyu content has been imported yet.', 'michiryu-sekki' ); ?></p>
+				<p class="description"><?php esc_html_e( 'The plugin can still render the basic local Sekki and Ko calendar without imported content.', 'michiryu-sekki' ); ?></p>
+			</div>
+			<?php
+			return;
+		}
+
+		$rows = array(
+			array(
+				'label' => __( 'Source', 'michiryu-sekki' ),
+				'value' => $this->get_import_source_label( $import_status ),
+			),
+			array(
+				'label' => __( 'Imported', 'michiryu-sekki' ),
+				'value' => $this->format_import_date( $import_status['imported_at'] ?? '' ),
+			),
+			array(
+				'label' => __( 'Stories', 'michiryu-sekki' ),
+				'value' => isset( $import_status['stories'] ) ? number_format_i18n( (int) $import_status['stories'] ) : __( 'Unknown', 'michiryu-sekki' ),
+			),
+			array(
+				'label' => __( 'Characters', 'michiryu-sekki' ),
+				'value' => isset( $import_status['characters'] ) ? number_format_i18n( (int) $import_status['characters'] ) : __( 'Unknown', 'michiryu-sekki' ),
+			),
+			array(
+				'label' => __( 'Image references', 'michiryu-sekki' ),
+				'value' => isset( $import_status['images'] ) ? number_format_i18n( (int) $import_status['images'] ) : __( 'Unknown', 'michiryu-sekki' ),
+			),
+			array(
+				'label' => __( 'Images copied', 'michiryu-sekki' ),
+				'value' => isset( $import_status['images_copied'] ) ? number_format_i18n( (int) $import_status['images_copied'] ) : __( 'Unknown', 'michiryu-sekki' ),
+			),
+			array(
+				'label' => __( 'Token used', 'michiryu-sekki' ),
+				'value' => ! empty( $import_status['uses_token'] ) ? __( 'Yes', 'michiryu-sekki' ) : __( 'No', 'michiryu-sekki' ),
+			),
+			array(
+				'label' => __( 'Local copy', 'michiryu-sekki' ),
+				'value' => $local_active ? __( 'Active', 'michiryu-sekki' ) : __( 'Not found', 'michiryu-sekki' ),
+			),
+		);
+		?>
+		<div class="michiryu-sekki-admin__import-summary">
+			<h3><?php esc_html_e( 'Last content import', 'michiryu-sekki' ); ?></h3>
+			<dl>
+				<?php foreach ( $rows as $row ) : ?>
+					<div>
+						<dt><?php echo esc_html( $row['label'] ); ?></dt>
+						<dd><?php echo esc_html( $row['value'] ); ?></dd>
+					</div>
+				<?php endforeach; ?>
+			</dl>
 		</div>
 		<?php
 	}
@@ -491,6 +560,43 @@ class MichiRyu_Sekki_Admin {
 		}
 
 		return __( 'Premium license token saved. Validation is not active yet.', 'michiryu-sekki' );
+	}
+
+	/**
+	 * Return a readable import source label.
+	 *
+	 * @param array<string,mixed> $import_status Import status.
+	 * @return string
+	 */
+	private function get_import_source_label( $import_status ) {
+		if ( 'basic' === ( $import_status['import_context'] ?? '' ) ) {
+			return __( 'Basic MichiRyu', 'michiryu-sekki' );
+		}
+
+		if ( 'custom' === ( $import_status['import_context'] ?? '' ) ) {
+			return __( 'Custom content library', 'michiryu-sekki' );
+		}
+
+		if ( 'manifest' === ( $import_status['source_type'] ?? '' ) ) {
+			return __( 'Manifest endpoint', 'michiryu-sekki' );
+		}
+
+		return __( 'Remote content folder', 'michiryu-sekki' );
+	}
+
+	/**
+	 * Format an import date for display.
+	 *
+	 * @param string $date_string Stored date string.
+	 * @return string
+	 */
+	private function format_import_date( $date_string ) {
+		if ( '' === (string) $date_string ) {
+			return __( 'Unknown', 'michiryu-sekki' );
+		}
+
+		$format = get_option( 'date_format' ) . ' ' . get_option( 'time_format' );
+		return mysql2date( $format, $date_string );
 	}
 
 	/**

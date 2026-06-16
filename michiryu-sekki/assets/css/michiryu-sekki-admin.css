@@ -65,6 +65,42 @@
 	margin-top: 14px;
 }
 
+.michiryu-sekki-admin__import-summary {
+	background: #f6f7f7;
+	border: 1px solid #dcdcde;
+	margin: 14px 0 16px;
+	padding: 14px 16px;
+}
+
+.michiryu-sekki-admin__import-summary h3 {
+	margin: 0 0 10px;
+}
+
+.michiryu-sekki-admin__import-summary dl {
+	display: grid;
+	gap: 1px;
+	grid-template-columns: repeat(4, minmax(0, 1fr));
+	margin: 0;
+}
+
+.michiryu-sekki-admin__import-summary dl > div {
+	background: #fff;
+	min-width: 0;
+	padding: 10px 12px;
+}
+
+.michiryu-sekki-admin__import-summary dt {
+	color: #646970;
+	font-size: 12px;
+	font-weight: 600;
+	margin: 0 0 4px;
+}
+
+.michiryu-sekki-admin__import-summary dd {
+	margin: 0;
+	overflow-wrap: anywhere;
+}
+
 .michiryu-sekki-admin__action {
 	border: 1px solid #dcdcde;
 	padding: 14px 16px 16px;
@@ -117,6 +153,10 @@
 	}
 
 	.michiryu-sekki-admin__actions {
+		grid-template-columns: 1fr;
+	}
+
+	.michiryu-sekki-admin__import-summary dl {
 		grid-template-columns: 1fr;
 	}
 }

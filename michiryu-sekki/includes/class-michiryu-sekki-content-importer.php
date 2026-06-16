@@ -20,11 +20,13 @@ class MichiRyu_Sekki_Content_Importer {
 	 *
 	 * @param string $remote_url Remote content library base URL.
 	 * @param string $access_token Optional access token.
+	 * @param string $import_context Import context label.
 	 * @return array<string,mixed>
 	 */
-	public function import( $remote_url, $access_token = '' ) {
+	public function import( $remote_url, $access_token = '', $import_context = 'custom' ) {
 		$remote_url = $this->normalize_remote_url( $remote_url );
 		$access_token = trim( (string) $access_token );
+		$import_context = sanitize_key( $import_context );
 
 		if ( '' === $remote_url ) {
 			return $this->error( __( 'Enter a valid remote content URL.', 'michiryu-sekki' ) );
@@ -69,6 +71,7 @@ class MichiRyu_Sekki_Content_Importer {
 		$status = array(
 			'remote_url'    => $remote_url,
 			'source_type'   => $source['type'],
+			'import_context' => '' !== $import_context ? $import_context : 'custom',
 			'imported_at'   => current_time( 'mysql' ),
 			'stories'       => count( $featured_content['stories'] ),
 			'characters'    => count( $featured_content['characters'] ),
