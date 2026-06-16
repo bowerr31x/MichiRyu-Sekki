@@ -127,6 +127,13 @@ The current built-in basic content URL is:
 https://www.bowerr31x.com/michiryu-content
 ```
 
+The protected API/token path is currently used through Advanced content
+settings while it is being hardened:
+
+```text
+https://www.bowerr31x.com/michiryu-content/michiryu-content-api/index.php?route=manifest
+```
+
 Filters:
 
 ```text

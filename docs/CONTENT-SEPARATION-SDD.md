@@ -465,7 +465,7 @@ https://content.michiryu.com/premium/manifest
 Temporary endpoint direction if hosted under the current account:
 
 ```text
-https://www.bowerr31x.com/michiryu-content-api/manifest
+https://www.bowerr31x.com/michiryu-content/michiryu-content-api/index.php?route=manifest
 ```
 
 The server endpoint should:
@@ -478,6 +478,16 @@ The server endpoint should:
 
 The current static folder should not be locked down until the protected endpoint
 exists, because doing so would break the working import path.
+
+Current operating decision:
+
+```text
+Basic Import -> https://www.bowerr31x.com/michiryu-content
+Advanced Custom Import -> protected API manifest endpoint
+```
+
+The Basic Import default should remain on the stable static folder until the API
+endpoint is hardened enough to become the default source.
 
 See:
 

@@ -42,8 +42,8 @@ This package should be deployed separately from the WordPress plugin.
 Temporary current-host shape:
 
 ```text
-https://www.bowerr31x.com/michiryu-content-api/manifest
-https://www.bowerr31x.com/michiryu-content-api/file?path=images/map/yuki-no-sato-sekki-map.jpg
+https://www.bowerr31x.com/michiryu-content/michiryu-content-api/index.php?route=manifest
+https://www.bowerr31x.com/michiryu-content/michiryu-content-api/index.php?route=file&path=images/map/yuki-no-sato-sekki-map.jpg
 ```
 
 Preferred future host:
@@ -143,10 +143,19 @@ The current plugin importer already supports:
 - Optional bearer token.
 - Basic content default URL.
 - Local imported provider.
+- Manifest endpoint imports.
+
+Current operating decision:
+
+- Basic Import uses the stable static folder:
+  `https://www.bowerr31x.com/michiryu-content`
+- Protected API/token imports are tested through Advanced content settings:
+  `https://www.bowerr31x.com/michiryu-content/michiryu-content-api/index.php?route=manifest`
+- The plugin's Basic Import default should not switch to the API endpoint until
+  the endpoint is hardened and ready to replace the static folder.
 
 Future plugin changes may add:
 
-- Manifest endpoint support.
 - Premium license token field.
 - License validation status.
 - Re-import/update checks.
@@ -155,9 +164,10 @@ Future plugin changes may add:
 
 1. Keep the current static hosted folder public while testing.
 2. Build and test `michiryu-content-api` against the same content directory.
-3. Point the plugin basic content URL to the API endpoint.
-4. Confirm basic import still works.
-5. Add token validation for the basic endpoint.
-6. Add premium token validation and premium manifests later.
-7. Lock down or remove public access to the static folder only after the API
+3. Test the protected API endpoint through Advanced content settings.
+4. Add token validation for the basic endpoint.
+5. Confirm token-based import works.
+6. Point the plugin basic content URL to the API endpoint when hardened.
+7. Add premium token validation and premium manifests later.
+8. Lock down or remove public access to the static folder only after the API
    endpoint is stable.
