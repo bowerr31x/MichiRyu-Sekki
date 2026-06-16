@@ -117,14 +117,14 @@ frontend rendering after content has been copied into WordPress.
 The default basic import source may be supplied by constants or filters:
 
 ```php
-define( 'MICHIRYU_SEKKI_BASIC_CONTENT_URL', 'https://www.bowerr31x.com/michiryu-content-api/index.php?route=manifest' );
+define( 'MICHIRYU_SEKKI_BASIC_CONTENT_URL', 'https://michiryu.com/michiryu-content-api/index.php?route=manifest' );
 define( 'MICHIRYU_SEKKI_BASIC_CONTENT_TOKEN', 'optional-basic-token' );
 ```
 
 The current built-in basic content URL uses the hardened content API manifest:
 
 ```text
-https://www.bowerr31x.com/michiryu-content-api/index.php?route=manifest
+https://michiryu.com/michiryu-content-api/index.php?route=manifest
 ```
 
 The built-in basic token is a soft access gate for the current basic library.

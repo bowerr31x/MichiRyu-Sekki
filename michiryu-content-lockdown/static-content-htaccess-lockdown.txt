@@ -1,5 +1,5 @@
 # MichiRyu static content lockdown.
-# Upload this only to public_html/michiryu-content and rename it to .htaccess.
+# Upload this only to public_html/website_935ed7d0/michiryu-content and rename it to .htaccess.
 
 Options -Indexes
 

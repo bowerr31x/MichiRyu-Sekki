@@ -38,7 +38,7 @@ https://content.michiryu.com/premium/manifest
 or a temporary endpoint under the current host:
 
 ```text
-https://www.bowerr31x.com/michiryu-content-api/index.php?route=manifest
+https://michiryu.com/michiryu-content-api/index.php?route=manifest
 ```
 
 The plugin shall continue to import content into local WordPress storage and

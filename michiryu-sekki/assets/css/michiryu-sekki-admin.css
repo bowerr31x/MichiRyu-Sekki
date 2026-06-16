@@ -58,6 +58,22 @@
 	margin-top: 18px;
 }
 
+.michiryu-sekki-admin__diagnostics {
+	margin-top: 14px;
+}
+
+.michiryu-sekki-admin__diagnostics .michiryu-sekki-admin__status-table {
+	margin-top: 12px;
+}
+
+.michiryu-sekki-admin__option-disabled {
+	opacity: 0.62;
+}
+
+.michiryu-sekki-admin__option-disabled input[type="checkbox"] {
+	cursor: not-allowed;
+}
+
 .michiryu-sekki-admin__actions {
 	display: grid;
 	gap: 16px;

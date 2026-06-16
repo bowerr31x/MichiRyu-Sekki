@@ -7,14 +7,14 @@ This package is server-side content infrastructure. It is not part of the public
 1. Upload this folder as:
 
 ```text
-/home1/bowerrx1/public_html/michiryu-content-api/
+/home1/bowerrx1/public_html/website_935ed7d0/michiryu-content-api/
 ```
 
 2. Copy `config.example.php` to `config.php` on the server.
 3. Confirm `content_root` points to the existing hosted content folder:
 
 ```text
-/home1/bowerrx1/public_html/michiryu-content
+/home1/bowerrx1/public_html/website_935ed7d0/michiryu-content
 ```
 
 4. Set `basic_token_hash` in `config.php` before using this for anything beyond initial testing.
@@ -24,18 +24,18 @@ This package is server-side content infrastructure. It is not part of the public
 Use these explicit URLs first because they do not depend on clean URL rewriting:
 
 ```text
-https://www.bowerr31x.com/michiryu-content-api/index.php?route=health
-https://www.bowerr31x.com/michiryu-content-api/index.php?route=manifest
-https://www.bowerr31x.com/michiryu-content-api/index.php?route=file&path=featured-content.json
-https://www.bowerr31x.com/michiryu-content-api/index.php?route=file&path=images/map/yuki-no-sato-sekki-map.jpg
+https://michiryu.com/michiryu-content-api/index.php?route=health
+https://michiryu.com/michiryu-content-api/index.php?route=manifest
+https://michiryu.com/michiryu-content-api/index.php?route=file&path=featured-content.json
+https://michiryu.com/michiryu-content-api/index.php?route=file&path=images/map/yuki-no-sato-sekki-map.jpg
 ```
 
 If `.htaccess` rewriting is working, these shorter URLs should also work:
 
 ```text
-https://www.bowerr31x.com/michiryu-content-api/health
-https://www.bowerr31x.com/michiryu-content-api/manifest
-https://www.bowerr31x.com/michiryu-content-api/file?path=featured-content.json
+https://michiryu.com/michiryu-content-api/health
+https://michiryu.com/michiryu-content-api/manifest
+https://michiryu.com/michiryu-content-api/file?path=featured-content.json
 ```
 
 ## Token Gate

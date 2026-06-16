@@ -388,7 +388,7 @@ Default basic access token
 Current default basic content library URL:
 
 ```text
-https://www.bowerr31x.com/michiryu-content-api/index.php?route=manifest
+https://michiryu.com/michiryu-content-api/index.php?route=manifest
 ```
 
 These defaults are used only to import the basic MichiRyu content package into
@@ -474,7 +474,7 @@ https://content.michiryu.com/premium/manifest
 Temporary endpoint direction if hosted under the current account:
 
 ```text
-https://www.bowerr31x.com/michiryu-content-api/index.php?route=manifest
+https://michiryu.com/michiryu-content-api/index.php?route=manifest
 ```
 
 The server endpoint should:
@@ -499,7 +499,7 @@ Advanced Custom Import -> custom manifest endpoint or static folder
 The built-in Basic Import action now uses the hardened API manifest endpoint:
 
 ```text
-https://www.bowerr31x.com/michiryu-content-api/index.php?route=manifest
+https://michiryu.com/michiryu-content-api/index.php?route=manifest
 ```
 
 The prior static folder path remains useful as a fallback and for server-side
@@ -514,7 +514,7 @@ michiryu-content-lockdown/
 Rollback is removing:
 
 ```text
-/home1/bowerrx1/public_html/michiryu-content/.htaccess
+/home1/bowerrx1/public_html/website_935ed7d0/michiryu-content/.htaccess
 ```
 
 See:

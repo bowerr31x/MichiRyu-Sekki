@@ -7,13 +7,13 @@ Use these files carefully. The API folder and static content folder need differe
 API folder:
 
 ```text
-public_html/michiryu-content-api
+public_html/website_935ed7d0/michiryu-content-api
 ```
 
 Static content folder:
 
 ```text
-public_html/michiryu-content
+public_html/website_935ed7d0/michiryu-content
 ```
 
 ## If The API Shows Forbidden
@@ -21,7 +21,7 @@ public_html/michiryu-content
 If this URL shows `Forbidden`:
 
 ```text
-https://www.bowerr31x.com/michiryu-content-api/index.php?route=health
+https://michiryu.com/michiryu-content-api/index.php?route=health
 ```
 
 then the static lockdown file was probably placed in `michiryu-content-api` by mistake.
@@ -29,7 +29,7 @@ then the static lockdown file was probably placed in `michiryu-content-api` by m
 Fix it by replacing:
 
 ```text
-public_html/michiryu-content-api/.htaccess
+public_html/website_935ed7d0/michiryu-content-api/.htaccess
 ```
 
 with the contents of:
@@ -41,7 +41,7 @@ api-htaccess-restore.txt
 Then test:
 
 ```text
-https://www.bowerr31x.com/michiryu-content-api/index.php?route=health
+https://michiryu.com/michiryu-content-api/index.php?route=health
 ```
 
 Expected: JSON with `"status": "ok"`.
@@ -57,7 +57,7 @@ static-content-htaccess-lockdown.txt
 to:
 
 ```text
-public_html/michiryu-content
+public_html/website_935ed7d0/michiryu-content
 ```
 
 Then rename it to:
@@ -69,14 +69,14 @@ Then rename it to:
 Test direct static access. This should be blocked:
 
 ```text
-https://www.bowerr31x.com/michiryu-content/featured-content.json?test=1
-https://www.bowerr31x.com/michiryu-content/images/map/yuki-no-sato-sekki-map.jpg?test=1
+https://michiryu.com/michiryu-content/featured-content.json?test=1
+https://michiryu.com/michiryu-content/images/map/yuki-no-sato-sekki-map.jpg?test=1
 ```
 
 Test API access. This should still work:
 
 ```text
-https://www.bowerr31x.com/michiryu-content-api/index.php?route=health
+https://michiryu.com/michiryu-content-api/index.php?route=health
 ```
 
 Then test WordPress Basic Import.
@@ -92,5 +92,5 @@ Imported 72 stories, 31 characters, and 61 image references.
 To undo static folder lockdown, delete:
 
 ```text
-public_html/michiryu-content/.htaccess
+public_html/website_935ed7d0/michiryu-content/.htaccess
 ```

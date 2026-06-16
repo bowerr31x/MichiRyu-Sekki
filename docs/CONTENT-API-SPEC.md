@@ -42,8 +42,8 @@ This package should be deployed separately from the WordPress plugin.
 Temporary current-host shape:
 
 ```text
-https://www.bowerr31x.com/michiryu-content-api/index.php?route=manifest
-https://www.bowerr31x.com/michiryu-content-api/index.php?route=file&path=images/map/yuki-no-sato-sekki-map.jpg
+https://michiryu.com/michiryu-content-api/index.php?route=manifest
+https://michiryu.com/michiryu-content-api/index.php?route=file&path=images/map/yuki-no-sato-sekki-map.jpg
 ```
 
 Preferred future host:
@@ -83,7 +83,7 @@ Response:
   "license": "MichiRyu Content License",
   "featured_content": "featured-content.json",
   "images": "images.json",
-  "base_url": "https://www.bowerr31x.com/michiryu-content-api/file?path="
+  "base_url": "https://michiryu.com/michiryu-content-api/index.php?route=file&path="
 }
 ```
 
@@ -148,7 +148,7 @@ The current plugin importer already supports:
 Current operating decision:
 
 - Basic Import uses the hardened protected API manifest:
-  `https://www.bowerr31x.com/michiryu-content-api/index.php?route=manifest`
+  `https://michiryu.com/michiryu-content-api/index.php?route=manifest`
 - Advanced content settings remain available for support, testing, and
   self-hosted content libraries.
 - The current built-in basic token is a soft gate only. It is acceptable for
@@ -209,14 +209,14 @@ static content folder may be blocked from direct browser access with an
 `.htaccess` file inside:
 
 ```text
-/home1/bowerrx1/public_html/michiryu-content/.htaccess
+/home1/bowerrx1/public_html/website_935ed7d0/michiryu-content/.htaccess
 ```
 
 The lockdown file should deny web requests to the static folder but leave the
 files readable on disk for:
 
 ```text
-/home1/bowerrx1/public_html/michiryu-content-api/
+/home1/bowerrx1/public_html/website_935ed7d0/michiryu-content-api/
 ```
 
 Rollback is simply removing that `.htaccess` file.
