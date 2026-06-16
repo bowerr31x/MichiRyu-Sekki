@@ -1,9 +1,0 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 240" role="img" aria-labelledby="title">
-	<title id="title">Saburo</title>
-	<rect width="240" height="240" rx="28" fill="#f6f1e5"/>
-	<circle cx="120" cy="82" r="38" fill="#4a3b2d"/>
-	<path d="M58 206c8-52 40-82 62-82s54 30 62 82" fill="#7b644d"/>
-	<path d="M82 78c12-36 64-48 78 2-26-14-54-14-78-2z" fill="#2f332d"/>
-	<path d="M150 130l34 62M170 130l-34 62" stroke="#8f7b42" stroke-width="7" stroke-linecap="round"/>
-	<path d="M144 156h32M138 176h44" stroke="#687661" stroke-width="6" stroke-linecap="round"/>
-</svg>

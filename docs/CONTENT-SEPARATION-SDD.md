@@ -2,7 +2,7 @@
 
 ## MichiRyu-Sekki Content Separation Architecture
 
-### Version 1.0
+### Version 1.1
 
 ### June 2026
 
@@ -295,17 +295,28 @@ No proprietary maps.
 
 ---
 
-# 7. Remote Content Provider
+# 7. MichiRyu Content Import
 
 Future implementation.
 
-Provider name:
+## Architecture
 
-MichiRyu Content Service
+The preferred MichiRyu content model is:
+
+```text
+Public GPL plugin
+        ↓
+Admin-approved content import from MichiRyu
+        ↓
+Content stored locally in WordPress
+        ↓
+Plugin runs without constant API calls
+```
 
 Purpose:
 
-Supply proprietary content.
+Supply proprietary MichiRyu content while keeping plugin code public, GPL, and
+usable without any external content service.
 
 Potential content:
 
@@ -323,9 +334,82 @@ Premium seasonal content
 
 ---
 
+## Admin Approval
+
+The plugin shall not silently download proprietary content on activation.
+
+On setup, an administrator may be offered:
+
+```text
+Connect to MichiRyu Content Library?
+
+This will download seasonal story text, images, and related metadata from
+MichiRyu.com and store it on your WordPress site.
+
+No visitor or member personal data is sent.
+
+[Connect and Import Content]
+[Use Basic Local Content]
+```
+
+Before import, the administrator must explicitly acknowledge:
+
+```text
+☑ I understand this will download MichiRyu copyrighted content to this site.
+☑ I agree to use the content under the MichiRyu Content License.
+☑ I understand no personal visitor data is transmitted.
+```
+
+---
+
+## Local Storage
+
+Imported content shall be stored locally in WordPress, such as:
+
+* WordPress database tables or options for metadata and story records.
+* WordPress Media Library for imported images and documents.
+* Plugin-managed cache records for import manifests and version metadata.
+
+After import, normal site rendering shall use the local WordPress copy.
+
+The plugin shall not require constant API calls to MichiRyu.com for normal page
+views.
+
+---
+
+## Content Updates
+
+Default update mode:
+
+```text
+Manual updates only
+```
+
+Optional update modes:
+
+```text
+(•) Manual updates only
+( ) Check monthly for updates
+( ) Check every Sekki
+```
+
+Automatic update checks shall be opt-in.
+
+---
+
+## Privacy Requirements
+
+Content import and update checks shall not send visitor or member personal data
+to MichiRyu.
+
+Requests may include plugin version, content manifest version, site language,
+and license/account metadata if premium content is enabled in a later phase.
+
+---
+
 ## Failure Requirements
 
-If remote content is unavailable:
+If MichiRyu content import or update checks are unavailable:
 
 Plugin continues operating.
 
@@ -336,6 +420,8 @@ No broken pages.
 No missing widget failures.
 
 Gracefully fall back to Local Provider.
+
+Previously imported local content remains usable.
 
 ---
 
@@ -434,7 +520,8 @@ MichiRyu-Sekki
 ├── providers
 │   ├── ContentProviderInterface.php
 │   ├── LocalProvider.php
-│   └── RemoteProvider.php
+│   ├── FileProvider.php
+│   └── ImportProvider.php
 ├── templates
 ├── languages
 ├── tests
@@ -460,6 +547,22 @@ MichiRyu-Content
 Not distributed publicly.
 
 Not GPL.
+
+---
+
+## Imported WordPress Storage
+
+Imported MichiRyu content may be stored locally in WordPress after explicit
+admin approval.
+
+Imported storage may include:
+
+* Plugin-owned database tables.
+* WordPress options for manifests and import status.
+* WordPress Media Library attachments.
+* Local content indexes used by providers.
+
+Imported content remains proprietary even when stored in WordPress.
 
 ---
 
@@ -513,7 +616,7 @@ The architecture shall support future providers:
 
 ### MichiRyu Provider
 
-Official content
+Official imported content
 
 ### Community Provider
 
@@ -531,6 +634,9 @@ Subscription content
 
 No core plugin modification should be required to support future providers.
 
+The official MichiRyu provider should prefer local imported content over
+constant remote API calls.
+
 ---
 
 # 13. Success Criteria
@@ -541,7 +647,7 @@ The project is considered compliant when:
 
 ✓ GitHub repository contains no proprietary stories or artwork.
 
-✓ Proprietary content can be added through a provider.
+✓ Proprietary content can be added through a provider or admin-approved import.
 
 ✓ Plugin remains GPL-compliant.
 
@@ -566,10 +672,12 @@ The project is considered compliant when:
 
 **Phase 2 (Future)**
 
-1. Build MichiRyu Content Service.
-2. Create Remote Provider.
-3. Connect proprietary content.
-4. Add caching and synchronization.
+1. Build MichiRyu Content Library import service.
+2. Add admin-approved import workflow.
+3. Store imported content locally in WordPress.
+4. Use manual content updates by default.
+5. Add opt-in update checks.
+6. Provide import status, error handling, and re-import controls.
 
 **Phase 3 (Future)**
 

@@ -10,13 +10,13 @@ Stable tag: 1.2.20
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
-Display the current Japanese 24 Sekki season, current Ko microseason, story teaser, and seasonal map handoff.
+Display the current Japanese 24 Sekki season, current Ko microseason, and provider-ready seasonal content views.
 
 == Description ==
 
 MichiRyu-Sekki-Calendar displays the current Japanese 24 Sekki solar term in
 WordPress. The main shortcode can show the current Sekki, current Ko
-microseason, seasonal image, date stamp, story teaser, and journey map handoff.
+microseason, date stamp, and optional content-provider enhancements.
 
 Sekki are 24 traditional divisions of the solar year. Each Sekki lasts about
 fifteen days and is further divided into three Ko microseasons.
@@ -67,24 +67,27 @@ Go to MichiRyu-Sekki-Calendar in WordPress Admin to set core defaults:
 * Dedicated map page URL.
 * Optional custom CSS.
 * Optional creator website link in the About panel. This public-facing link is off by default.
+* Content Provider Status showing the active provider, content counts, file provider path status, and whether map or signature images are supplied.
+* Optional file content provider for testing a separate private content library without bundling proprietary content in the plugin.
+* Future admin-approved MichiRyu Content Library import model with local WordPress storage.
+* Admin settings for future content import consent and manual or opt-in update checks.
 
 Recommended setup: use [michiryu_sekki] for the main experience. It shows the
-current Sekki, current Ko, story entry, and journey map handoff.
+current Sekki and current Ko, with story and map features available when a
+content provider supplies them.
 
 Optional for other sections or pages: [michiryu_story] [michiryu_sekki_map]
 
-== Artwork and Story Content ==
+== Content Providers and Licensing ==
 
-The plugin includes original MichiRyu artwork, Yuki no Sato stories, maps,
-icons, names, branding, and written seasonal content. These creative materials
-are part of the MichiRyu-Sekki experience.
+The plugin package contains GPL software only. Proprietary stories, artwork,
+maps, icons, PDFs, educational materials, and Yuki no Sato content are not
+included in this plugin package.
 
 Plugin PHP, JavaScript, and CSS code is licensed under GPLv2 or later.
 
-Original artwork, Yuki no Sato stories, maps, icons, names, branding, and
-written seasonal content are copyright Russell Bowers / MichiRyu unless
-explicitly stated otherwise. They are provided for normal use within the plugin
-experience and are not offered as standalone reusable creative assets.
+Story, map, image, character, and educational content should be supplied through
+a Content Provider and licensed separately from the plugin code.
 
 See CONTENT-LICENSE for more information.
 
@@ -114,15 +117,19 @@ default.
 
 = Can I reuse the artwork or stories outside the plugin? =
 
-No separate reuse permission is granted by this plugin package. The creative
-content is provided for normal display as part of the MichiRyu-Sekki plugin
-experience unless a separate written permission or license says otherwise.
+No proprietary artwork or stories are included in this plugin package. Content
+provided by a separate Content Provider follows that provider's license terms.
 
 == Changelog ==
 
 = 1.2.20 =
-* Canonicalize Masaru-sensei as the Flower Teacher across interface character data and all 72 Ko stories.
-* Add the Yuki no Sato character bible for future story, illustration, and educational continuity.
+* Add the Content Provider architecture for separating GPL plugin software from proprietary content.
+* Make the GPL-safe local provider the default plugin content source.
+* Add admin Content Provider Status diagnostics for local and external provider testing.
+* Add a file content provider for JSON-based private content library testing outside the plugin folder.
+* Show file provider path validity in the admin status panel.
+* Document the future admin-approved content import model for proprietary MichiRyu content.
+* Add saved admin settings for future content import consent and update mode.
 
 = 1.2.19 =
 * Test build with shorter narrow banner image and longer story preview.
@@ -252,5 +259,5 @@ experience unless a separate written permission or license says otherwise.
 
 = 1.0.0 =
 * Initial production release of the MichiRyu-Sekki seasonal display experience.
-* Includes the main Sekki shortcode, seasonal display settings, bundled
-  MichiRyu creative content, and GPLv2-or-later plugin code licensing.
+* Includes the main Sekki shortcode, seasonal display settings, and
+  GPLv2-or-later plugin code licensing.

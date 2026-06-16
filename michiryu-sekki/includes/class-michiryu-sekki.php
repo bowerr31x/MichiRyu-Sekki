@@ -1103,6 +1103,10 @@ class MichiRyu_Sekki {
 			'external_season_base_url' => '',
 			'map_page_url'            => '',
 			'custom_css'              => '',
+			'content_import_ack_copyright' => false,
+			'content_import_accept_license' => false,
+			'content_import_ack_privacy' => false,
+			'content_update_mode'      => 'manual',
 		);
 	}
 
@@ -1122,7 +1126,7 @@ class MichiRyu_Sekki {
 		$output['default_style'] = $this->normalize_style_value( $input['default_style'] ?? '', $defaults['default_style'] );
 		$output['default_plan']  = in_array( $input['default_plan'] ?? '', $this->plans, true ) ? $input['default_plan'] : $saved['default_plan'];
 
-		foreach ( array( 'show_kanji', 'show_romanized', 'show_english', 'show_sekki_image', 'show_ko_icon', 'show_ikebana_materials', 'show_story_teaser', 'show_date_stamp', 'show_creator_link' ) as $key ) {
+		foreach ( array( 'show_kanji', 'show_romanized', 'show_english', 'show_sekki_image', 'show_ko_icon', 'show_ikebana_materials', 'show_story_teaser', 'show_date_stamp', 'show_creator_link', 'content_import_ack_copyright', 'content_import_accept_license', 'content_import_ack_privacy' ) as $key ) {
 			$output[ $key ] = ! empty( $input[ $key ] );
 		}
 
@@ -1136,6 +1140,7 @@ class MichiRyu_Sekki {
 		$reader_open_behaviors = array( 'modal', 'inline' );
 		$map_progression_styles = array( 'wheel', 'timeline', 'none' );
 		$read_more_link_behaviors = array( 'none', 'internal', 'external' );
+		$content_update_modes = array( 'manual', 'monthly', 'sekki' );
 		$signature_positions = array( 'bottom-right', 'bottom-left', 'top-right', 'top-left' );
 		$signature_sizes     = array( 'small', 'medium', 'large' );
 		$signature_opacity   = isset( $input['signature_opacity'] ) ? (float) $input['signature_opacity'] : (float) $saved['signature_opacity'];
@@ -1147,6 +1152,7 @@ class MichiRyu_Sekki {
 		$output['reader_open_behavior']      = in_array( $input['reader_open_behavior'] ?? '', $reader_open_behaviors, true ) ? $input['reader_open_behavior'] : $saved['reader_open_behavior'];
 		$output['map_progression_style']     = in_array( $input['map_progression_style'] ?? '', $map_progression_styles, true ) ? $input['map_progression_style'] : $saved['map_progression_style'];
 		$output['read_more_link_behavior']   = in_array( $input['read_more_link_behavior'] ?? '', $read_more_link_behaviors, true ) ? $input['read_more_link_behavior'] : $saved['read_more_link_behavior'];
+		$output['content_update_mode']       = in_array( $input['content_update_mode'] ?? '', $content_update_modes, true ) ? $input['content_update_mode'] : $saved['content_update_mode'];
 		$output['external_season_base_url']  = array_key_exists( 'external_season_base_url', $input ) ? esc_url_raw( $input['external_season_base_url'] ) : $saved['external_season_base_url'];
 		$output['map_page_url']              = esc_url_raw( $input['map_page_url'] ?? '' );
 		$output['signature_position']        = in_array( $input['signature_position'] ?? '', $signature_positions, true ) ? $input['signature_position'] : $saved['signature_position'];
@@ -2045,9 +2051,12 @@ class MichiRyu_Sekki {
 						__( 'Experiences: %s', 'michiryu-sekki' ),
 						esc_html( $story_group['lesson'] )
 					) : $character['role'];
+					$portrait_url = $this->get_character_portrait_url( $character );
 					?>
 					<button class="michiryu-sekki-map__character<?php echo $story_group['is_initial'] ? ' is-visible' : ''; ?>" type="button" data-mrs-character data-season="<?php echo esc_attr( $story_group['season_slug'] ); ?>" data-story="<?php echo esc_attr( $story_group['story_id'] ); ?>" data-character="<?php echo esc_attr( $character_id ); ?>" aria-expanded="false">
-						<img src="<?php echo esc_url( $this->get_character_portrait_url( $character ) ); ?>" alt="" aria-hidden="true" loading="lazy" />
+						<?php if ( ! empty( $portrait_url ) ) : ?>
+							<img src="<?php echo esc_url( $portrait_url ); ?>" alt="" aria-hidden="true" loading="lazy" />
+						<?php endif; ?>
 						<span><?php echo esc_html( $character['name'] ); ?></span>
 						<small><?php echo esc_html( $note ); ?></small>
 					</button>
@@ -2486,13 +2495,11 @@ class MichiRyu_Sekki {
 	 * @return string
 	 */
 	private function get_character_portrait_url( $character ) {
-		$relative = 'assets/images/characters/' . basename( $character['portrait_file'] );
-
-		if ( file_exists( MICHIRYU_SEKKI_PATH . $relative ) ) {
-			return MICHIRYU_SEKKI_URL . $relative;
+		if ( empty( $character['portrait_file'] ) ) {
+			return '';
 		}
 
-		return MICHIRYU_SEKKI_URL . 'assets/images/characters/Character_Generic.svg';
+		return $this->get_provider_image_url( 'characters/' . basename( $character['portrait_file'] ) );
 	}
 
 	/**
@@ -2730,10 +2737,9 @@ class MichiRyu_Sekki {
 	 * @return string
 	 */
 	private function render_signature( $args ) {
-		$relative = 'assets/images/MichiRyu_Signature.png';
-		$path     = MICHIRYU_SEKKI_PATH . $relative;
+		$signature_url = $this->get_provider_image_url( 'signature' );
 
-		if ( ! file_exists( $path ) ) {
+		if ( empty( $signature_url ) ) {
 			return '';
 		}
 
@@ -2745,7 +2751,7 @@ class MichiRyu_Sekki {
 			'<img class="michiryu-sekki-signature michiryu-sekki-signature--%1$s michiryu-sekki-signature--%2$s" src="%3$s" alt="" aria-hidden="true" loading="lazy" style="--mrs-signature-opacity:%4$s;" />',
 			esc_attr( $position ),
 			esc_attr( $size ),
-			esc_url( MICHIRYU_SEKKI_URL . $relative ),
+			esc_url( $signature_url ),
 			esc_attr( $opacity )
 		);
 	}
@@ -2805,7 +2811,7 @@ class MichiRyu_Sekki {
 	}
 
 	/**
-	 * Resolve bundled asset URL after checking the file exists.
+	 * Resolve provider asset URL.
 	 *
 	 * @param string              $kind Asset kind: sekki or ko.
 	 * @param string              $filename Stable asset filename.
@@ -2822,23 +2828,6 @@ class MichiRyu_Sekki {
 			return $provider_url;
 		}
 
-		if ( MichiRyu_Sekki_Content::is_local_provider() ) {
-			return ! empty( $fallback_url ) ? esc_url_raw( $fallback_url ) : '';
-		}
-
-		$candidates = $this->get_asset_filename_candidates( $filename, $kind );
-
-		if ( ! empty( $options['use_bundled_images'] ) ) {
-			foreach ( $candidates as $candidate ) {
-				$relative = 'assets/images/' . $kind . '/' . $candidate;
-				$path     = MICHIRYU_SEKKI_PATH . $relative;
-
-				if ( file_exists( $path ) ) {
-					return MICHIRYU_SEKKI_URL . $relative;
-				}
-			}
-		}
-
 		if ( ! empty( $fallback_url ) ) {
 			return esc_url_raw( $fallback_url );
 		}
@@ -2853,7 +2842,11 @@ class MichiRyu_Sekki {
 	 * @return string
 	 */
 	private function get_provider_image_url( $id ) {
-		$image = MichiRyu_Sekki_Content::get_provider()->get_image( $id );
+		try {
+			$image = MichiRyu_Sekki_Content::get_provider()->get_image( $id );
+		} catch ( Throwable $error ) {
+			return '';
+		}
 
 		if ( is_string( $image ) && '' !== $image ) {
 			if ( preg_match( '#^https?://#i', $image ) ) {
@@ -2873,26 +2866,4 @@ class MichiRyu_Sekki {
 		return '';
 	}
 
-	/**
-	 * Build predictable filename fallbacks for JPG/PNG image uploads.
-	 *
-	 * @param string $filename Stored filename.
-	 * @param string $kind Asset kind.
-	 * @return array<int,string>
-	 */
-	private function get_asset_filename_candidates( $filename, $kind ) {
-		$pathinfo  = pathinfo( $filename );
-		$dirname   = empty( $pathinfo['dirname'] ) || '.' === $pathinfo['dirname'] ? '' : trailingslashit( $pathinfo['dirname'] );
-		$basename  = $pathinfo['filename'] ?? $filename;
-		$extension = strtolower( $pathinfo['extension'] ?? '' );
-		$preferred = 'ko' === $kind ? array( 'svg', 'jpg', 'jpeg', 'png' ) : array( 'jpg', 'jpeg', 'png' );
-		$extensions = array_values( array_unique( array_filter( array_merge( array( $extension ), $preferred ) ) ) );
-		$candidates = array();
-
-		foreach ( $extensions as $candidate_extension ) {
-			$candidates[] = $dirname . $basename . '.' . $candidate_extension;
-		}
-
-		return $candidates;
-	}
 }

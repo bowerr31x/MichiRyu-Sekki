@@ -1,9 +1,0 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 240" role="img" aria-labelledby="title">
-	<title id="title">Mei</title>
-	<rect width="240" height="240" rx="28" fill="#f6f1e5"/>
-	<circle cx="120" cy="82" r="38" fill="#3f463d"/>
-	<path d="M58 206c8-52 40-82 62-82s54 30 62 82" fill="#8f7b42"/>
-	<path d="M78 82c16-42 68-50 86 0-24-14-60-14-86 0z" fill="#2f332d"/>
-	<rect x="150" y="132" width="34" height="48" rx="12" fill="#f6d66f" stroke="#8f3e32" stroke-width="5"/>
-	<path d="M156 132c2-13 20-13 22 0M158 150h18M158 164h18" stroke="#8f3e32" stroke-width="5" stroke-linecap="round"/>
-</svg>

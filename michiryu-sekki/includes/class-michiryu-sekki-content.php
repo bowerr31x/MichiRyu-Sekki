@@ -35,6 +35,13 @@ class MichiRyu_Sekki_Content {
 	private static $provider = null;
 
 	/**
+	 * Active provider key.
+	 *
+	 * @var string|null
+	 */
+	private static $provider_key = null;
+
+	/**
 	 * Return full runtime content.
 	 *
 	 * @return array<string,mixed>
@@ -97,28 +104,29 @@ class MichiRyu_Sekki_Content {
 			return self::$provider;
 		}
 
-		$provider_key = defined( 'MICHIRYU_SEKKI_CONTENT_PROVIDER' ) ? MICHIRYU_SEKKI_CONTENT_PROVIDER : 'bundled';
+		$provider_key = self::get_provider_key();
+		$provider = new MichiRyu_Sekki_Local_Content_Provider();
 
-		/**
-		 * Filters the active content provider key.
-		 *
-		 * Supported core values are "bundled" and "local". The bundled provider
-		 * is the temporary migration default; local returns GPL-safe factual data.
-		 *
-		 * @param string $provider_key Provider key.
-		 */
-		$provider_key = sanitize_key( apply_filters( 'michiryu_sekki_content_provider_key', $provider_key ) );
-		$provider = 'local' === $provider_key ? new MichiRyu_Sekki_Local_Content_Provider() : new MichiRyu_Sekki_Bundled_Content_Provider();
+		if ( 'file' === $provider_key ) {
+			$content_path = MichiRyu_Sekki_File_Content_Provider::get_configured_content_path();
+			if ( MichiRyu_Sekki_File_Content_Provider::is_valid_content_path( $content_path ) ) {
+				$provider = new MichiRyu_Sekki_File_Content_Provider(
+					$content_path,
+					MichiRyu_Sekki_File_Content_Provider::get_configured_content_url()
+				);
+			}
+		}
 
 		/**
 		 * Filters the active content provider.
 		 *
-		 * The bundled provider preserves current behavior during migration. Future
-		 * providers can replace it with a GPL-safe local provider or remote provider.
+		 * Custom providers can supply separately licensed content without requiring
+		 * proprietary files to be included in the plugin repository.
 		 *
 		 * @param MichiRyu_Sekki_Content_Provider_Interface $provider Active provider.
+		 * @param string                                    $provider_key Requested provider key.
 		 */
-		$provider = apply_filters( 'michiryu_sekki_content_provider', $provider );
+		$provider = apply_filters( 'michiryu_sekki_content_provider', $provider, $provider_key );
 
 		if ( ! $provider instanceof MichiRyu_Sekki_Content_Provider_Interface ) {
 			$provider = new MichiRyu_Sekki_Local_Content_Provider();
@@ -130,13 +138,38 @@ class MichiRyu_Sekki_Content {
 	}
 
 	/**
+	 * Return the selected content provider key.
+	 *
+	 * @return string
+	 */
+	public static function get_provider_key() {
+		if ( null !== self::$provider_key ) {
+			return self::$provider_key;
+		}
+
+		$provider_key = defined( 'MICHIRYU_SEKKI_CONTENT_PROVIDER' ) ? MICHIRYU_SEKKI_CONTENT_PROVIDER : 'local';
+
+		/**
+		 * Filters the active content provider key.
+		 *
+		 * Core defaults to "local". Custom providers can be supplied with the
+		 * michiryu_sekki_content_provider filter.
+		 *
+		 * @param string $provider_key Provider key.
+		 */
+		self::$provider_key = sanitize_key( apply_filters( 'michiryu_sekki_content_provider_key', $provider_key ) );
+
+		return self::$provider_key;
+	}
+
+	/**
 	 * Return whether the active provider is the GPL-safe local provider.
 	 *
 	 * @return bool
 	 */
 	public static function is_local_provider() {
 		$provider = self::get_provider();
-		return $provider instanceof MichiRyu_Sekki_Local_Content_Provider && ! ( $provider instanceof MichiRyu_Sekki_Bundled_Content_Provider );
+		return get_class( $provider ) === MichiRyu_Sekki_Local_Content_Provider::class;
 	}
 
 	/**
@@ -146,12 +179,24 @@ class MichiRyu_Sekki_Content {
 	 */
 	private static function build_content() {
 		$provider = self::get_provider();
-		$featured_content = $provider->get_featured_content();
-		$stories = is_array( $featured_content['stories'] ?? null ) ? $featured_content['stories'] : array();
-		$characters = is_array( $featured_content['characters'] ?? null ) ? $featured_content['characters'] : array();
-		$seasons = $provider->get_sekki_content();
-		$ko = $provider->get_ko_content();
-		$map_locations = $provider->get_map_data();
+		$local_provider = new MichiRyu_Sekki_Local_Content_Provider();
+		$featured_content = self::normalize_featured_content(
+			self::get_provider_value( $provider, 'get_featured_content', $local_provider->get_featured_content() )
+		);
+		$stories = $featured_content['stories'];
+		$characters = $featured_content['characters'];
+		$seasons = self::normalize_list(
+			self::get_provider_value( $provider, 'get_sekki_content', $local_provider->get_sekki_content() ),
+			$local_provider->get_sekki_content()
+		);
+		$ko = self::normalize_list(
+			self::get_provider_value( $provider, 'get_ko_content', $local_provider->get_ko_content() ),
+			$local_provider->get_ko_content()
+		);
+		$map_locations = self::normalize_list(
+			self::get_provider_value( $provider, 'get_map_data', $local_provider->get_map_data() ),
+			$local_provider->get_map_data()
+		);
 
 		self::add_navigation_links( $stories, $seasons, $ko );
 
@@ -163,6 +208,65 @@ class MichiRyu_Sekki_Content {
 			'sekki'          => $seasons,
 			'ko'             => $ko,
 			'map_locations'  => $map_locations,
+		);
+	}
+
+	/**
+	 * Safely read a value from a provider.
+	 *
+	 * @param MichiRyu_Sekki_Content_Provider_Interface $provider Provider instance.
+	 * @param string                                    $method Provider method.
+	 * @param mixed                                     $fallback Fallback value.
+	 * @return mixed
+	 */
+	private static function get_provider_value( $provider, $method, $fallback ) {
+		try {
+			return $provider->$method();
+		} catch ( Throwable $error ) {
+			return $fallback;
+		}
+	}
+
+	/**
+	 * Normalize a provider list response.
+	 *
+	 * @param mixed                  $value Provider response.
+	 * @param array<int,mixed>|null  $fallback Optional fallback list.
+	 * @return array<int,mixed>
+	 */
+	private static function normalize_list( $value, $fallback = null ) {
+		if ( ! is_array( $value ) ) {
+			return is_array( $fallback ) ? array_values( $fallback ) : array();
+		}
+
+		return array_values(
+			array_filter(
+				$value,
+				function ( $item ) {
+					return is_array( $item );
+				}
+			)
+		);
+	}
+
+	/**
+	 * Normalize enhanced provider content.
+	 *
+	 * @param mixed $value Provider response.
+	 * @return array{stories:array<int,array<string,mixed>>,characters:array<string,array<string,mixed>>}
+	 */
+	private static function normalize_featured_content( $value ) {
+		$content = is_array( $value ) ? $value : array();
+		$characters = is_array( $content['characters'] ?? null ) ? $content['characters'] : array();
+
+		return array(
+			'stories'    => self::normalize_list( $content['stories'] ?? array() ),
+			'characters' => array_filter(
+				$characters,
+				function ( $character ) {
+					return is_array( $character );
+				}
+			),
 		);
 	}
 

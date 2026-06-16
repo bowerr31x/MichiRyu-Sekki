@@ -1,9 +1,0 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 240" role="img" aria-labelledby="title">
-	<title id="title">Ren</title>
-	<rect width="240" height="240" rx="28" fill="#f6f1e5"/>
-	<circle cx="120" cy="82" r="37" fill="#4a3b2d"/>
-	<path d="M58 206c8-52 40-82 62-82s54 30 62 82" fill="#6c6a60"/>
-	<path d="M74 72h92l-18-24H92z" fill="#8f7b42"/>
-	<rect x="146" y="136" width="36" height="48" rx="4" fill="#fbfaf4" stroke="#7b644d" stroke-width="5"/>
-	<path d="M156 150h16M156 164h16" stroke="#687661" stroke-width="5" stroke-linecap="round"/>
-</svg>

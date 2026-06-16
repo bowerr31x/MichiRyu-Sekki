@@ -3,23 +3,30 @@
 ## Current Focus
 
 - Preserve the existing public shortcode and admin behavior.
-- Keep Yuki no Sato story continuity consistent across all 24 Sekki and 72 Ko stories.
-- Maintain Masaru-sensei as the canonical Flower Teacher across interface labels, story metadata, and future educational materials.
+- Keep the plugin repository GPL-only.
+- Route story, map, character, image, and educational content through providers.
 - Keep installable ZIP builds reliable for LocalWP and WordPress testing.
 
 ## Near-Term
 
-- Continue testing the 1.2.x story, map, banner, and character experience locally.
-- Verify the story reader and map character rail after content updates.
+- Continue testing the 1.2.x seasonal display and provider-empty states locally.
+- Test the file provider against a private content directory for story, map, banner, and character testing.
+- Use `docs/CONTENT-PROVIDER-SCHEMA.md` as the contract for private provider work.
+- Use the admin Content Provider Status panel to confirm file provider path validity during LocalWP provider testing.
+- Design the admin-approved MichiRyu Content Library import flow.
+- Keep imported-content updates manual by default.
+- Use `docs/CONTENT-IMPORT-BDD.md` as acceptance criteria for import behavior.
+- Store import consent acknowledgements and update mode before enabling network import.
 - Keep changelog entries aligned with version bumps.
 - Keep generated archives out of Git.
 
-## Content Continuity
+## Content Provider Continuity
 
-- Use `michiryu-sekki/stories/YukiNoSato_CharacterBible.md` as the canonical story-world reference.
-- Keep recurring villagers consistent with their character metadata and story roles.
-- Avoid turning Yuki no Sato stories into adventure, conflict, samurai, or politics-driven tales.
-- Let seasonal observation, ikebana, community, and impermanence remain the center.
+- Keep canonical Yuki no Sato story-world references in the separate proprietary content library.
+- Keep recurring villagers consistent in provider-supplied character metadata and story roles.
+- Preserve provider boundaries so proprietary content does not enter the plugin repository.
+- Keep the local provider useful without stories, maps, images, or remote content.
+- Store official imported MichiRyu content locally in WordPress after explicit admin approval.
 
 ## Technical Maintenance
 
@@ -33,4 +40,3 @@
 - For local test builds, create a ZIP without changing the plugin version.
 - For production-ready batches, update the plugin version, changelog, and release notes before packaging.
 - Use patch version bumps for production bug fixes, minor version bumps for stable feature batches, and major version bumps only for larger stable milestones.
-

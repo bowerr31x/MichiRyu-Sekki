@@ -1,9 +1,0 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 240" role="img" aria-labelledby="title">
-	<title id="title">Kenji</title>
-	<rect width="240" height="240" rx="28" fill="#f6f1e5"/>
-	<circle cx="120" cy="82" r="36" fill="#2f332d"/>
-	<path d="M60 206c9-50 40-78 60-78s51 28 60 78" fill="#8f7b42"/>
-	<path d="M80 80c14-42 66-46 82-2-28-11-53-9-82 2z" fill="#1f211e"/>
-	<circle cx="103" cy="82" r="5" fill="#fbfaf4"/>
-	<circle cx="137" cy="82" r="5" fill="#fbfaf4"/>
-</svg>

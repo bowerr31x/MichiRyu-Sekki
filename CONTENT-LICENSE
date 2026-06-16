@@ -1,8 +1,8 @@
-MichiRyu-Sekki Creative Content Notice
+MichiRyu-Sekki Content Provider Notice
 =====================================
 
-This notice explains the ownership of non-code creative materials included with
-MichiRyu-Sekki.
+This notice explains how proprietary MichiRyu content is handled separately from
+the GPL MichiRyu-Sekki plugin.
 
 Code License
 ------------
@@ -10,18 +10,16 @@ Code License
 The plugin PHP, JavaScript, and CSS code is licensed under GPLv2 or later. See
 the LICENSE file.
 
-Creative Content Ownership
---------------------------
+Proprietary Content
+-------------------
 
-Original artwork, Yuki no Sato stories, maps, icons, names, branding, and
-written seasonal content included with this plugin are copyright Russell Bowers
-/ MichiRyu unless explicitly stated otherwise.
+Original artwork, Yuki no Sato stories, maps, icons, names, branding, PDFs, and
+written seasonal or educational content are proprietary MichiRyu content unless
+explicitly stated otherwise.
 
-These creative materials are provided for normal use within the MichiRyu-Sekki
-plugin experience. Installing and using the plugin does not grant separate
-permission to copy, redistribute, remix, publish, sell, or reuse the artwork,
-stories, maps, icons, names, branding, or written seasonal content outside the
-normal operation of the plugin.
+These materials are not included in the GPL plugin repository. When they are
+used with MichiRyu-Sekki, they must be supplied through a Content Provider and
+licensed separately from the plugin code.
 
 Third-Party Content
 -------------------

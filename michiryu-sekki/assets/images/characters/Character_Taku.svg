@@ -1,9 +1,0 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 240" role="img" aria-labelledby="title">
-	<title id="title">Taku</title>
-	<rect width="240" height="240" rx="28" fill="#f6f1e5"/>
-	<circle cx="120" cy="82" r="40" fill="#4a3b2d"/>
-	<path d="M58 206c8-52 40-82 62-82s54 30 62 82" fill="#7b644d"/>
-	<path d="M76 80c18-45 70-52 88 0-28-16-60-16-88 0z" fill="#c9c1ae"/>
-	<path d="M95 119c10 24 40 24 50 0" fill="#c9c1ae"/>
-	<path d="M92 154h56" stroke="#fbfaf4" stroke-width="10" stroke-linecap="round"/>
-</svg>

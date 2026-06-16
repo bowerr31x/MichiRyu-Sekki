@@ -26,7 +26,7 @@ define( 'MICHIRYU_SEKKI_URL', plugin_dir_url( __FILE__ ) );
 require_once MICHIRYU_SEKKI_PATH . 'includes/class-michiryu-sekki-data.php';
 require_once MICHIRYU_SEKKI_PATH . 'includes/providers/interface-michiryu-sekki-content-provider.php';
 require_once MICHIRYU_SEKKI_PATH . 'includes/providers/class-michiryu-sekki-local-content-provider.php';
-require_once MICHIRYU_SEKKI_PATH . 'includes/providers/class-michiryu-sekki-bundled-content-provider.php';
+require_once MICHIRYU_SEKKI_PATH . 'includes/providers/class-michiryu-sekki-file-content-provider.php';
 require_once MICHIRYU_SEKKI_PATH . 'includes/class-michiryu-sekki-content.php';
 require_once MICHIRYU_SEKKI_PATH . 'includes/class-michiryu-sekki.php';
 require_once MICHIRYU_SEKKI_PATH . 'admin/class-michiryu-sekki-admin.php';

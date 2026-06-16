@@ -1,9 +1,0 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 240" role="img" aria-labelledby="title">
-	<title id="title">Sora</title>
-	<rect width="240" height="240" rx="28" fill="#f6f1e5"/>
-	<circle cx="120" cy="82" r="34" fill="#3f463d"/>
-	<path d="M62 206c9-48 39-76 58-76s49 28 58 76" fill="#536679"/>
-	<path d="M80 78c20-35 70-36 82 3-32-7-54-4-82-3z" fill="#1f211e"/>
-	<path d="M154 58l22 18-22 18" fill="none" stroke="#8f7b42" stroke-width="9" stroke-linecap="round" stroke-linejoin="round"/>
-	<path d="M176 76h-40" stroke="#8f7b42" stroke-width="9" stroke-linecap="round"/>
-</svg>

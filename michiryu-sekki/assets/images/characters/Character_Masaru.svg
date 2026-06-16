@@ -1,8 +1,0 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 240" role="img" aria-labelledby="title">
-	<title id="title">Masaru</title>
-	<rect width="240" height="240" rx="28" fill="#f6f1e5"/>
-	<circle cx="120" cy="82" r="38" fill="#2f332d"/>
-	<path d="M58 204c8-52 42-82 62-82s54 30 62 82" fill="#687661"/>
-	<path d="M88 82c8-28 26-42 54-41 13 10 19 23 18 41-18-13-46-13-72 0z" fill="#1f211e"/>
-	<path d="M94 151h52" stroke="#fbfaf4" stroke-width="12" stroke-linecap="round"/>
-</svg>
