@@ -34,6 +34,7 @@ class MichiRyu_Sekki_Admin {
 	 */
 	public function init() {
 		add_action( 'admin_menu', array( $this, 'add_menu' ) );
+		add_action( 'admin_enqueue_scripts', array( $this, 'enqueue_assets' ) );
 		add_action( 'admin_init', array( $this, 'register_settings' ) );
 		add_action( 'admin_post_michiryu_sekki_import_content', array( $this, 'handle_content_import' ) );
 		add_action( 'admin_post_michiryu_sekki_remove_imported_content', array( $this, 'handle_remove_imported_content' ) );
@@ -70,6 +71,27 @@ class MichiRyu_Sekki_Admin {
 	}
 
 	/**
+	 * Enqueue settings page assets.
+	 *
+	 * @param string $hook_suffix Current admin page hook.
+	 */
+	public function enqueue_assets( $hook_suffix ) {
+		if ( 'toplevel_page_michiryu' !== $hook_suffix ) {
+			return;
+		}
+
+		$style_path    = MICHIRYU_SEKKI_PATH . 'assets/css/michiryu-sekki-admin.css';
+		$style_version = file_exists( $style_path ) ? MICHIRYU_SEKKI_VERSION . '.' . filemtime( $style_path ) : MICHIRYU_SEKKI_VERSION;
+
+		wp_enqueue_style(
+			'michiryu-sekki-admin',
+			MICHIRYU_SEKKI_URL . 'assets/css/michiryu-sekki-admin.css',
+			array(),
+			$style_version
+		);
+	}
+
+	/**
 	 * Render page.
 	 */
 	public function render_page() {
@@ -79,11 +101,11 @@ class MichiRyu_Sekki_Admin {
 
 		$options = $this->plugin->get_options();
 		?>
-		<div class="wrap">
+		<div class="wrap michiryu-sekki-admin">
 			<h1><?php esc_html_e( 'MichiRyu-Sekki-Calendar', 'michiryu-sekki' ); ?></h1>
-			<p><?php esc_html_e( 'Set up the seasonal journey and map experience.', 'michiryu-sekki' ); ?></p>
+			<p class="michiryu-sekki-admin__lede"><?php esc_html_e( 'Set up the seasonal journey, imported content, and map experience.', 'michiryu-sekki' ); ?></p>
 
-			<div class="notice notice-info inline">
+			<div class="notice notice-info inline michiryu-sekki-admin__notice">
 				<p><strong><?php esc_html_e( 'Recommended setup', 'michiryu-sekki' ); ?></strong></p>
 				<p><?php esc_html_e( 'Use', 'michiryu-sekki' ); ?> <code>[michiryu_sekki]</code> <?php esc_html_e( 'for the main seasonal display. Story, image, character, and map enhancements appear when a content provider supplies them.', 'michiryu-sekki' ); ?></p>
 				<p><?php esc_html_e( 'Optional provider-backed sections or pages:', 'michiryu-sekki' ); ?> <code>[michiryu_story]</code> <code>[michiryu_sekki_map]</code></p>
@@ -95,36 +117,31 @@ class MichiRyu_Sekki_Admin {
 			<form method="post" action="options.php">
 				<?php settings_fields( 'michiryu_sekki_settings' ); ?>
 
-				<h2><?php esc_html_e( 'MichiRyu Content Library', 'michiryu-sekki' ); ?></h2>
-				<p><?php esc_html_e( 'Import MichiRyu stories and images into this WordPress site. The site will use the local imported copy after import, so visitors do not depend on remote content requests.', 'michiryu-sekki' ); ?></p>
-				<table class="form-table" role="presentation">
-					<tr>
-						<th scope="row"><?php esc_html_e( 'Import consent', 'michiryu-sekki' ); ?></th>
-						<td>
-							<?php $this->render_checkbox_field( 'content_import_ack_copyright', __( 'I understand this will download MichiRyu copyrighted content to this site.', 'michiryu-sekki' ), $options['content_import_ack_copyright'] ); ?>
-							<?php $this->render_checkbox_field( 'content_import_accept_license', __( 'I agree to use the content under the MichiRyu Content License.', 'michiryu-sekki' ), $options['content_import_accept_license'] ); ?>
-							<?php $this->render_checkbox_field( 'content_import_ack_privacy', __( 'I understand no personal visitor data is transmitted.', 'michiryu-sekki' ), $options['content_import_ack_privacy'] ); ?>
-							<p class="description"><?php esc_html_e( 'Save settings after changing these acknowledgements, then run the import.', 'michiryu-sekki' ); ?></p>
-						</td>
-					</tr>
-					<tr>
-						<th scope="row"><label for="michiryu-sekki-content-update-mode"><?php esc_html_e( 'Content updates', 'michiryu-sekki' ); ?></label></th>
-						<td>
-							<?php $this->render_select( 'content_update_mode', $options['content_update_mode'], $this->get_content_update_mode_options(), 'michiryu-sekki-content-update-mode' ); ?>
-							<p class="description"><?php esc_html_e( 'Manual updates only is the default. Automatic checks will be opt-in when the import feature is implemented.', 'michiryu-sekki' ); ?></p>
-						</td>
-					</tr>
-					<tr>
-						<th scope="row"><?php esc_html_e( 'Import action', 'michiryu-sekki' ); ?></th>
-						<td>
-							<p class="description"><?php esc_html_e( 'Save this settings form before importing if you changed consent, update mode, or advanced content settings.', 'michiryu-sekki' ); ?></p>
-						</td>
-					</tr>
-				</table>
-
-				<details>
-					<summary><?php esc_html_e( 'Advanced content settings', 'michiryu-sekki' ); ?></summary>
+				<section class="michiryu-sekki-admin__section">
+					<h2><?php esc_html_e( 'MichiRyu Content Library', 'michiryu-sekki' ); ?></h2>
+					<p><?php esc_html_e( 'Import MichiRyu stories and images into this WordPress site. After import, visitors use the local WordPress copy.', 'michiryu-sekki' ); ?></p>
 					<table class="form-table" role="presentation">
+						<tr>
+							<th scope="row"><?php esc_html_e( 'Import consent', 'michiryu-sekki' ); ?></th>
+							<td>
+								<?php $this->render_checkbox_field( 'content_import_ack_copyright', __( 'I understand this will download MichiRyu copyrighted content to this site.', 'michiryu-sekki' ), $options['content_import_ack_copyright'] ); ?>
+								<?php $this->render_checkbox_field( 'content_import_accept_license', __( 'I agree to use the content under the MichiRyu Content License.', 'michiryu-sekki' ), $options['content_import_accept_license'] ); ?>
+								<?php $this->render_checkbox_field( 'content_import_ack_privacy', __( 'I understand no personal visitor data is transmitted.', 'michiryu-sekki' ), $options['content_import_ack_privacy'] ); ?>
+								<p class="description"><?php esc_html_e( 'Save these acknowledgements before importing content.', 'michiryu-sekki' ); ?></p>
+							</td>
+						</tr>
+						<tr>
+							<th scope="row"><label for="michiryu-sekki-content-update-mode"><?php esc_html_e( 'Content updates', 'michiryu-sekki' ); ?></label></th>
+							<td>
+								<?php $this->render_select( 'content_update_mode', $options['content_update_mode'], $this->get_content_update_mode_options(), 'michiryu-sekki-content-update-mode' ); ?>
+								<p class="description"><?php esc_html_e( 'Manual updates only is the default. Automatic checks will be opt-in later.', 'michiryu-sekki' ); ?></p>
+							</td>
+						</tr>
+					</table>
+
+					<details class="michiryu-sekki-admin__details">
+						<summary><?php esc_html_e( 'Advanced content settings', 'michiryu-sekki' ); ?></summary>
+						<table class="form-table" role="presentation">
 						<tr>
 							<th scope="row"><label for="michiryu-sekki-content-library-url"><?php esc_html_e( 'Custom remote content URL', 'michiryu-sekki' ); ?></label></th>
 							<td>
@@ -139,9 +156,9 @@ class MichiRyu_Sekki_Admin {
 								<p class="description"><?php esc_html_e( 'Optional. Custom import requests send this as an Authorization bearer token. Future premium libraries will use license-specific tokens here.', 'michiryu-sekki' ); ?></p>
 							</td>
 						</tr>
-					</table>
-					<h3><?php esc_html_e( 'Future premium access', 'michiryu-sekki' ); ?></h3>
-					<table class="form-table" role="presentation">
+						</table>
+						<h3><?php esc_html_e( 'Future premium access', 'michiryu-sekki' ); ?></h3>
+						<table class="form-table" role="presentation">
 						<tr>
 							<th scope="row"><label for="michiryu-sekki-premium-license-token"><?php esc_html_e( 'Premium license token', 'michiryu-sekki' ); ?></label></th>
 							<td>
@@ -162,47 +179,54 @@ class MichiRyu_Sekki_Admin {
 								<p class="description"><?php esc_html_e( 'Premium validation will be added later through a server-side entitlement check before premium manifests are imported.', 'michiryu-sekki' ); ?></p>
 							</td>
 						</tr>
-					</table>
-				</details>
+						</table>
+					</details>
+				</section>
 
-				<h2><?php esc_html_e( 'Core Settings', 'michiryu-sekki' ); ?></h2>
-				<table class="form-table" role="presentation">
-					<tr>
-						<th scope="row"><label for="michiryu-sekki-default-style"><?php esc_html_e( 'Default display style', 'michiryu-sekki' ); ?></label></th>
-						<td>
-							<?php $this->render_select( 'default_style', $options['default_style'], $this->get_style_options(), 'michiryu-sekki-default-style' ); ?>
-							<p class="description"><?php esc_html_e( 'Used by [michiryu_sekki], widgets, and blocks.', 'michiryu-sekki' ); ?></p>
-						</td>
-					</tr>
-					<?php $this->render_checkbox_row( 'show_ko_icon', __( 'Show Ko microseason section', 'michiryu-sekki' ), $options['show_ko_icon'] ); ?>
-					<?php $this->render_checkbox_row( 'show_kanji', __( 'Show Japanese kanji', 'michiryu-sekki' ), $options['show_kanji'] ); ?>
-					<?php $this->render_checkbox_row( 'show_romanized', __( 'Show romanized name', 'michiryu-sekki' ), $options['show_romanized'] ); ?>
-					<?php $this->render_checkbox_row( 'show_english', __( 'Show English name', 'michiryu-sekki' ), $options['show_english'] ); ?>
-					<?php $this->render_checkbox_row( 'show_sekki_image', __( 'Show Sekki image', 'michiryu-sekki' ), $options['show_sekki_image'] ); ?>
-					<?php $this->render_checkbox_row( 'show_ikebana_materials', __( 'Show ikebana materials and theme', 'michiryu-sekki' ), $options['show_ikebana_materials'] ); ?>
-					<?php $this->render_checkbox_row( 'show_date_stamp', __( 'Show current date stamp', 'michiryu-sekki' ), $options['show_date_stamp'] ); ?>
-					<?php $this->render_checkbox_row( 'show_story_teaser', __( 'Show story teaser', 'michiryu-sekki' ), $options['show_story_teaser'] ); ?>
-					<?php $this->render_checkbox_row( 'show_creator_link', __( 'Link creator website in About panel', 'michiryu-sekki' ), $options['show_creator_link'] ); ?>
-					<tr>
-						<th scope="row"><label for="michiryu-sekki-map-page-url"><?php esc_html_e( 'Dedicated map page URL', 'michiryu-sekki' ); ?></label></th>
-						<td>
-							<input id="michiryu-sekki-map-page-url" type="url" class="large-text" name="<?php echo esc_attr( MichiRyu_Sekki::OPTION_NAME ); ?>[map_page_url]" value="<?php echo esc_attr( $options['map_page_url'] ); ?>" />
-							<p class="description"><?php esc_html_e( 'Use this when Map open behavior is Dedicated page or New tab. Add [michiryu_sekki_map] to that page.', 'michiryu-sekki' ); ?></p>
-						</td>
-					</tr>
-					<tr>
-						<th scope="row"><label for="michiryu-sekki-custom-css"><?php esc_html_e( 'Optional custom CSS', 'michiryu-sekki' ); ?></label></th>
-						<td>
-							<textarea id="michiryu-sekki-custom-css" name="<?php echo esc_attr( MichiRyu_Sekki::OPTION_NAME ); ?>[custom_css]" class="large-text code" rows="8"><?php echo esc_textarea( $options['custom_css'] ); ?></textarea>
-							<p class="description"><?php esc_html_e( 'CSS is printed only when the Sekki display renders.', 'michiryu-sekki' ); ?></p>
-						</td>
-					</tr>
-				</table>
+				<section class="michiryu-sekki-admin__section">
+					<h2><?php esc_html_e( 'Display Settings', 'michiryu-sekki' ); ?></h2>
+					<table class="form-table" role="presentation">
+						<tr>
+							<th scope="row"><label for="michiryu-sekki-default-style"><?php esc_html_e( 'Default display style', 'michiryu-sekki' ); ?></label></th>
+							<td>
+								<?php $this->render_select( 'default_style', $options['default_style'], $this->get_style_options(), 'michiryu-sekki-default-style' ); ?>
+								<p class="description"><?php esc_html_e( 'Used by [michiryu_sekki], widgets, and blocks.', 'michiryu-sekki' ); ?></p>
+							</td>
+						</tr>
+						<?php $this->render_checkbox_row( 'show_ko_icon', __( 'Show Ko microseason section', 'michiryu-sekki' ), $options['show_ko_icon'] ); ?>
+						<?php $this->render_checkbox_row( 'show_kanji', __( 'Show Japanese kanji', 'michiryu-sekki' ), $options['show_kanji'] ); ?>
+						<?php $this->render_checkbox_row( 'show_romanized', __( 'Show romanized name', 'michiryu-sekki' ), $options['show_romanized'] ); ?>
+						<?php $this->render_checkbox_row( 'show_english', __( 'Show English name', 'michiryu-sekki' ), $options['show_english'] ); ?>
+						<?php $this->render_checkbox_row( 'show_sekki_image', __( 'Show Sekki image', 'michiryu-sekki' ), $options['show_sekki_image'] ); ?>
+						<?php $this->render_checkbox_row( 'show_ikebana_materials', __( 'Show ikebana materials and theme', 'michiryu-sekki' ), $options['show_ikebana_materials'] ); ?>
+						<?php $this->render_checkbox_row( 'show_date_stamp', __( 'Show current date stamp', 'michiryu-sekki' ), $options['show_date_stamp'] ); ?>
+						<?php $this->render_checkbox_row( 'show_story_teaser', __( 'Show story teaser', 'michiryu-sekki' ), $options['show_story_teaser'] ); ?>
+						<?php $this->render_checkbox_row( 'show_creator_link', __( 'Link creator website in About panel', 'michiryu-sekki' ), $options['show_creator_link'] ); ?>
+						<tr>
+							<th scope="row"><label for="michiryu-sekki-map-page-url"><?php esc_html_e( 'Dedicated map page URL', 'michiryu-sekki' ); ?></label></th>
+							<td>
+								<input id="michiryu-sekki-map-page-url" type="url" class="large-text" name="<?php echo esc_attr( MichiRyu_Sekki::OPTION_NAME ); ?>[map_page_url]" value="<?php echo esc_attr( $options['map_page_url'] ); ?>" />
+								<p class="description"><?php esc_html_e( 'Use this when Map open behavior is Dedicated page or New tab. Add [michiryu_sekki_map] to that page.', 'michiryu-sekki' ); ?></p>
+							</td>
+						</tr>
+						<tr>
+							<th scope="row"><label for="michiryu-sekki-custom-css"><?php esc_html_e( 'Optional custom CSS', 'michiryu-sekki' ); ?></label></th>
+							<td>
+								<textarea id="michiryu-sekki-custom-css" name="<?php echo esc_attr( MichiRyu_Sekki::OPTION_NAME ); ?>[custom_css]" class="large-text code" rows="8"><?php echo esc_textarea( $options['custom_css'] ); ?></textarea>
+								<p class="description"><?php esc_html_e( 'CSS is printed only when the Sekki display renders.', 'michiryu-sekki' ); ?></p>
+							</td>
+						</tr>
+					</table>
+				</section>
 
 				<?php submit_button(); ?>
 			</form>
-			<?php $this->render_import_forms( $options ); ?>
-			<?php $this->render_remove_imported_content_form(); ?>
+			<section class="michiryu-sekki-admin__section">
+				<h2><?php esc_html_e( 'Content Actions', 'michiryu-sekki' ); ?></h2>
+				<p><?php esc_html_e( 'Save settings first if you changed consent, update mode, or advanced content settings.', 'michiryu-sekki' ); ?></p>
+				<?php $this->render_import_forms( $options ); ?>
+				<?php $this->render_remove_imported_content_form(); ?>
+			</section>
 		</div>
 		<?php
 	}
@@ -278,24 +302,26 @@ class MichiRyu_Sekki_Admin {
 	private function render_provider_status() {
 		$status = $this->get_provider_status();
 		?>
-		<h2><?php esc_html_e( 'Content Provider Status', 'michiryu-sekki' ); ?></h2>
-		<div class="notice <?php echo esc_attr( $status['notice_class'] ); ?> inline">
-			<p>
-				<strong><?php echo esc_html( $status['label'] ); ?></strong>
-				<?php echo esc_html( $status['message'] ); ?>
-			</p>
-		</div>
-		<table class="widefat striped" role="table">
-			<tbody>
-				<?php foreach ( $status['rows'] as $row ) : ?>
-					<tr>
-						<th scope="row"><?php echo esc_html( $row['label'] ); ?></th>
-						<td><?php echo esc_html( $row['value'] ); ?></td>
-					</tr>
-				<?php endforeach; ?>
-			</tbody>
-		</table>
-		<p class="description"><?php esc_html_e( 'The plugin package contains GPL software only. Proprietary stories, artwork, maps, icons, PDFs, educational materials, and Yuki no Sato content must come from a separate provider.', 'michiryu-sekki' ); ?></p>
+		<section class="michiryu-sekki-admin__section">
+			<h2><?php esc_html_e( 'Content Provider Status', 'michiryu-sekki' ); ?></h2>
+			<div class="notice <?php echo esc_attr( $status['notice_class'] ); ?> inline michiryu-sekki-admin__notice">
+				<p>
+					<strong><?php echo esc_html( $status['label'] ); ?></strong>
+					<?php echo esc_html( $status['message'] ); ?>
+				</p>
+			</div>
+			<table class="widefat striped michiryu-sekki-admin__status-table" role="table">
+				<tbody>
+					<?php foreach ( $status['rows'] as $row ) : ?>
+						<tr>
+							<th scope="row"><?php echo esc_html( $row['label'] ); ?></th>
+							<td><?php echo esc_html( $row['value'] ); ?></td>
+						</tr>
+					<?php endforeach; ?>
+				</tbody>
+			</table>
+			<p class="description"><?php esc_html_e( 'The plugin package contains GPL software only. Proprietary stories, artwork, maps, icons, PDFs, educational materials, and Yuki no Sato content must come from a separate provider.', 'michiryu-sekki' ); ?></p>
+		</section>
 		<?php
 	}
 
@@ -336,29 +362,34 @@ class MichiRyu_Sekki_Admin {
 		$basic_disabled = ! $has_consent || ! $has_basic_url;
 		$custom_disabled = ! $has_consent || ! $has_custom_url;
 		?>
-		<form method="post" action="<?php echo esc_url( admin_url( 'admin-post.php' ) ); ?>" style="margin-top: 1em;" data-michiryu-content-import-form>
-			<input type="hidden" name="action" value="michiryu_sekki_import_content" />
-			<input type="hidden" name="michiryu_import_type" value="basic" />
-			<?php wp_nonce_field( 'michiryu_sekki_import_content' ); ?>
-			<?php submit_button( __( 'Import Basic MichiRyu Content', 'michiryu-sekki' ), 'primary', 'submit', false, $basic_disabled ? array( 'disabled' => 'disabled' ) : array( 'data-importing-label' => esc_attr__( 'Importing content...', 'michiryu-sekki' ) ) ); ?>
-			<span class="spinner" data-michiryu-content-import-spinner></span>
-			<p class="description" data-michiryu-content-import-message hidden><?php esc_html_e( 'Importing content. This may take up to a minute while images are copied into WordPress.', 'michiryu-sekki' ); ?></p>
-			<p class="description"><?php esc_html_e( 'The import downloads the content package once, stores a local copy in WordPress uploads, and may take a minute when images are included.', 'michiryu-sekki' ); ?></p>
-			<?php if ( $basic_disabled ) : ?>
-				<p class="description"><?php esc_html_e( 'Check all acknowledgements and save settings before importing. If no default basic library is configured, add a custom URL in Advanced content settings.', 'michiryu-sekki' ); ?></p>
-			<?php endif; ?>
-		</form>
-		<form method="post" action="<?php echo esc_url( admin_url( 'admin-post.php' ) ); ?>" style="margin-top: 0.75em;" data-michiryu-content-import-form>
-			<input type="hidden" name="action" value="michiryu_sekki_import_content" />
-			<input type="hidden" name="michiryu_import_type" value="custom" />
-			<?php wp_nonce_field( 'michiryu_sekki_import_content' ); ?>
-			<?php submit_button( __( 'Import Custom Content Library', 'michiryu-sekki' ), 'secondary', 'submit', false, $custom_disabled ? array( 'disabled' => 'disabled' ) : array( 'data-importing-label' => esc_attr__( 'Importing custom content...', 'michiryu-sekki' ) ) ); ?>
-			<span class="spinner" data-michiryu-content-import-spinner></span>
-			<p class="description" data-michiryu-content-import-message hidden><?php esc_html_e( 'Importing custom content. This may take up to a minute while images are copied into WordPress.', 'michiryu-sekki' ); ?></p>
-			<?php if ( $custom_disabled ) : ?>
-				<p class="description"><?php esc_html_e( 'Enter a custom remote content URL, check all acknowledgements, and save settings before importing custom content.', 'michiryu-sekki' ); ?></p>
-			<?php endif; ?>
-		</form>
+		<div class="michiryu-sekki-admin__actions">
+			<form class="michiryu-sekki-admin__action" method="post" action="<?php echo esc_url( admin_url( 'admin-post.php' ) ); ?>" data-michiryu-content-import-form>
+				<h3><?php esc_html_e( 'Basic MichiRyu content', 'michiryu-sekki' ); ?></h3>
+				<p><?php esc_html_e( 'Imports the protected basic MichiRyu library, including stories, characters, and image references.', 'michiryu-sekki' ); ?></p>
+				<input type="hidden" name="action" value="michiryu_sekki_import_content" />
+				<input type="hidden" name="michiryu_import_type" value="basic" />
+				<?php wp_nonce_field( 'michiryu_sekki_import_content' ); ?>
+				<?php submit_button( __( 'Import Basic MichiRyu Content', 'michiryu-sekki' ), 'primary', 'submit', false, $basic_disabled ? array( 'disabled' => 'disabled' ) : array( 'data-importing-label' => esc_attr__( 'Importing content...', 'michiryu-sekki' ) ) ); ?>
+				<span class="spinner" data-michiryu-content-import-spinner></span>
+				<p class="description" data-michiryu-content-import-message hidden><?php esc_html_e( 'Importing content. This may take up to a minute while images are copied into WordPress. Please keep this tab open.', 'michiryu-sekki' ); ?></p>
+				<?php if ( $basic_disabled ) : ?>
+					<p class="description"><?php esc_html_e( 'Check all acknowledgements and save settings before importing.', 'michiryu-sekki' ); ?></p>
+				<?php endif; ?>
+			</form>
+			<form class="michiryu-sekki-admin__action" method="post" action="<?php echo esc_url( admin_url( 'admin-post.php' ) ); ?>" data-michiryu-content-import-form>
+				<h3><?php esc_html_e( 'Custom content library', 'michiryu-sekki' ); ?></h3>
+				<p><?php esc_html_e( 'Imports from the custom URL and access token saved in Advanced content settings.', 'michiryu-sekki' ); ?></p>
+				<input type="hidden" name="action" value="michiryu_sekki_import_content" />
+				<input type="hidden" name="michiryu_import_type" value="custom" />
+				<?php wp_nonce_field( 'michiryu_sekki_import_content' ); ?>
+				<?php submit_button( __( 'Import Custom Content Library', 'michiryu-sekki' ), 'secondary', 'submit', false, $custom_disabled ? array( 'disabled' => 'disabled' ) : array( 'data-importing-label' => esc_attr__( 'Importing custom content...', 'michiryu-sekki' ) ) ); ?>
+				<span class="spinner" data-michiryu-content-import-spinner></span>
+				<p class="description" data-michiryu-content-import-message hidden><?php esc_html_e( 'Importing custom content. This may take up to a minute while images are copied into WordPress. Please keep this tab open.', 'michiryu-sekki' ); ?></p>
+				<?php if ( $custom_disabled ) : ?>
+					<p class="description"><?php esc_html_e( 'Enter a custom remote content URL, check all acknowledgements, and save settings before importing custom content.', 'michiryu-sekki' ); ?></p>
+				<?php endif; ?>
+			</form>
+		</div>
 		<script>
 			(function () {
 				document.querySelectorAll( '[data-michiryu-content-import-form]' ).forEach( function ( form ) {
@@ -394,10 +425,11 @@ class MichiRyu_Sekki_Admin {
 			return;
 		}
 		?>
-		<hr />
-		<h2><?php esc_html_e( 'Remove Imported Content', 'michiryu-sekki' ); ?></h2>
-		<p><?php esc_html_e( 'Remove the locally imported MichiRyu stories, images, and import status from this WordPress site. The plugin will return to the basic local calendar until content is imported again.', 'michiryu-sekki' ); ?></p>
-		<form method="post" action="<?php echo esc_url( admin_url( 'admin-post.php' ) ); ?>">
+		<div class="michiryu-sekki-admin__danger">
+			<h3><?php esc_html_e( 'Remove imported content', 'michiryu-sekki' ); ?></h3>
+			<p><?php esc_html_e( 'Deletes the local imported MichiRyu copy and returns the plugin to the basic local calendar until content is imported again.', 'michiryu-sekki' ); ?></p>
+		</div>
+		<form class="michiryu-sekki-admin__remove-form" method="post" action="<?php echo esc_url( admin_url( 'admin-post.php' ) ); ?>">
 			<input type="hidden" name="action" value="michiryu_sekki_remove_imported_content" />
 			<?php wp_nonce_field( 'michiryu_sekki_remove_imported_content' ); ?>
 			<label>

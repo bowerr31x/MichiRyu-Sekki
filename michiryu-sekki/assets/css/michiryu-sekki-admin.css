@@ -1,0 +1,122 @@
+.michiryu-sekki-admin {
+	max-width: 1180px;
+}
+
+.michiryu-sekki-admin__lede {
+	font-size: 14px;
+	margin-bottom: 16px;
+}
+
+.michiryu-sekki-admin__notice {
+	margin: 16px 0;
+}
+
+.michiryu-sekki-admin__section {
+	background: #fff;
+	border: 1px solid #c3c4c7;
+	margin: 18px 0;
+	padding: 18px 20px 20px;
+}
+
+.michiryu-sekki-admin__section > h2 {
+	margin-top: 0;
+}
+
+.michiryu-sekki-admin__section > p {
+	max-width: 760px;
+}
+
+.michiryu-sekki-admin__section .form-table {
+	margin-top: 8px;
+}
+
+.michiryu-sekki-admin__section .form-table th {
+	width: 220px;
+}
+
+.michiryu-sekki-admin__status-table {
+	margin-top: 12px;
+	max-width: 920px;
+}
+
+.michiryu-sekki-admin__status-table th {
+	width: 260px;
+}
+
+.michiryu-sekki-admin__details {
+	border-top: 1px solid #dcdcde;
+	margin-top: 16px;
+	padding-top: 14px;
+}
+
+.michiryu-sekki-admin__details summary {
+	cursor: pointer;
+	font-weight: 600;
+}
+
+.michiryu-sekki-admin__details h3 {
+	margin-top: 18px;
+}
+
+.michiryu-sekki-admin__actions {
+	display: grid;
+	gap: 16px;
+	grid-template-columns: repeat(2, minmax(0, 1fr));
+	margin-top: 14px;
+}
+
+.michiryu-sekki-admin__action {
+	border: 1px solid #dcdcde;
+	padding: 14px 16px 16px;
+}
+
+.michiryu-sekki-admin__action h3,
+.michiryu-sekki-admin__danger h3 {
+	margin: 0 0 8px;
+}
+
+.michiryu-sekki-admin__action p {
+	margin-top: 0;
+}
+
+.michiryu-sekki-admin__action .submit {
+	display: inline-block;
+	margin: 6px 0 0;
+	padding: 0;
+}
+
+.michiryu-sekki-admin__action .spinner {
+	float: none;
+	margin-top: 8px;
+	vertical-align: middle;
+}
+
+.michiryu-sekki-admin__danger {
+	border-top: 1px solid #dcdcde;
+	margin-top: 18px;
+	padding-top: 16px;
+}
+
+.michiryu-sekki-admin__remove-form label {
+	display: block;
+	margin: 0 0 10px;
+}
+
+.michiryu-sekki-admin__remove-form .submit {
+	margin: 0;
+	padding: 0;
+}
+
+@media screen and (max-width: 782px) {
+	.michiryu-sekki-admin__section {
+		padding: 14px;
+	}
+
+	.michiryu-sekki-admin__section .form-table th {
+		width: auto;
+	}
+
+	.michiryu-sekki-admin__actions {
+		grid-template-columns: 1fr;
+	}
+}
