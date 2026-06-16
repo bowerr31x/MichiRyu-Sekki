@@ -36,6 +36,7 @@ class MichiRyu_Sekki_Admin {
 		add_action( 'admin_menu', array( $this, 'add_menu' ) );
 		add_action( 'admin_init', array( $this, 'register_settings' ) );
 		add_action( 'admin_post_michiryu_sekki_import_content', array( $this, 'handle_content_import' ) );
+		add_action( 'admin_post_michiryu_sekki_remove_imported_content', array( $this, 'handle_remove_imported_content' ) );
 	}
 
 	/**
@@ -178,6 +179,7 @@ class MichiRyu_Sekki_Admin {
 				<?php submit_button(); ?>
 			</form>
 			<?php $this->render_import_forms( $options ); ?>
+			<?php $this->render_remove_imported_content_form(); ?>
 		</div>
 		<?php
 	}
@@ -213,6 +215,32 @@ class MichiRyu_Sekki_Admin {
 					$this->get_basic_content_token( $options )
 				);
 			}
+		}
+
+		set_transient( $this->get_import_notice_key(), $result, MINUTE_IN_SECONDS );
+
+		wp_safe_redirect( admin_url( 'admin.php?page=michiryu&michiryu_import=1' ) );
+		exit;
+	}
+
+	/**
+	 * Handle imported content removal.
+	 */
+	public function handle_remove_imported_content() {
+		if ( ! current_user_can( 'manage_options' ) ) {
+			wp_die( esc_html__( 'You do not have permission to remove MichiRyu content.', 'michiryu-sekki' ) );
+		}
+
+		check_admin_referer( 'michiryu_sekki_remove_imported_content' );
+
+		if ( empty( $_POST['michiryu_confirm_remove_imported_content'] ) ) {
+			$result = array(
+				'success' => false,
+				'message' => __( 'Confirm that you want to remove imported content before continuing.', 'michiryu-sekki' ),
+			);
+		} else {
+			$importer = new MichiRyu_Sekki_Content_Importer();
+			$result = $importer->remove_imported_content();
 		}
 
 		set_transient( $this->get_import_notice_key(), $result, MINUTE_IN_SECONDS );
@@ -332,6 +360,29 @@ class MichiRyu_Sekki_Admin {
 				} );
 			}());
 		</script>
+		<?php
+	}
+
+	/**
+	 * Render imported content removal form.
+	 */
+	private function render_remove_imported_content_form() {
+		if ( empty( MichiRyu_Sekki_Content_Importer::get_status() ) && ! MichiRyu_Sekki_Imported_Content_Provider::has_imported_content() ) {
+			return;
+		}
+		?>
+		<hr />
+		<h2><?php esc_html_e( 'Remove Imported Content', 'michiryu-sekki' ); ?></h2>
+		<p><?php esc_html_e( 'Remove the locally imported MichiRyu stories, images, and import status from this WordPress site. The plugin will return to the basic local calendar until content is imported again.', 'michiryu-sekki' ); ?></p>
+		<form method="post" action="<?php echo esc_url( admin_url( 'admin-post.php' ) ); ?>">
+			<input type="hidden" name="action" value="michiryu_sekki_remove_imported_content" />
+			<?php wp_nonce_field( 'michiryu_sekki_remove_imported_content' ); ?>
+			<label>
+				<input type="checkbox" name="michiryu_confirm_remove_imported_content" value="1" />
+				<?php esc_html_e( 'I understand this will delete the local imported MichiRyu content copy from this site.', 'michiryu-sekki' ); ?>
+			</label>
+			<?php submit_button( __( 'Remove Imported Content', 'michiryu-sekki' ), 'delete', 'submit', false ); ?>
+		</form>
 		<?php
 	}
 

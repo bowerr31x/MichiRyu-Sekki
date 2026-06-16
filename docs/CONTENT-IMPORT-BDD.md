@@ -98,6 +98,16 @@ When the administrator opens the MichiRyu Content Library settings
 Then the import action is disabled
 And the screen explains what is required before importing
 
+## Scenario: Administrator Removes Imported Content
+
+Given content has been imported into local WordPress storage
+When the administrator opens the MichiRyu Content Library settings
+Then the administrator sees a Remove Imported Content action
+When the administrator confirms removal
+Then the plugin deletes the local imported content copy
+And the plugin clears import status
+And the plugin returns to the basic local calendar provider
+
 ## Scenario: MichiRyu Service Is Unavailable
 
 Given the administrator attempts an import or update

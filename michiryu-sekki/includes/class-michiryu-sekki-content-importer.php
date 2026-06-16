@@ -98,6 +98,41 @@ class MichiRyu_Sekki_Content_Importer {
 	}
 
 	/**
+	 * Remove locally imported content.
+	 *
+	 * @return array<string,mixed>
+	 */
+	public function remove_imported_content() {
+		$content_path = MichiRyu_Sekki_Imported_Content_Provider::get_content_path();
+		$upload_dir   = wp_upload_dir();
+		$uploads_path = is_array( $upload_dir ) && ! empty( $upload_dir['basedir'] ) ? realpath( $upload_dir['basedir'] ) : false;
+		$content_realpath = realpath( $content_path );
+
+		if ( false === $content_realpath ) {
+			delete_option( self::OPTION_NAME );
+			return array(
+				'success' => true,
+				'message' => __( 'Imported content status was cleared. No imported content folder was found.', 'michiryu-sekki' ),
+			);
+		}
+
+		if ( false === $uploads_path || 0 !== strpos( $content_realpath, rtrim( $uploads_path, '/\\' ) . DIRECTORY_SEPARATOR ) ) {
+			return $this->error( __( 'The imported content folder is outside WordPress uploads and was not removed.', 'michiryu-sekki' ) );
+		}
+
+		if ( ! $this->delete_directory( $content_realpath ) ) {
+			return $this->error( __( 'WordPress could not remove the imported content folder.', 'michiryu-sekki' ) );
+		}
+
+		delete_option( self::OPTION_NAME );
+
+		return array(
+			'success' => true,
+			'message' => __( 'Imported MichiRyu content was removed from this site.', 'michiryu-sekki' ),
+		);
+	}
+
+	/**
 	 * Normalize a remote content URL.
 	 *
 	 * @param string $remote_url Remote URL.
@@ -297,6 +332,35 @@ class MichiRyu_Sekki_Content_Importer {
 		}
 
 		return $path;
+	}
+
+	/**
+	 * Delete a directory tree.
+	 *
+	 * @param string $directory Directory path.
+	 * @return bool
+	 */
+	private function delete_directory( $directory ) {
+		if ( ! is_dir( $directory ) ) {
+			return true;
+		}
+
+		$iterator = new RecursiveIteratorIterator(
+			new RecursiveDirectoryIterator( $directory, FilesystemIterator::SKIP_DOTS ),
+			RecursiveIteratorIterator::CHILD_FIRST
+		);
+
+		foreach ( $iterator as $item ) {
+			if ( $item->isDir() ) {
+				if ( ! rmdir( $item->getPathname() ) ) {
+					return false;
+				}
+			} elseif ( ! unlink( $item->getPathname() ) ) {
+				return false;
+			}
+		}
+
+		return rmdir( $directory );
 	}
 
 	/**

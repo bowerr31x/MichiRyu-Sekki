@@ -137,6 +137,11 @@ wp-content/uploads/michiryu-sekki-content/
 When imported content exists and no stronger provider is configured, the plugin
 uses the imported provider instead of making ongoing remote requests.
 
+The admin Content Library screen may remove imported content from local
+WordPress storage. Removal deletes the plugin-owned imported content directory
+under `wp-content/uploads/michiryu-sekki-content/` and clears import status. It
+does not remove remote content and does not affect the GPL plugin files.
+
 ## Required Interface
 
 Custom providers must implement `MichiRyu_Sekki_Content_Provider_Interface`.
