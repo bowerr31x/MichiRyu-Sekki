@@ -485,9 +485,9 @@ The server endpoint should:
 * Avoid receiving visitor or member personal data.
 * Preserve the plugin's local-import model after content is downloaded.
 
-The current static folder should not be locked down until the protected endpoint
-remains stable in hosted testing, because the API still reads from that same
-content directory.
+The current static folder may now be locked down with a reversible `.htaccess`
+file because the protected endpoint has passed hosted Basic Import testing. The
+API still reads from that same content directory through the server filesystem.
 
 Current operating decision:
 
@@ -504,6 +504,18 @@ https://www.bowerr31x.com/michiryu-content-api/index.php?route=manifest
 
 The prior static folder path remains useful as a fallback and for server-side
 content storage, but should not be treated as the long-term public access model.
+
+Static-folder lockdown package:
+
+```text
+michiryu-content-lockdown/
+```
+
+Rollback is removing:
+
+```text
+/home1/bowerrx1/public_html/michiryu-content/.htaccess
+```
 
 See:
 
@@ -881,9 +893,10 @@ The project is considered compliant when:
 1. Hide basic content URL behind a simple Import Basic MichiRyu Content action. ✓
 2. Keep custom URL/token controls as advanced settings. ✓
 3. Add user-specific premium license token scaffold. ✓
-4. Add server-side entitlement validation for premium manifests.
-5. Add community content providers.
-6. Add subscription services.
-7. Add educational content marketplace.
+4. Lock down public browser access to the static content folder. ✓
+5. Add server-side entitlement validation for premium manifests.
+6. Add community content providers.
+7. Add subscription services.
+8. Add educational content marketplace.
 
 This approach turns MichiRyu-Sekki into a reusable seasonal calendar platform, while keeping Yuki no Sato and all associated creative works exclusively under your control.

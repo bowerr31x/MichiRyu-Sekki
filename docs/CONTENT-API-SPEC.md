@@ -198,5 +198,25 @@ storage and must not expose license tokens on frontend pages.
 4. Confirm token-based import works. ✓
 5. Point the plugin basic content URL to the API endpoint when hardened. ✓
 6. Add premium token validation and premium manifests later.
-7. Lock down or remove public access to the static folder only after the API
-   endpoint is stable.
+7. Lock down public browser access to the static folder after the API endpoint
+   is stable. ✓
+8. Add premium token validation and premium manifests later.
+
+## Static Folder Lockdown
+
+After the protected API has passed hosted Basic Import testing, the public
+static content folder may be blocked from direct browser access with an
+`.htaccess` file inside:
+
+```text
+/home1/bowerrx1/public_html/michiryu-content/.htaccess
+```
+
+The lockdown file should deny web requests to the static folder but leave the
+files readable on disk for:
+
+```text
+/home1/bowerrx1/public_html/michiryu-content-api/
+```
+
+Rollback is simply removing that `.htaccess` file.

@@ -55,8 +55,9 @@ Rationale:
 
 Consequences:
 
-- The current public static folder should not be locked down until the
-  protected endpoint remains stable in hosted testing.
+- The public static folder may be locked down once the protected endpoint
+  remains stable in hosted testing. The API reads the same files through the
+  server filesystem, so direct browser access is not required.
 - Basic shared tokens are not strong security and must not be used for valuable
   premium content.
 - Premium imports require a server component that can validate license tokens
