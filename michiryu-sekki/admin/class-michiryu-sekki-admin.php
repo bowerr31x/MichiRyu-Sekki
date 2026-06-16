@@ -105,6 +105,13 @@ class MichiRyu_Sekki_Admin {
 						</td>
 					</tr>
 					<tr>
+						<th scope="row"><label for="michiryu-sekki-content-access-token"><?php esc_html_e( 'Content access token', 'michiryu-sekki' ); ?></label></th>
+						<td>
+							<input id="michiryu-sekki-content-access-token" type="password" class="regular-text" autocomplete="off" name="<?php echo esc_attr( MichiRyu_Sekki::OPTION_NAME ); ?>[content_access_token]" value="<?php echo esc_attr( $options['content_access_token'] ); ?>" />
+							<p class="description"><?php esc_html_e( 'Optional. When present, import requests send this as an Authorization bearer token.', 'michiryu-sekki' ); ?></p>
+						</td>
+					</tr>
+					<tr>
 						<th scope="row"><?php esc_html_e( 'Import consent', 'michiryu-sekki' ); ?></th>
 						<td>
 							<?php $this->render_checkbox_field( 'content_import_ack_copyright', __( 'I understand this will download MichiRyu copyrighted content to this site.', 'michiryu-sekki' ), $options['content_import_ack_copyright'] ); ?>
@@ -191,7 +198,7 @@ class MichiRyu_Sekki_Admin {
 			);
 		} else {
 			$importer = new MichiRyu_Sekki_Content_Importer();
-			$result = $importer->import( $options['content_library_url'] ?? '' );
+			$result = $importer->import( $options['content_library_url'] ?? '', $options['content_access_token'] ?? '' );
 		}
 
 		set_transient( $this->get_import_notice_key(), $result, MINUTE_IN_SECONDS );
@@ -362,6 +369,10 @@ class MichiRyu_Sekki_Admin {
 			$rows[] = array(
 				'label' => __( 'Imported image references', 'michiryu-sekki' ),
 				'value' => isset( $import_status['images'] ) ? (string) $import_status['images'] : __( 'Unknown', 'michiryu-sekki' ),
+			);
+			$rows[] = array(
+				'label' => __( 'Token used for last import', 'michiryu-sekki' ),
+				'value' => ! empty( $import_status['uses_token'] ) ? __( 'Yes', 'michiryu-sekki' ) : __( 'No', 'michiryu-sekki' ),
 			);
 		}
 

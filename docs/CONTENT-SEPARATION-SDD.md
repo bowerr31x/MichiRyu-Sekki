@@ -2,7 +2,7 @@
 
 ## MichiRyu-Sekki Content Separation Architecture
 
-### Version 1.1
+### Version 1.2
 
 ### June 2026
 
@@ -297,8 +297,6 @@ No proprietary maps.
 
 # 7. MichiRyu Content Import
 
-Future implementation.
-
 ## Architecture
 
 The preferred MichiRyu content model is:
@@ -331,6 +329,114 @@ Character information
 Educational materials
 
 Premium seasonal content
+
+---
+
+## Implemented Import Model
+
+The current implementation supports a manual remote content import:
+
+```text
+MichiRyu Content Library URL
+        ↓
+Admin consent
+        ↓
+Manual import
+        ↓
+Local WordPress uploads storage
+        ↓
+Imported Content Provider
+```
+
+The import reads:
+
+```text
+featured-content.json
+images.json
+referenced image files
+```
+
+Imported content is stored under the local WordPress uploads directory and is
+used for normal frontend rendering without constant remote calls.
+
+---
+
+## Target User Experience
+
+The long-term admin experience should avoid exposing low-level content URLs to
+ordinary site administrators.
+
+Preferred basic-content flow:
+
+```text
+MichiRyu Content Library
+
+[Import Basic MichiRyu Content]
+
+Advanced settings
+Remote content URL: hidden by default
+Content access token: hidden by default
+```
+
+The plugin may provide internal defaults for basic MichiRyu content:
+
+```text
+Default content library URL
+Default basic access token
+```
+
+These defaults are used only to import the basic MichiRyu content package into
+the site. After import, the site uses its local WordPress copy.
+
+The remote URL and token fields should remain available as advanced settings for
+development, testing, self-hosted content libraries, and support.
+
+---
+
+## Token and License Strategy
+
+The import architecture supports an optional content access token.
+
+When a token is present, the importer sends:
+
+```text
+Authorization: Bearer <token>
+```
+
+The token applies to:
+
+* `featured-content.json`
+* `images.json`
+* Referenced image files
+
+For basic content, a built-in or hidden token may be used as a convenience gate.
+However, a token embedded in a public GPL plugin is not a true secret because
+users can inspect the plugin code.
+
+Therefore:
+
+* Hidden/basic tokens may reduce accidental public discovery.
+* Hidden/basic tokens must not be treated as strong premium-content protection.
+* Premium content must use user-specific license or subscription tokens.
+* Premium token validation must happen server-side.
+* Premium content should be imported locally only after the server confirms
+  entitlement.
+
+Preferred future premium flow:
+
+```text
+Premium Content
+License token: [ user enters token ]
+[Connect Premium Library]
+        ↓
+Server validates entitlement
+        ↓
+Premium manifest is imported locally
+        ↓
+Frontend renders from local WordPress copy
+```
+
+The plugin must not expose license tokens on frontend pages.
 
 ---
 
@@ -394,6 +500,22 @@ Optional update modes:
 ```
 
 Automatic update checks shall be opt-in.
+
+---
+
+## Advanced Settings
+
+Advanced settings may include:
+
+* Custom remote content URL.
+* Optional content access token.
+* Manual re-import action.
+* Remove imported content action.
+* Last import timestamp.
+* Imported story, character, and image counts.
+
+Advanced settings should be available for debugging and custom deployments, but
+the default setup path should remain a simple import action.
 
 ---
 
@@ -672,18 +794,22 @@ The project is considered compliant when:
 
 **Phase 2 (Future)**
 
-1. Build MichiRyu Content Library import service.
-2. Add admin-approved import workflow.
-3. Store imported content locally in WordPress.
-4. Use manual content updates by default.
-5. Add opt-in update checks.
-6. Provide import status, error handling, and re-import controls.
+1. Build MichiRyu Content Library import service. ✓
+2. Add admin-approved import workflow. ✓
+3. Store imported content locally in WordPress. ✓
+4. Use manual content updates by default. ✓
+5. Add optional content access token support. ✓
+6. Add opt-in update checks.
+7. Provide import status, error handling, re-import controls, and remove-imported-content controls.
 
 **Phase 3 (Future)**
 
-1. Premium content support.
-2. Community content providers.
-3. Subscription services.
-4. Educational content marketplace.
+1. Hide basic content URL behind a simple Import Basic MichiRyu Content action.
+2. Keep custom URL/token controls as advanced settings.
+3. Add user-specific premium license token support.
+4. Add server-side entitlement validation for premium manifests.
+5. Add community content providers.
+6. Add subscription services.
+7. Add educational content marketplace.
 
 This approach turns MichiRyu-Sekki into a reusable seasonal calendar platform, while keeping Yuki no Sato and all associated creative works exclusively under your control.

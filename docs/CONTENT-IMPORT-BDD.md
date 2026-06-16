@@ -67,6 +67,18 @@ directory
 And the imported content provider can render the local copy without constant
 remote requests
 
+## Scenario: Administrator Imports With An Access Token
+
+Given the administrator has entered a remote content URL
+And the administrator has entered a content access token
+And the administrator has saved all import acknowledgements
+When the administrator starts the import
+Then requests to featured-content.json, images.json, and referenced images send
+the token as an Authorization bearer token
+And the token is not displayed in the Content Provider Status panel
+And the imported local copy works without sending the token on frontend page
+views
+
 ## Scenario: Import Action Is Disabled Until Ready
 
 Given the administrator has not entered a remote content URL

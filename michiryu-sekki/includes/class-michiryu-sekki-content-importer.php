@@ -19,10 +19,12 @@ class MichiRyu_Sekki_Content_Importer {
 	 * Import a remote content library.
 	 *
 	 * @param string $remote_url Remote content library base URL.
+	 * @param string $access_token Optional access token.
 	 * @return array<string,mixed>
 	 */
-	public function import( $remote_url ) {
+	public function import( $remote_url, $access_token = '' ) {
 		$remote_url = $this->normalize_remote_url( $remote_url );
+		$access_token = trim( (string) $access_token );
 
 		if ( '' === $remote_url ) {
 			return $this->error( __( 'Enter a valid remote content URL.', 'michiryu-sekki' ) );
@@ -33,12 +35,12 @@ class MichiRyu_Sekki_Content_Importer {
 			return $this->error( __( 'WordPress could not create the local content folder.', 'michiryu-sekki' ) );
 		}
 
-		$featured_content = $this->fetch_json( $remote_url . '/featured-content.json' );
+		$featured_content = $this->fetch_json( $remote_url . '/featured-content.json', $access_token );
 		if ( is_wp_error( $featured_content ) ) {
 			return $this->error( $featured_content->get_error_message() );
 		}
 
-		$images = $this->fetch_json( $remote_url . '/images.json' );
+		$images = $this->fetch_json( $remote_url . '/images.json', $access_token );
 		if ( is_wp_error( $images ) ) {
 			return $this->error( $images->get_error_message() );
 		}
@@ -51,7 +53,7 @@ class MichiRyu_Sekki_Content_Importer {
 			return $this->error( __( 'images.json must be a JSON object.', 'michiryu-sekki' ) );
 		}
 
-		$image_result = $this->import_images( $remote_url, $images, $content_path );
+		$image_result = $this->import_images( $remote_url, $images, $content_path, $access_token );
 		if ( is_wp_error( $image_result ) ) {
 			return $this->error( $image_result->get_error_message() );
 		}
@@ -66,6 +68,7 @@ class MichiRyu_Sekki_Content_Importer {
 			'characters'    => count( $featured_content['characters'] ),
 			'images'        => count( $images ),
 			'images_copied' => (int) $image_result['copied'],
+			'uses_token'    => '' !== $access_token,
 		);
 
 		update_option( self::OPTION_NAME, $status, false );
@@ -114,14 +117,18 @@ class MichiRyu_Sekki_Content_Importer {
 	 * Fetch a JSON document.
 	 *
 	 * @param string $url JSON URL.
+	 * @param string $access_token Optional access token.
 	 * @return array<string,mixed>|WP_Error
 	 */
-	private function fetch_json( $url ) {
+	private function fetch_json( $url, $access_token = '' ) {
 		$response = wp_remote_get(
 			$url,
-			array(
-				'timeout'     => 20,
-				'redirection' => 3,
+			$this->get_request_args(
+				array(
+					'timeout'     => 20,
+					'redirection' => 3,
+				),
+				$access_token
 			)
 		);
 
@@ -157,9 +164,10 @@ class MichiRyu_Sekki_Content_Importer {
 	 * @param string              $remote_url Remote content base URL.
 	 * @param array<string,mixed> $images Image mapping.
 	 * @param string              $content_path Local content path.
+	 * @param string              $access_token Optional access token.
 	 * @return array<string,int>|WP_Error
 	 */
-	private function import_images( $remote_url, $images, $content_path ) {
+	private function import_images( $remote_url, $images, $content_path, $access_token = '' ) {
 		$copied = 0;
 
 		foreach ( $images as $image ) {
@@ -178,7 +186,7 @@ class MichiRyu_Sekki_Content_Importer {
 				$source_url = $image['url'];
 			}
 
-			$result = $this->download_file( $source_url, $content_path . '/' . $relative_path );
+			$result = $this->download_file( $source_url, $content_path . '/' . $relative_path, $access_token );
 			if ( is_wp_error( $result ) ) {
 				return $result;
 			}
@@ -193,14 +201,18 @@ class MichiRyu_Sekki_Content_Importer {
 	 *
 	 * @param string $source_url Source URL.
 	 * @param string $destination Destination path.
+	 * @param string $access_token Optional access token.
 	 * @return true|WP_Error
 	 */
-	private function download_file( $source_url, $destination ) {
+	private function download_file( $source_url, $destination, $access_token = '' ) {
 		$response = wp_remote_get(
 			$source_url,
-			array(
-				'timeout'     => 30,
-				'redirection' => 3,
+			$this->get_request_args(
+				array(
+					'timeout'     => 30,
+					'redirection' => 3,
+				),
+				$access_token
 			)
 		);
 
@@ -243,6 +255,26 @@ class MichiRyu_Sekki_Content_Importer {
 	 */
 	private function write_json( $path, $data ) {
 		file_put_contents( $path, wp_json_encode( $data, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES ) . "\n" );
+	}
+
+	/**
+	 * Return remote request arguments.
+	 *
+	 * @param array<string,mixed> $args Request arguments.
+	 * @param string              $access_token Optional access token.
+	 * @return array<string,mixed>
+	 */
+	private function get_request_args( $args, $access_token ) {
+		$access_token = trim( (string) $access_token );
+		if ( '' === $access_token ) {
+			return $args;
+		}
+
+		$headers = is_array( $args['headers'] ?? null ) ? $args['headers'] : array();
+		$headers['Authorization'] = 'Bearer ' . $access_token;
+		$args['headers'] = $headers;
+
+		return $args;
 	}
 
 	/**

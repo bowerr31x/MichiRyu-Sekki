@@ -89,6 +89,17 @@ images.json
 images/...
 ```
 
+The optional Content access token is sent during import requests as:
+
+```text
+Authorization: Bearer <token>
+```
+
+If a hosted content library requires a token, it should apply the same
+authorization rule to `featured-content.json`, `images.json`, and referenced
+image files. Tokens are used only during import and are not needed for normal
+frontend rendering after content has been copied into WordPress.
+
 After import, the plugin stores the local copy under:
 
 ```text
