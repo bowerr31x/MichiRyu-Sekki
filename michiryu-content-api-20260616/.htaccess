@@ -1,7 +1,14 @@
-RewriteEngine On
-RewriteRule ^manifest/?$ index.php?route=manifest [L,QSA]
-RewriteRule ^file/?$ index.php?route=file [L,QSA]
+Options -Indexes
 
 <Files "config.php">
     Require all denied
 </Files>
+
+<Files "config.example.php">
+    Require all denied
+</Files>
+
+RewriteEngine On
+RewriteRule ^health/?$ index.php?route=health [L,QSA]
+RewriteRule ^manifest/?$ index.php?route=manifest [L,QSA]
+RewriteRule ^file/?$ index.php?route=file [L,QSA]

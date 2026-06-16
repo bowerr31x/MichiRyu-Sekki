@@ -1,9 +1,6 @@
 <?php
 /**
- * Example config for MichiRyu Content API.
- *
- * Copy to config.php on the server and fill in deployment values.
- * Do not commit real secrets.
+ * Copy this file to config.php and edit values on the hosted server.
  */
 
 return array(
@@ -13,7 +10,10 @@ return array(
     'base_url' => 'https://www.bowerr31x.com/michiryu-content-api',
     'content_root' => '/home1/bowerrx1/public_html/michiryu-content',
 
-    // Leave empty for public testing. For a soft gate, set this to hash('sha256', '<token>').
-    // Premium content should use server-side user/license validation instead.
+    // Leave empty only during initial setup. Use a SHA-256 token hash for basic access.
     'basic_token_hash' => '',
+
+    // File serving guardrails.
+    'allowed_extensions' => array('json', 'jpg', 'jpeg', 'png', 'svg', 'webp', 'pdf', 'md', 'txt'),
+    'max_file_bytes' => 26214400,
 );
