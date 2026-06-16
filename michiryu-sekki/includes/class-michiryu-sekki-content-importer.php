@@ -35,12 +35,17 @@ class MichiRyu_Sekki_Content_Importer {
 			return $this->error( __( 'WordPress could not create the local content folder.', 'michiryu-sekki' ) );
 		}
 
-		$featured_content = $this->fetch_json( $remote_url . '/featured-content.json', $access_token );
+		$source = $this->resolve_content_source( $remote_url, $access_token );
+		if ( is_wp_error( $source ) ) {
+			return $this->error( $source->get_error_message() );
+		}
+
+		$featured_content = $this->fetch_json( $source['featured_content_url'], $access_token );
 		if ( is_wp_error( $featured_content ) ) {
 			return $this->error( $featured_content->get_error_message() );
 		}
 
-		$images = $this->fetch_json( $remote_url . '/images.json', $access_token );
+		$images = $this->fetch_json( $source['images_url'], $access_token );
 		if ( is_wp_error( $images ) ) {
 			return $this->error( $images->get_error_message() );
 		}
@@ -53,7 +58,7 @@ class MichiRyu_Sekki_Content_Importer {
 			return $this->error( __( 'images.json must be a JSON object.', 'michiryu-sekki' ) );
 		}
 
-		$image_result = $this->import_images( $remote_url, $images, $content_path, $access_token );
+		$image_result = $this->import_images( $source, $images, $content_path, $access_token );
 		if ( is_wp_error( $image_result ) ) {
 			return $this->error( $image_result->get_error_message() );
 		}
@@ -63,6 +68,7 @@ class MichiRyu_Sekki_Content_Importer {
 
 		$status = array(
 			'remote_url'    => $remote_url,
+			'source_type'   => $source['type'],
 			'imported_at'   => current_time( 'mysql' ),
 			'stories'       => count( $featured_content['stories'] ),
 			'characters'    => count( $featured_content['characters'] ),
@@ -194,15 +200,89 @@ class MichiRyu_Sekki_Content_Importer {
 	}
 
 	/**
+	 * Resolve a static-folder or manifest-based content source.
+	 *
+	 * @param string $remote_url Remote URL.
+	 * @param string $access_token Optional access token.
+	 * @return array<string,string>|WP_Error
+	 */
+	private function resolve_content_source( $remote_url, $access_token = '' ) {
+		$manifest_url = $this->looks_like_manifest_url( $remote_url ) ? $remote_url : $remote_url . '/manifest';
+		$manifest = $this->fetch_json( $manifest_url, $access_token );
+
+		if ( is_array( $manifest ) && ( ! empty( $manifest['featured_content_url'] ) || ! empty( $manifest['featured_content'] ) ) && ( ! empty( $manifest['images_url'] ) || ! empty( $manifest['images'] ) ) ) {
+			return $this->source_from_manifest( $remote_url, $manifest );
+		}
+
+		if ( $this->looks_like_manifest_url( $remote_url ) ) {
+			return is_wp_error( $manifest ) ? $manifest : new WP_Error( 'michiryu_sekki_import_manifest', __( 'The content manifest did not include featured content and image URLs.', 'michiryu-sekki' ) );
+		}
+
+		return array(
+			'type'                 => 'static',
+			'base_url'             => $remote_url,
+			'featured_content_url' => $remote_url . '/featured-content.json',
+			'images_url'           => $remote_url . '/images.json',
+			'file_base_url'        => $remote_url . '/',
+		);
+	}
+
+	/**
+	 * Return a source definition from manifest data.
+	 *
+	 * @param string              $remote_url Remote URL.
+	 * @param array<string,mixed> $manifest Manifest data.
+	 * @return array<string,string>
+	 */
+	private function source_from_manifest( $remote_url, $manifest ) {
+		$base_url = ! empty( $manifest['base_url'] ) && is_string( $manifest['base_url'] ) ? rtrim( $manifest['base_url'], '/' ) : $remote_url;
+		$file_base_url = ! empty( $manifest['file_base_url'] ) && is_string( $manifest['file_base_url'] ) ? $manifest['file_base_url'] : $base_url . '/';
+
+		return array(
+			'type'                 => 'manifest',
+			'base_url'             => $base_url,
+			'featured_content_url' => $this->resolve_manifest_url( $base_url, $manifest['featured_content_url'] ?? $manifest['featured_content'] ?? 'featured-content.json' ),
+			'images_url'           => $this->resolve_manifest_url( $base_url, $manifest['images_url'] ?? $manifest['images'] ?? 'images.json' ),
+			'file_base_url'        => $file_base_url,
+		);
+	}
+
+	/**
+	 * Resolve a manifest URL or relative path.
+	 *
+	 * @param string $base_url Base URL.
+	 * @param mixed  $value URL or path value.
+	 * @return string
+	 */
+	private function resolve_manifest_url( $base_url, $value ) {
+		$value = trim( (string) $value );
+		if ( preg_match( '#^https?://#i', $value ) ) {
+			return $value;
+		}
+
+		return rtrim( $base_url, '/' ) . '/' . ltrim( $value, '/' );
+	}
+
+	/**
+	 * Return whether a URL appears to be a manifest endpoint.
+	 *
+	 * @param string $remote_url Remote URL.
+	 * @return bool
+	 */
+	private function looks_like_manifest_url( $remote_url ) {
+		return false !== strpos( $remote_url, 'route=manifest' ) || preg_match( '#/manifest/?$#', $remote_url );
+	}
+
+	/**
 	 * Import image files referenced by images.json.
 	 *
-	 * @param string              $remote_url Remote content base URL.
+	 * @param array<string,string> $source Content source.
 	 * @param array<string,mixed> $images Image mapping.
 	 * @param string              $content_path Local content path.
 	 * @param string              $access_token Optional access token.
 	 * @return array<string,int>|WP_Error
 	 */
-	private function import_images( $remote_url, $images, $content_path, $access_token = '' ) {
+	private function import_images( $source, $images, $content_path, $access_token = '' ) {
 		$copied = 0;
 
 		foreach ( $images as $image ) {
@@ -216,7 +296,7 @@ class MichiRyu_Sekki_Content_Importer {
 				continue;
 			}
 
-			$source_url = $remote_url . '/' . $relative_path;
+			$source_url = $this->get_source_file_url( $source, $relative_path );
 			if ( is_array( $image ) && ! empty( $image['url'] ) && is_string( $image['url'] ) && preg_match( '#^https?://#i', $image['url'] ) ) {
 				$source_url = $image['url'];
 			}
@@ -229,6 +309,23 @@ class MichiRyu_Sekki_Content_Importer {
 		}
 
 		return array( 'copied' => $copied );
+	}
+
+	/**
+	 * Return the remote URL for a source file path.
+	 *
+	 * @param array<string,string> $source Content source.
+	 * @param string               $relative_path Relative path.
+	 * @return string
+	 */
+	private function get_source_file_url( $source, $relative_path ) {
+		$file_base_url = $source['file_base_url'] ?? ( ( $source['base_url'] ?? '' ) . '/' );
+
+		if ( false !== strpos( $file_base_url, '?' ) ) {
+			return $file_base_url . rawurlencode( $relative_path );
+		}
+
+		return rtrim( $file_base_url, '/' ) . '/' . ltrim( $relative_path, '/' );
 	}
 
 	/**

@@ -78,6 +78,16 @@ And the remote URL and token controls are contained in Advanced content settings
 When the administrator starts the basic import
 Then the plugin imports the basic content package into local WordPress storage
 
+## Scenario: Administrator Imports From A Manifest Endpoint
+
+Given the administrator has entered a manifest endpoint URL
+And the administrator has saved all import acknowledgements
+When the administrator starts the import
+Then the plugin reads the manifest
+And the plugin downloads featured content and images from the manifest URLs
+And relative image paths are downloaded through the manifest file base URL
+And the imported content provider renders the local WordPress copy
+
 ## Scenario: Administrator Imports With An Access Token
 
 Given the administrator has entered a remote content URL

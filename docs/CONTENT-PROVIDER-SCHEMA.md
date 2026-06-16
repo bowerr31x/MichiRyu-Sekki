@@ -90,6 +90,19 @@ images.json
 images/...
 ```
 
+Or it may be a manifest endpoint that returns:
+
+```json
+{
+  "featured_content_url": "https://example.com/api/file?path=featured-content.json",
+  "images_url": "https://example.com/api/file?path=images.json",
+  "file_base_url": "https://example.com/api/file?path="
+}
+```
+
+When a manifest supplies `file_base_url`, relative image paths from
+`images.json` are appended to that URL and downloaded through the endpoint.
+
 The optional Content access token is sent during import requests as:
 
 ```text
