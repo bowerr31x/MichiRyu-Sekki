@@ -446,6 +446,47 @@ The plugin must not expose license tokens on frontend pages.
 
 ---
 
+## Hosted Content Protection
+
+The current hosted content library may remain publicly reachable while the
+import workflow is being tested.
+
+Long term, the project should move from direct public static file access toward
+a server-side content endpoint that can validate access before serving manifests
+or assets.
+
+Preferred endpoint direction:
+
+```text
+https://content.michiryu.com/basic/manifest
+https://content.michiryu.com/premium/manifest
+```
+
+Temporary endpoint direction if hosted under the current account:
+
+```text
+https://www.bowerr31x.com/michiryu-content-api/manifest
+```
+
+The server endpoint should:
+
+* Accept bearer tokens from the importer.
+* Validate basic or premium access server-side.
+* Return only the manifest and assets allowed for that token.
+* Avoid receiving visitor or member personal data.
+* Preserve the plugin's local-import model after content is downloaded.
+
+The current static folder should not be locked down until the protected endpoint
+exists, because doing so would break the working import path.
+
+See:
+
+```text
+docs/adr/ADR-003-Content-Library-Access-Control.md
+```
+
+---
+
 ## Admin Approval
 
 The plugin shall not silently download proprietary content on activation.

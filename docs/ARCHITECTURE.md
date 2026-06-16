@@ -83,6 +83,15 @@ The admin settings may store import consent acknowledgements and the selected
 content update mode before the network import service is implemented. Saving
 those settings must not trigger any download by itself.
 
+## Protected Content Endpoint
+
+The current basic content library can be imported from a hosted content URL.
+Long term, hosted content access should move behind a protected content API that
+validates bearer tokens server-side before returning manifests or files.
+
+The endpoint is separate content infrastructure, not plugin code. See
+`docs/CONTENT-API-SPEC.md`.
+
 ## Packaging
 
 Installable ZIP files should be generated from the `michiryu-sekki/` folder so the archive contains `michiryu-sekki/` as its top-level directory.
