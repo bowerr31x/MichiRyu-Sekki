@@ -444,6 +444,15 @@ Frontend renders from local WordPress copy
 
 The plugin must not expose license tokens on frontend pages.
 
+Current scaffold:
+
+* The admin screen may save a Premium license token for future use.
+* The saved premium token is not used by the Basic Import action.
+* No premium manifest should be requested until server-side entitlement
+  validation exists.
+* Basic content continues to use the protected basic manifest and soft basic
+  token.
+
 ---
 
 ## Hosted Content Protection
@@ -871,7 +880,7 @@ The project is considered compliant when:
 
 1. Hide basic content URL behind a simple Import Basic MichiRyu Content action. ✓
 2. Keep custom URL/token controls as advanced settings. ✓
-3. Add user-specific premium license token support.
+3. Add user-specific premium license token scaffold. ✓
 4. Add server-side entitlement validation for premium manifests.
 5. Add community content providers.
 6. Add subscription services.

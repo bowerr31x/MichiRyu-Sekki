@@ -100,6 +100,19 @@ And the token is not displayed in the Content Provider Status panel
 And the imported local copy works without sending the token on frontend page
 views
 
+## Scenario: Administrator Saves A Future Premium License Token
+
+Given premium MichiRyu content is not active yet
+When the administrator opens Advanced content settings
+Then the administrator sees a Premium license token field
+And the screen explains that premium validation is not active yet
+When the administrator saves a premium license token
+Then the token is stored locally in WordPress settings
+And the saved token is not rendered back into the settings field value
+And the administrator can clear the saved token
+And the token is not used for the current basic import
+And no premium manifest is requested
+
 ## Scenario: Import Action Is Disabled Until Ready
 
 Given the administrator has not entered a remote content URL

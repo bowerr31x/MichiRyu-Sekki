@@ -140,6 +140,29 @@ class MichiRyu_Sekki_Admin {
 							</td>
 						</tr>
 					</table>
+					<h3><?php esc_html_e( 'Future premium access', 'michiryu-sekki' ); ?></h3>
+					<table class="form-table" role="presentation">
+						<tr>
+							<th scope="row"><label for="michiryu-sekki-premium-license-token"><?php esc_html_e( 'Premium license token', 'michiryu-sekki' ); ?></label></th>
+							<td>
+								<input id="michiryu-sekki-premium-license-token" type="password" class="regular-text" autocomplete="off" name="<?php echo esc_attr( MichiRyu_Sekki::OPTION_NAME ); ?>[premium_license_token]" value="" placeholder="<?php echo ! empty( $options['premium_license_token'] ) ? esc_attr__( 'Token saved', 'michiryu-sekki' ) : ''; ?>" />
+								<p class="description"><?php esc_html_e( 'Reserved for future premium MichiRyu libraries. This token is saved locally but is not used by the current basic import.', 'michiryu-sekki' ); ?></p>
+								<?php if ( ! empty( $options['premium_license_token'] ) ) : ?>
+									<label>
+										<input type="checkbox" name="<?php echo esc_attr( MichiRyu_Sekki::OPTION_NAME ); ?>[premium_license_token_clear]" value="1" />
+										<?php esc_html_e( 'Clear saved premium license token', 'michiryu-sekki' ); ?>
+									</label>
+								<?php endif; ?>
+							</td>
+						</tr>
+						<tr>
+							<th scope="row"><?php esc_html_e( 'Premium status', 'michiryu-sekki' ); ?></th>
+							<td>
+								<p><?php echo esc_html( $this->get_premium_license_status_label( $options ) ); ?></p>
+								<p class="description"><?php esc_html_e( 'Premium validation will be added later through a server-side entitlement check before premium manifests are imported.', 'michiryu-sekki' ); ?></p>
+							</td>
+						</tr>
+					</table>
 				</details>
 
 				<h2><?php esc_html_e( 'Core Settings', 'michiryu-sekki' ); ?></h2>
@@ -422,6 +445,20 @@ class MichiRyu_Sekki_Admin {
 		 * @param string $content_token Default content token.
 		 */
 		return sanitize_text_field( apply_filters( 'michiryu_sekki_basic_content_token', $content_token ) );
+	}
+
+	/**
+	 * Return the saved premium license status label.
+	 *
+	 * @param array<string,mixed> $options Saved options.
+	 * @return string
+	 */
+	private function get_premium_license_status_label( $options ) {
+		if ( empty( $options['premium_license_token'] ) ) {
+			return __( 'No premium license token saved.', 'michiryu-sekki' );
+		}
+
+		return __( 'Premium license token saved. Validation is not active yet.', 'michiryu-sekki' );
 	}
 
 	/**

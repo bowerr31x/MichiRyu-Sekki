@@ -156,9 +156,39 @@ Current operating decision:
 
 Future plugin changes may add:
 
-- Premium license token field.
-- License validation status.
+- Premium license token validation.
+- License validation status returned by the server.
 - Re-import/update checks.
+
+## Premium License Scaffold
+
+The plugin may save a future premium license token locally, but the current
+basic import must not use that token. Premium access becomes active only after
+the server exposes an entitlement-aware endpoint.
+
+Future validation request:
+
+```text
+GET /license/status
+Authorization: Bearer <license-token>
+```
+
+Future validation response:
+
+```json
+{
+  "status": "active",
+  "library": "michiryu-premium",
+  "allowed_manifests": [
+    "premium"
+  ],
+  "expires": "2027-06-16"
+}
+```
+
+The server must return premium manifest and file URLs only after validating the
+license token. The plugin must import premium content into local WordPress
+storage and must not expose license tokens on frontend pages.
 
 ## Migration Path
 
