@@ -946,6 +946,7 @@
 	overflow: hidden;
 	width: 100%;
 	min-height: 500px;
+	max-height: none;
 	background: #eee7da;
 	border: 1px solid var(--mrs-wash);
 	border-radius: 8px;
@@ -961,6 +962,7 @@
 	position: relative;
 	width: 100%;
 	min-height: inherit;
+	min-width: 100%;
 	transform-origin: top left;
 	transition: width 160ms ease, transform 160ms ease;
 }
@@ -981,9 +983,9 @@
 .michiryu-sekki-map__image {
 	display: block;
 	width: 100%;
-	height: 100%;
-	min-height: inherit;
-	object-fit: cover;
+	height: auto;
+	min-height: 0;
+	object-fit: contain;
 }
 
 .michiryu-sekki-map__markers {
@@ -1449,7 +1451,8 @@
 }
 
 .mrs-map-modal-open,
-.mrs-learn-modal-open {
+.mrs-learn-modal-open,
+.mrs-story-modal-open {
 	overflow: hidden;
 }
 
@@ -1457,11 +1460,16 @@
 .michiryu-sekki-learn-modal {
 	position: fixed;
 	inset: 0;
+	width: 100vw;
+	height: 100vh;
+	height: 100dvh;
 	z-index: 99999;
 	display: grid;
 	place-items: center;
 	padding: 1rem;
-	overflow: hidden;
+	overflow: auto;
+	overscroll-behavior: contain;
+	-webkit-overflow-scrolling: touch;
 }
 
 .michiryu-sekki-map-modal__backdrop,
@@ -1473,21 +1481,90 @@
 
 .michiryu-sekki-map-modal__dialog,
 .michiryu-sekki-learn-modal__dialog {
+	box-sizing: border-box;
 	position: relative;
 	z-index: 1;
 	width: min(92rem, 100%);
 	max-height: min(58rem, calc(100dvh - 2rem));
 	overflow: auto;
+	overflow-x: hidden;
 	overscroll-behavior: contain;
 	-webkit-overflow-scrolling: touch;
 	padding: clamp(0.85rem, 2vw, 1.25rem);
-	background: var(--mrs-paper);
+	background: #fbfaf4;
 	border-radius: 8px;
 	box-shadow: 0 24px 70px rgba(20, 23, 19, 0.36);
 }
 
 .michiryu-sekki-learn-modal__dialog {
 	width: min(42rem, 100%);
+}
+
+.michiryu-sekki-map-modal .michiryu-sekki-map,
+.michiryu-sekki-map-modal .michiryu-sekki-map__layout,
+.michiryu-sekki-map-modal .michiryu-sekki-map__main,
+.michiryu-sekki-map-modal .michiryu-sekki-map__main-top,
+.michiryu-sekki-map-modal .michiryu-sekki-map__details,
+.michiryu-sekki-map-modal .michiryu-sekki-map__story-region,
+.michiryu-sekki-map-modal .michiryu-sekki-map__stories,
+.michiryu-sekki-map-modal .michiryu-sekki-map__story,
+.michiryu-sekki-map-modal .michiryu-sekki-map__characters {
+	max-width: 100%;
+	min-width: 0;
+}
+
+.michiryu-sekki-map-modal .michiryu-sekki-map__story p,
+.michiryu-sekki-map-modal .michiryu-sekki-map__story-spotlight p,
+.michiryu-sekki-map-modal .michiryu-sekki-map__story-reflection p,
+.michiryu-sekki-map-modal .michiryu-sekki-map__story-meta,
+.michiryu-sekki-map-modal .michiryu-sekki-map__story-meta dd {
+	max-width: 100%;
+	white-space: normal;
+	overflow-wrap: anywhere;
+	word-break: normal;
+}
+
+@media (max-width: 1200px), (max-height: 700px) {
+	.michiryu-sekki-map-modal,
+	.michiryu-sekki-learn-modal,
+	.michiryu-sekki-story-modal {
+		display: block;
+		padding: 0;
+	}
+
+	.michiryu-sekki-map-modal__dialog,
+	.michiryu-sekki-learn-modal__dialog,
+	.michiryu-sekki-story-modal__dialog {
+		position: fixed;
+		inset: 8px;
+		width: auto;
+		max-width: none;
+		height: auto;
+		max-height: none;
+	}
+
+	.michiryu-sekki-map-modal .michiryu-sekki-map__layout,
+	.michiryu-sekki-map-modal .michiryu-sekki-map__main,
+	.michiryu-sekki-map-modal .michiryu-sekki-map__main-top {
+		display: grid;
+		grid-template-columns: minmax(0, 1fr);
+	}
+
+	.michiryu-sekki-map-modal .michiryu-sekki-map__story-tabs,
+	.michiryu-sekki-map-modal .michiryu-sekki-map__story-meta {
+		grid-template-columns: minmax(0, 1fr);
+	}
+
+	.michiryu-sekki-map-modal .michiryu-sekki-map__story-controls {
+		justify-content: flex-start;
+	}
+
+	.michiryu-sekki-map-modal .michiryu-sekki-map__story p,
+	.michiryu-sekki-map-modal .michiryu-sekki-map__story-spotlight p,
+	.michiryu-sekki-map-modal .michiryu-sekki-map__story-reflection p {
+		font-size: 16px;
+		line-height: 1.55;
+	}
 }
 
 .michiryu-sekki-map-modal__close,
@@ -2069,7 +2146,7 @@
 	--mrs-moss: #687661;
 	--mrs-bark: #7b644d;
 	box-sizing: border-box;
-	max-width: 68rem;
+	max-width: min(68rem, 100%);
 	color: var(--mrs-ink);
 	background: var(--mrs-paper);
 	border: 1px solid var(--mrs-wash);
@@ -2385,6 +2462,7 @@
 .michiryu-sekki-story-reader__continue {
 	display: grid;
 	gap: 0.18rem;
+	min-width: 0;
 	min-height: 4rem;
 	padding: 0.75rem;
 	color: var(--mrs-ink);
@@ -2426,6 +2504,7 @@
 }
 
 .michiryu-sekki-story-reader__nav strong {
+	overflow-wrap: anywhere;
 	font-size: 1.02rem;
 	line-height: 1.25;
 }
@@ -2699,10 +2778,16 @@
 .michiryu-sekki-story-modal {
 	position: fixed;
 	inset: 0;
+	width: 100vw;
+	height: 100vh;
+	height: 100dvh;
 	z-index: 99999;
 	display: grid;
 	place-items: center;
 	padding: clamp(0.5rem, 2vw, 1.5rem);
+	overflow: auto;
+	overscroll-behavior: contain;
+	-webkit-overflow-scrolling: touch;
 }
 
 .michiryu-sekki-story-modal__backdrop {
@@ -2718,13 +2803,182 @@
 }
 
 .michiryu-sekki-story-modal__dialog {
+	box-sizing: border-box;
 	position: relative;
 	z-index: 1;
 	width: min(72rem, 100%);
-	max-height: min(90vh, 56rem);
+	max-width: 100%;
+	max-height: min(90dvh, 56rem);
 	overflow: auto;
+	overflow-x: hidden;
+	background: #fbfaf4;
 	border-radius: 8px;
 	box-shadow: 0 24px 80px rgba(47, 51, 45, 0.32);
+}
+
+.michiryu-sekki-story-modal .michiryu-sekki-story-reader {
+	width: 100%;
+	max-width: none;
+	overflow: visible;
+}
+
+.michiryu-sekki-story-modal .michiryu-sekki-story-reader__header,
+.michiryu-sekki-story-modal .michiryu-sekki-story-reader__body,
+.michiryu-sekki-story-modal .michiryu-sekki-story-reader__nav {
+	grid-template-columns: minmax(0, 1fr);
+}
+
+.michiryu-sekki-story-modal .michiryu-sekki-story-reader__header h2 {
+	max-width: none;
+	font-size: clamp(1.7rem, 8vw, 2.7rem);
+}
+
+.michiryu-sekki-story-modal .michiryu-sekki-story-reader__image {
+	width: 100%;
+	max-width: 100%;
+	min-height: 0;
+	aspect-ratio: 16 / 9;
+	overflow: hidden;
+}
+
+.michiryu-sekki-story-modal .michiryu-sekki-story-reader__image img:not(.michiryu-sekki-signature) {
+	width: 100%;
+	max-width: 100%;
+	height: 100%;
+	min-height: 0;
+	object-fit: contain;
+}
+
+.michiryu-sekki-story-modal .michiryu-sekki-story-reader__image .michiryu-sekki-signature {
+	max-width: calc(100% - 24px);
+	max-height: calc(100% - 24px);
+}
+
+.michiryu-sekki-story-modal .michiryu-sekki-story-reader__story {
+	grid-row: auto;
+}
+
+.michiryu-sekki-story-modal .michiryu-sekki-story-reader__story p,
+.michiryu-sekki-story-modal .michiryu-sekki-story-reader__spotlight p,
+.michiryu-sekki-story-modal .michiryu-sekki-story-reader__reflection p,
+.michiryu-sekki-story-modal .michiryu-sekki-story-reader__reflection dd {
+	max-width: 100%;
+	overflow-wrap: anywhere;
+	word-break: normal;
+}
+
+.michiryu-sekki-story-modal .michiryu-sekki-story-reader__story p {
+	font-size: clamp(1rem, 4.5vw, 1.18rem);
+	line-height: 1.62;
+}
+
+.michiryu-sekki-story-modal .michiryu-sekki-story-reader__nav-link:nth-child(2) {
+	text-align: left;
+}
+
+@media (max-width: 1200px), (max-height: 700px) {
+	.michiryu-sekki-map-modal,
+	.michiryu-sekki-learn-modal,
+	.michiryu-sekki-story-modal {
+		display: block;
+		padding: 0;
+	}
+
+	.michiryu-sekki-map-modal__dialog,
+	.michiryu-sekki-learn-modal__dialog,
+	.michiryu-sekki-story-modal__dialog {
+		position: fixed;
+		inset: 8px;
+		width: auto;
+		max-width: none;
+		height: auto;
+		max-height: none;
+	}
+}
+
+@media (orientation: landscape) and (max-height: 520px) {
+	.michiryu-sekki-map-modal,
+	.michiryu-sekki-learn-modal,
+	.michiryu-sekki-story-modal {
+		align-items: start;
+		padding: 0.5rem;
+	}
+
+	.michiryu-sekki-map-modal__dialog,
+	.michiryu-sekki-learn-modal__dialog,
+	.michiryu-sekki-story-modal__dialog {
+		position: fixed;
+		inset: 8px;
+		width: auto;
+		max-width: none;
+		height: auto;
+		max-height: none;
+	}
+
+	.michiryu-sekki-map,
+	.michiryu-sekki-map__main,
+	.michiryu-sekki-map__story-region,
+	.michiryu-sekki-map__stories,
+	.michiryu-sekki-map__story,
+	.michiryu-sekki-story-reader {
+		max-width: 100%;
+		min-width: 0;
+	}
+
+	.michiryu-sekki-map__story p,
+	.michiryu-sekki-map__story-spotlight p,
+	.michiryu-sekki-story-reader__story p,
+	.michiryu-sekki-story-reader__spotlight p {
+		overflow-wrap: anywhere;
+		font-size: 0.95rem;
+		line-height: 1.55;
+	}
+
+	.michiryu-sekki-story-modal .michiryu-sekki-story-reader__header {
+		padding: 0.85rem;
+	}
+
+	.michiryu-sekki-story-modal .michiryu-sekki-story-reader__body,
+	.michiryu-sekki-story-modal .michiryu-sekki-story-reader__nav {
+		padding-left: 0.85rem;
+		padding-right: 0.85rem;
+	}
+
+	.michiryu-sekki-story-modal .michiryu-sekki-story-reader__story p {
+		font-size: 0.98rem;
+		line-height: 1.55;
+	}
+
+	.michiryu-sekki-story-reader__body {
+		grid-template-columns: minmax(0, 1fr);
+	}
+
+	.michiryu-sekki-story-reader__nav {
+		grid-template-columns: repeat(3, minmax(0, 1fr));
+	}
+
+	.michiryu-sekki-map-modal__dialog {
+		padding: 0.65rem;
+	}
+
+	.michiryu-sekki-map__viewport,
+	.michiryu-sekki-map--modal .michiryu-sekki-map__viewport,
+	.michiryu-sekki-map--page .michiryu-sekki-map__viewport {
+		min-height: clamp(210px, 54dvh, 320px);
+		max-height: calc(100dvh - 8.5rem);
+	}
+
+	.michiryu-sekki-map__header {
+		gap: 0.5rem;
+	}
+
+	.michiryu-sekki-map__controls {
+		margin-top: 0.35rem;
+	}
+
+	.michiryu-sekki-map__progression {
+		margin: 0.5rem 0;
+	}
 }
 
 @media (max-width: 900px) {
@@ -2901,7 +3155,7 @@
 	}
 
 	.michiryu-sekki-story-modal__dialog {
-		max-height: calc(100vh - 1rem);
+		max-height: calc(100dvh - 1rem);
 	}
 
 	.michiryu-sekki-story-reader__header,
@@ -3061,6 +3315,7 @@
 
 	.michiryu-sekki-map-modal {
 		padding: 0.5rem;
+		place-items: start center;
 	}
 
 	.michiryu-sekki-map-modal__dialog {
@@ -3088,10 +3343,311 @@
 	}
 
 	.michiryu-sekki-learn-modal__dialog {
-		max-height: calc(100vh - 1rem);
+		max-height: calc(100dvh - 1rem);
 	}
 
 	.michiryu-sekki-learn__grid {
 		grid-template-columns: 1fr;
+	}
+}
+
+@media (max-width: 1200px), (max-height: 700px) {
+	.michiryu-sekki-map-modal {
+		display: block;
+		padding: 0;
+	}
+
+	.michiryu-sekki-map-modal__dialog {
+		position: fixed;
+		inset: 8px;
+		width: auto;
+		max-width: none;
+		height: auto;
+		max-height: none;
+		padding: 0.75rem;
+	}
+
+	.michiryu-sekki-map-modal .michiryu-sekki-map {
+		display: flex;
+		flex-direction: column;
+		max-width: 100%;
+	}
+
+	.michiryu-sekki-map-modal .michiryu-sekki-map__layout,
+	.michiryu-sekki-map-modal .michiryu-sekki-map__main,
+	.michiryu-sekki-map-modal .michiryu-sekki-map__main-top {
+		display: contents;
+	}
+
+	.michiryu-sekki-map-modal .michiryu-sekki-map__header {
+		order: 1;
+	}
+
+	.michiryu-sekki-map-modal .michiryu-sekki-map__progression {
+		order: 2;
+		margin: 0.75rem 0;
+	}
+
+	.michiryu-sekki-map-modal .michiryu-sekki-map__viewport {
+		order: 3;
+	}
+
+	.michiryu-sekki-map-modal .michiryu-sekki-map__details {
+		order: 4;
+	}
+
+	.michiryu-sekki-map-modal .michiryu-sekki-map__story-region {
+		order: 5;
+	}
+
+	.michiryu-sekki-map-modal .michiryu-sekki-map__characters {
+		order: 6;
+	}
+
+	.michiryu-sekki-map-modal .michiryu-sekki-map__character-popover {
+		position: fixed;
+		top: auto;
+		right: max(0.75rem, env(safe-area-inset-right));
+		bottom: max(0.75rem, env(safe-area-inset-bottom));
+		left: max(0.75rem, env(safe-area-inset-left));
+		z-index: 100002;
+		width: auto;
+		max-height: min(70dvh, 22rem);
+		overflow: auto;
+		background: #fbfaf4;
+	}
+}
+
+@media (hover: none) and (pointer: coarse) and (max-width: 1200px) {
+	.michiryu-sekki-map--page {
+		display: flex !important;
+		flex-direction: column;
+		position: static;
+		left: auto;
+		width: 100%;
+		max-width: 100%;
+		margin-right: 0;
+		margin-left: 0;
+		overflow-x: hidden;
+	}
+
+	.mrs-has-page-map,
+	.mrs-has-page-map body {
+		width: 100%;
+		max-width: 100%;
+		overflow-x: hidden;
+	}
+
+	.mrs-has-page-map body:has(.michiryu-sekki-map--page) {
+		overflow-x: hidden;
+	}
+
+	.michiryu-sekki-map--page,
+	.michiryu-sekki-map--page .michiryu-sekki-map__page-layout,
+	.michiryu-sekki-map--page .michiryu-sekki-map__page-primary,
+	.michiryu-sekki-map--page .michiryu-sekki-map__page-map-stack,
+	.michiryu-sekki-map--page .michiryu-sekki-map__page-under-map,
+	.michiryu-sekki-map--page .michiryu-sekki-map__page-map,
+	.michiryu-sekki-map--page .michiryu-sekki-map__details,
+	.michiryu-sekki-map--page .michiryu-sekki-map__story-region,
+	.michiryu-sekki-map--page .michiryu-sekki-map__stories,
+	.michiryu-sekki-map--page .michiryu-sekki-map__story,
+	.michiryu-sekki-map--page .michiryu-sekki-map__characters {
+		min-width: 0;
+		width: 100%;
+		max-width: 100%;
+	}
+
+	.michiryu-sekki-map--page .michiryu-sekki-map__page-layout,
+	.michiryu-sekki-map--page .michiryu-sekki-map__page-primary,
+	.michiryu-sekki-map--page .michiryu-sekki-map__page-map-stack,
+	.michiryu-sekki-map--page .michiryu-sekki-map__page-under-map,
+	.michiryu-sekki-map--page .michiryu-sekki-map__page-map {
+		display: contents;
+	}
+
+	.michiryu-sekki-map--page .michiryu-sekki-map__header {
+		order: 1;
+	}
+
+	.michiryu-sekki-map--page .michiryu-sekki-map__progression {
+		order: 2;
+		margin: 0.75rem 0;
+	}
+
+	.michiryu-sekki-map--page .michiryu-sekki-map__viewport {
+		order: 3;
+	}
+
+	.michiryu-sekki-map--page .michiryu-sekki-map__details {
+		order: 4;
+	}
+
+	.michiryu-sekki-map--page .michiryu-sekki-map__story-region {
+		order: 5;
+	}
+
+	.michiryu-sekki-map--page .michiryu-sekki-map__characters {
+		order: 6;
+	}
+
+	.michiryu-sekki-map--page .michiryu-sekki-map__story-tabs,
+	.michiryu-sekki-map--page .michiryu-sekki-map__story-meta {
+		grid-template-columns: minmax(0, 1fr);
+	}
+
+	.michiryu-sekki-map--page .michiryu-sekki-map__story p,
+	.michiryu-sekki-map--page .michiryu-sekki-map__story-spotlight p,
+	.michiryu-sekki-map--page .michiryu-sekki-map__story-reflection p,
+	.michiryu-sekki-map--page .michiryu-sekki-map__story-meta,
+	.michiryu-sekki-map--page .michiryu-sekki-map__story-meta dd {
+		max-width: 100%;
+		white-space: normal;
+		overflow-wrap: anywhere;
+		word-break: normal;
+	}
+
+	.michiryu-sekki-map--page .michiryu-sekki-map__story p,
+	.michiryu-sekki-map--page .michiryu-sekki-map__story-spotlight p,
+	.michiryu-sekki-map--page .michiryu-sekki-map__story-reflection p {
+		font-size: 16px;
+		line-height: 1.55;
+	}
+}
+
+@media (hover: none) and (pointer: coarse) and (max-width: 1200px) {
+	body:has(.michiryu-sekki-map--page),
+	.entry-content:has(.michiryu-sekki-map--page),
+	.wp-block-post-content:has(.michiryu-sekki-map--page),
+	.site-main:has(.michiryu-sekki-map--page),
+	main:has(.michiryu-sekki-map--page) {
+		max-width: 100%;
+		overflow-x: clip;
+	}
+
+	.michiryu-sekki-map--page {
+		display: grid !important;
+		grid-template-columns: minmax(0, 1fr);
+		gap: 1rem;
+		inline-size: 100%;
+		max-inline-size: 100%;
+		margin-inline: 0;
+		padding-inline: 0;
+		overflow-x: hidden;
+		overflow-y: visible;
+		transform: none;
+	}
+
+	.mrs-has-page-map .michiryu-sekki-map--page {
+		inline-size: min(100%, 100dvw);
+		max-inline-size: min(100%, 100dvw);
+	}
+
+	.michiryu-sekki-map--page,
+	.michiryu-sekki-map--page * {
+		box-sizing: border-box;
+		min-inline-size: 0;
+	}
+
+	.michiryu-sekki-map--page .michiryu-sekki-map__page-layout,
+	.michiryu-sekki-map--page .michiryu-sekki-map__page-primary,
+	.michiryu-sekki-map--page .michiryu-sekki-map__page-map-stack,
+	.michiryu-sekki-map--page .michiryu-sekki-map__page-under-map,
+	.michiryu-sekki-map--page .michiryu-sekki-map__page-map {
+		display: contents;
+	}
+
+	.michiryu-sekki-map--page .michiryu-sekki-map__header {
+		align-items: stretch;
+		flex-direction: column;
+		order: 1;
+		gap: 0.75rem;
+	}
+
+	.michiryu-sekki-map--page .michiryu-sekki-map__title {
+		font-size: clamp(1.8rem, 8vw, 2.35rem);
+		line-height: 1.05;
+	}
+
+	.michiryu-sekki-map--page .michiryu-sekki-map__controls {
+		display: grid;
+		grid-template-columns: repeat(2, minmax(0, 1fr));
+		width: 100%;
+		gap: 0.5rem;
+	}
+
+	.michiryu-sekki-map--page .michiryu-sekki-map__controls button {
+		width: 100%;
+		min-width: 0;
+		white-space: normal;
+	}
+
+	.michiryu-sekki-map--page .michiryu-sekki-map__progression {
+		order: 2;
+		width: 100%;
+		max-width: 100%;
+		margin: 0;
+		padding: 0.65rem;
+		overflow: hidden;
+	}
+
+	.michiryu-sekki-map--page .michiryu-sekki-map__timeline {
+		max-width: 100%;
+	}
+
+	.michiryu-sekki-map--page .michiryu-sekki-map__viewport {
+		order: 3;
+		width: 100%;
+		min-height: clamp(280px, 58dvh, 460px);
+	}
+
+	.michiryu-sekki-map--page .michiryu-sekki-map__details {
+		order: 4;
+		width: 100%;
+	}
+
+	.michiryu-sekki-map--page .michiryu-sekki-map__story-region {
+		order: 5;
+		width: 100%;
+		margin-top: 0;
+	}
+
+	.michiryu-sekki-map--page .michiryu-sekki-map__characters {
+		order: 6;
+		width: 100%;
+	}
+
+	.michiryu-sekki-map--page .michiryu-sekki-map__story-tabs,
+	.michiryu-sekki-map--page .michiryu-sekki-map__story-meta {
+		grid-template-columns: minmax(0, 1fr);
+	}
+
+	.michiryu-sekki-map--page .michiryu-sekki-map__story-controls {
+		justify-content: flex-start;
+	}
+
+	.michiryu-sekki-map--page .michiryu-sekki-map__story p,
+	.michiryu-sekki-map--page .michiryu-sekki-map__story-spotlight p,
+	.michiryu-sekki-map--page .michiryu-sekki-map__story-reflection p,
+	.michiryu-sekki-map--page .michiryu-sekki-map__description,
+	.michiryu-sekki-map--page .michiryu-sekki-map__phrase,
+	.michiryu-sekki-map--page .michiryu-sekki-map__meta dd {
+		max-width: 100%;
+		white-space: normal;
+		overflow-wrap: anywhere;
+		word-break: normal;
+	}
+
+	.michiryu-sekki-map--page .michiryu-sekki-map__character-popover {
+		position: fixed;
+		top: auto;
+		right: max(0.75rem, env(safe-area-inset-right));
+		bottom: max(0.75rem, env(safe-area-inset-bottom));
+		left: max(0.75rem, env(safe-area-inset-left));
+		z-index: 100002;
+		width: auto;
+		max-height: min(70dvh, 22rem);
+		overflow: auto;
+		background: #fbfaf4;
 	}
 }

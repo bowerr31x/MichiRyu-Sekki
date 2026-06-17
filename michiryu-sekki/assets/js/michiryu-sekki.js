@@ -303,6 +303,38 @@
 		} );
 	}
 
+	function moveModalToBody( modal ) {
+		if ( ! modal || modal.parentNode === document.body ) {
+			return;
+		}
+
+		document.body.appendChild( modal );
+	}
+
+	function prepareDetachedModals() {
+		if ( document.querySelector( '.michiryu-sekki-map--page' ) ) {
+			document.documentElement.classList.add( 'mrs-has-page-map' );
+		}
+
+		document.querySelectorAll( '[data-mrs-map-modal]' ).forEach( function ( modal ) {
+			var card = modal.closest( '.michiryu-sekki' );
+
+			if ( card ) {
+				card.querySelectorAll( '[data-mrs-map-open]' ).forEach( function ( trigger ) {
+					trigger._mrsMapModal = modal;
+				} );
+			}
+
+			moveModalToBody( modal );
+		} );
+
+		document.querySelectorAll( '[data-mrs-learn-modal], [data-mrs-story-modal]' ).forEach( moveModalToBody );
+
+		if ( document.querySelector( '[data-mrs-story-modal][data-open="true"]' ) ) {
+			document.documentElement.classList.add( 'mrs-story-modal-open' );
+		}
+	}
+
 	function getOpenModal() {
 		return document.querySelector( '[data-mrs-map-modal][data-open="true"], [data-mrs-learn-modal][data-open="true"], [data-mrs-story-modal][data-open="true"]' );
 	}
@@ -572,6 +604,9 @@
 		if ( targetSeason && targetStory ) {
 			selectMapSeason( map, targetSeason, true );
 			selectMapStory( map, targetStory );
+			if ( map && map.closest( '[data-mrs-map-modal]' ) ) {
+				prepareMapModalView( map );
+			}
 			targetPanel = map.querySelector( '[data-mrs-story][data-story="' + targetStory + '"]' );
 			if ( targetPanel ) {
 				targetPanel.focus( { preventScroll: true } );
@@ -588,6 +623,9 @@
 
 		nextIndex = ( activeIndex + direction + tabs.length ) % tabs.length;
 		selectMapStory( map, tabs[ nextIndex ].getAttribute( 'data-story' ) );
+		if ( map && map.closest( '[data-mrs-map-modal]' ) ) {
+			centerMapOnMarker( map, getActiveMapMarker( map ) );
+		}
 	}
 
 	function moveStoryTabFocus( tab, key ) {
@@ -685,6 +723,86 @@
 		canvas.style.transform = 'translate(' + pan.x + 'px, ' + pan.y + 'px)';
 	}
 
+	function getActiveMapMarker( map ) {
+		if ( ! map ) {
+			return null;
+		}
+
+		return map.querySelector( '[data-mrs-map-marker].is-active' ) ||
+			map.querySelector( '[data-mrs-map-marker].is-current' ) ||
+			map.querySelector( '[data-mrs-map-marker]' );
+	}
+
+	function centerMapOnMarker( map, marker ) {
+		var viewport = map ? map.querySelector( '[data-mrs-map-viewport]' ) : null;
+		var canvas = map ? map.querySelector( '[data-mrs-map-canvas]' ) : null;
+		var markerRect;
+		var canvasRect;
+		var targetPan;
+
+		if ( ! viewport || ! canvas || ! marker || getMapZoom( map ) <= 1 ) {
+			return;
+		}
+
+		markerRect = marker.getBoundingClientRect();
+		canvasRect = canvas.getBoundingClientRect();
+		targetPan = {
+			x: ( viewport.clientWidth / 2 ) - ( markerRect.left - canvasRect.left + ( markerRect.width / 2 ) ),
+			y: ( viewport.clientHeight / 2 ) - ( markerRect.top - canvasRect.top + ( markerRect.height / 2 ) ),
+		};
+
+		map._mrsMapPan = clampMapPan( map, targetPan );
+		applyMapTransform( map );
+	}
+
+	function getModalMapZoom() {
+		if ( window.matchMedia && window.matchMedia( '(orientation: landscape) and (max-height: 520px)' ).matches ) {
+			return 1.55;
+		}
+
+		return 1.35;
+	}
+
+	function isMobilePageMap( map ) {
+		return !! (
+			map &&
+			map.classList.contains( 'michiryu-sekki-map--page' ) &&
+			window.matchMedia &&
+			window.matchMedia( '(hover: none) and (pointer: coarse) and (max-width: 1200px)' ).matches
+		);
+	}
+
+	function getPageMapZoom() {
+		if ( window.matchMedia && window.matchMedia( '(orientation: landscape) and (max-height: 700px)' ).matches ) {
+			return 1.45;
+		}
+
+		return 1.25;
+	}
+
+	function prepareMapModalView( map ) {
+		if ( ! map ) {
+			return;
+		}
+
+		setMapZoom( map, getModalMapZoom() );
+		window.requestAnimationFrame( function () {
+			centerMapOnMarker( map, getActiveMapMarker( map ) );
+		} );
+	}
+
+	function preparePageMapView( map ) {
+		if ( ! isMobilePageMap( map ) ) {
+			return;
+		}
+
+		setMapZoom( map, getPageMapZoom() );
+		window.requestAnimationFrame( function () {
+			centerMapOnMarker( map, getActiveMapMarker( map ) );
+			resetPageMapHorizontalScroll();
+		} );
+	}
+
 	function resetMapView( map ) {
 		var viewport = map ? map.querySelector( '[data-mrs-map-viewport]' ) : null;
 
@@ -720,7 +838,7 @@
 
 	function openMapModal( trigger ) {
 		var card = trigger.closest( '.michiryu-sekki' );
-		var modal = card ? card.querySelector( '[data-mrs-map-modal]' ) : document.querySelector( '[data-mrs-map-modal]' );
+		var modal = trigger._mrsMapModal || ( card ? card.querySelector( '[data-mrs-map-modal]' ) : document.querySelector( '[data-mrs-map-modal]' ) );
 		var dialog;
 		var map;
 		var firstMarker;
@@ -729,6 +847,8 @@
 			return null;
 		}
 
+		trigger._mrsMapModal = modal;
+		moveModalToBody( modal );
 		modal.hidden = false;
 		modal.setAttribute( 'data-open', 'true' );
 		modal._mrsTrigger = trigger;
@@ -741,6 +861,7 @@
 
 		map = modal.querySelector( '[data-mrs-map]' );
 		startMapSettling( map );
+		prepareMapModalView( map );
 
 		firstMarker = modal.querySelector( '[data-mrs-map-marker].is-current, [data-mrs-map-marker]' );
 		if ( firstMarker ) {
@@ -768,6 +889,7 @@
 
 		selectMapSeason( map, season, false );
 		selectMapStory( map, storyId );
+		prepareMapModalView( map );
 	}
 
 	function closeMapModal( modal ) {
@@ -847,6 +969,14 @@
 		map.querySelectorAll( '[data-mrs-character-popover]' ).forEach( function ( item ) {
 			item.hidden = item !== popover;
 		} );
+
+		if ( isMobilePageMap( map ) ) {
+			resetPageMapHorizontalScroll();
+			window.setTimeout( function () {
+				popover.scrollIntoView( { block: 'nearest', inline: 'nearest' } );
+				resetPageMapHorizontalScroll();
+			}, 0 );
+		}
 	}
 
 	function closeCharacterPopover( button ) {
@@ -967,6 +1097,13 @@
 				return;
 			}
 			selectMapSeason( markerMap, marker.getAttribute( 'data-season' ), false );
+			if ( markerMap && markerMap.closest( '[data-mrs-map-modal]' ) ) {
+				centerMapOnMarker( markerMap, marker );
+			}
+			if ( isMobilePageMap( markerMap ) ) {
+				centerMapOnMarker( markerMap, marker );
+				resetPageMapHorizontalScroll();
+			}
 		}
 
 		if ( selector ) {
@@ -976,6 +1113,10 @@
 				return;
 			}
 			selectMapSeason( selectorMap, selector.getAttribute( 'data-mrs-map-select' ), true );
+			if ( selectorMap && selectorMap.closest( '[data-mrs-map-modal]' ) ) {
+				prepareMapModalView( selectorMap );
+			}
+			preparePageMapView( selectorMap );
 		}
 
 		if ( zoom ) {
@@ -985,16 +1126,27 @@
 		}
 
 		if ( reset ) {
-			resetMapView( getMapRoot( reset ) );
+			var resetMap = getMapRoot( reset );
+			resetMapView( resetMap );
+			if ( resetMap && resetMap.closest( '[data-mrs-map-modal]' ) ) {
+				prepareMapModalView( resetMap );
+			}
+			preparePageMapView( resetMap );
 		}
 
 		if ( current ) {
 			var currentMap = getMapRoot( current );
 			selectMapSeason( currentMap, currentMap.getAttribute( 'data-current-season' ), true );
+			if ( currentMap && currentMap.closest( '[data-mrs-map-modal]' ) ) {
+				prepareMapModalView( currentMap );
+			}
+			preparePageMapView( currentMap );
 		}
 
 		if ( storyTab ) {
-			selectMapStory( getMapRoot( storyTab ), storyTab.getAttribute( 'data-story' ) );
+			var storyMap = getMapRoot( storyTab );
+			selectMapStory( storyMap, storyTab.getAttribute( 'data-story' ) );
+			resetPageMapHorizontalScroll();
 		}
 
 		if ( storyStep ) {
@@ -1060,12 +1212,14 @@
 
 	if ( document.readyState === 'loading' ) {
 		document.addEventListener( 'DOMContentLoaded', function () {
+			prepareDetachedModals();
 			updateDateStampsForBrowserTimezone();
 			window.requestAnimationFrame( focusCurrentSlides );
 			window.requestAnimationFrame( centerActiveTimelines );
 			initializeStoryReaderProgress();
 		} );
 	} else {
+		prepareDetachedModals();
 		updateDateStampsForBrowserTimezone();
 		window.requestAnimationFrame( focusCurrentSlides );
 		window.requestAnimationFrame( centerActiveTimelines );
@@ -1075,6 +1229,56 @@
 	window.addEventListener( 'load', updateDateStampsForBrowserTimezone );
 	window.addEventListener( 'load', focusCurrentSlides );
 	window.addEventListener( 'load', centerActiveTimelines );
+
+	function refreshOpenMapModals() {
+		document.querySelectorAll( '[data-mrs-map-modal][data-open="true"] [data-mrs-map]' ).forEach( function ( map ) {
+			prepareMapModalView( map );
+		} );
+		centerActiveTimelines();
+	}
+
+	function preparePageMaps() {
+		document.querySelectorAll( '.michiryu-sekki-map--page[data-mrs-map]' ).forEach( function ( map ) {
+			preparePageMapView( map );
+		} );
+	}
+
+	function resetPageMapHorizontalScroll() {
+		if ( ! document.querySelector( '.michiryu-sekki-map--page' ) || ! window.matchMedia || ! window.matchMedia( '(hover: none) and (pointer: coarse) and (max-width: 1200px)' ).matches ) {
+			return;
+		}
+
+		window.scrollTo( 0, window.scrollY );
+		document.documentElement.scrollLeft = 0;
+		document.body.scrollLeft = 0;
+		document.querySelectorAll( 'html, body, .michiryu-sekki-map--page' ).forEach( function ( element ) {
+			element.scrollLeft = 0;
+		} );
+	}
+
+	window.addEventListener( 'orientationchange', function () {
+		window.setTimeout( refreshOpenMapModals, 180 );
+		window.setTimeout( refreshOpenMapModals, 420 );
+		window.setTimeout( preparePageMaps, 220 );
+		window.setTimeout( resetPageMapHorizontalScroll, 450 );
+	} );
+
+	window.addEventListener( 'resize', function () {
+		if ( window._mrsMapResizeTimer ) {
+			window.clearTimeout( window._mrsMapResizeTimer );
+		}
+		window._mrsMapResizeTimer = window.setTimeout( function () {
+			refreshOpenMapModals();
+			preparePageMaps();
+			resetPageMapHorizontalScroll();
+		}, 180 );
+	} );
+
+	window.addEventListener( 'load', resetPageMapHorizontalScroll );
+	window.addEventListener( 'load', preparePageMaps );
+	window.setTimeout( resetPageMapHorizontalScroll, 300 );
+	window.setTimeout( preparePageMaps, 350 );
+	window.setTimeout( resetPageMapHorizontalScroll, 800 );
 
 	document.addEventListener( 'contextmenu', function ( event ) {
 		if ( event.target.closest( '.michiryu-sekki-image-wrap' ) ) {
