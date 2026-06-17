@@ -446,7 +446,7 @@ class MichiRyu_Sekki_Content_Importer {
 
 		$args['redirection'] = 0;
 		$headers = is_array( $args['headers'] ?? null ) ? $args['headers'] : array();
-		$headers['Authorization'] = 'Bearer ' . $access_token;
+		$headers['X-MichiRyu-Content-Token'] = $access_token;
 		$args['headers'] = $headers;
 
 		return $args;

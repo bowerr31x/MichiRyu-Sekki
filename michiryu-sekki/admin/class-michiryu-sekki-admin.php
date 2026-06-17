@@ -332,7 +332,7 @@ class MichiRyu_Sekki_Admin {
 					<?php endforeach; ?>
 				</tbody>
 			</table>
-			<?php if ( ! empty( $status['diagnostics'] ) ) : ?>
+			<?php if ( $this->show_developer_diagnostics() && ! empty( $status['diagnostics'] ) ) : ?>
 				<details class="michiryu-sekki-admin__details michiryu-sekki-admin__diagnostics">
 					<summary><?php esc_html_e( 'Developer diagnostics', 'michiryu-sekki' ); ?></summary>
 					<table class="widefat striped michiryu-sekki-admin__status-table" role="table">
@@ -350,6 +350,20 @@ class MichiRyu_Sekki_Admin {
 			<p class="description"><?php esc_html_e( 'The plugin package contains GPL software only. Proprietary stories, artwork, maps, icons, PDFs, educational materials, and Yuki no Sato content must come from a separate provider.', 'michiryu-sekki' ); ?></p>
 		</section>
 		<?php
+	}
+
+	/**
+	 * Return whether developer diagnostics should render in the admin screen.
+	 *
+	 * @return bool
+	 */
+	private function show_developer_diagnostics() {
+		/**
+		 * Filters whether the admin screen should show developer diagnostics.
+		 *
+		 * @param bool $show Whether diagnostics should be visible.
+		 */
+		return (bool) apply_filters( 'michiryu_sekki_show_developer_diagnostics', false );
 	}
 
 	/**

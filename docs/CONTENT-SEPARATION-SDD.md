@@ -406,8 +406,12 @@ The import architecture supports an optional content access token.
 When a token is present, the importer sends:
 
 ```text
-Authorization: Bearer <token>
+X-MichiRyu-Content-Token: <token>
 ```
+
+The API may also accept `Authorization: Bearer <token>` for compatibility, but
+the custom MichiRyu header is preferred because some shared hosts block bearer
+authorization before PHP receives the request.
 
 The token applies to:
 

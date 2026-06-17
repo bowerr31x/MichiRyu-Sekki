@@ -58,8 +58,12 @@ https://content.michiryu.com/premium/manifest
 Import requests may send:
 
 ```text
-Authorization: Bearer <token>
+X-MichiRyu-Content-Token: <token>
 ```
+
+The API may also accept `Authorization: Bearer <token>` for compatibility, but
+the custom MichiRyu header is preferred on shared hosting because some hosts
+block bearer authorization before PHP receives the request.
 
 Token behavior:
 
@@ -116,7 +120,7 @@ Example:
 
 ```text
 GET /file?path=images/sekki/Sekki_01_Risshun.png
-Authorization: Bearer <token>
+X-MichiRyu-Content-Token: <token>
 ```
 
 ## Recommended Server Config

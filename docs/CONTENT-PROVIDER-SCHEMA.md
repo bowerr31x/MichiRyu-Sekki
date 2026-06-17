@@ -106,8 +106,10 @@ When a manifest supplies `file_base_url`, relative image paths from
 The optional Content access token is sent during import requests as:
 
 ```text
-Authorization: Bearer <token>
+X-MichiRyu-Content-Token: <token>
 ```
+
+The API may also accept `Authorization: Bearer <token>` for compatibility.
 
 If a hosted content library requires a token, it should apply the same
 authorization rule to `featured-content.json`, `images.json`, and referenced

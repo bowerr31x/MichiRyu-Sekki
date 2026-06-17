@@ -186,17 +186,23 @@ function michiryu_content_api_content_root(array $library): string|false
 
 function michiryu_content_api_authorized(string $token_hash): bool
 {
+    $token = (string)($_SERVER['HTTP_X_MICHIRYU_CONTENT_TOKEN'] ?? $_SERVER['REDIRECT_HTTP_X_MICHIRYU_CONTENT_TOKEN'] ?? '');
+    if ('' === $token && function_exists('apache_request_headers')) {
+        $headers = apache_request_headers();
+        $token = (string)($headers['X-MichiRyu-Content-Token'] ?? $headers['x-michiryu-content-token'] ?? '');
+    }
+
     $header = (string)($_SERVER['HTTP_AUTHORIZATION'] ?? $_SERVER['REDIRECT_HTTP_AUTHORIZATION'] ?? '');
     if ('' === $header && function_exists('apache_request_headers')) {
         $headers = apache_request_headers();
         $header = (string)($headers['Authorization'] ?? $headers['authorization'] ?? '');
     }
 
-    if (!preg_match('/^Bearer\s+(.+)$/i', $header, $matches)) {
-        return false;
+    if ('' === $token && preg_match('/^Bearer\s+(.+)$/i', $header, $matches)) {
+        $token = $matches[1];
     }
 
-    $token = trim($matches[1]);
+    $token = trim($token);
     if ('' === $token) {
         return false;
     }

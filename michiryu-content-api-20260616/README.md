@@ -79,8 +79,12 @@ For the current test token, the value is:
 The plugin/import client sends:
 
 ```text
-Authorization: Bearer your-token-here
+X-MichiRyu-Content-Token: your-token-here
 ```
+
+The API also accepts `Authorization: Bearer <token>` for compatibility, but the
+custom header is preferred because some shared hosts block bearer auth before
+PHP receives the request.
 
 This is a soft gate. Premium content should later use user-specific license
 tokens validated by a server-side entitlement service.

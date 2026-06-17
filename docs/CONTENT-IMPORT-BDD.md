@@ -95,7 +95,7 @@ And the administrator has entered a content access token
 And the administrator has saved all import acknowledgements
 When the administrator starts the import
 Then requests to featured-content.json, images.json, and referenced images send
-the token as an Authorization bearer token
+the token as a MichiRyu content token header
 And the token is not displayed in the Content Provider Status panel
 And the imported local copy works without sending the token on frontend page
 views
