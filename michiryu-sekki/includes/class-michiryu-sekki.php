@@ -1157,11 +1157,17 @@ class MichiRyu_Sekki {
 		$output['read_more_link_behavior']   = in_array( $input['read_more_link_behavior'] ?? '', $read_more_link_behaviors, true ) ? $input['read_more_link_behavior'] : $saved['read_more_link_behavior'];
 		$output['content_update_mode']       = in_array( $input['content_update_mode'] ?? '', $content_update_modes, true ) ? $input['content_update_mode'] : $saved['content_update_mode'];
 		$output['content_library_url']       = array_key_exists( 'content_library_url', $input ) ? esc_url_raw( $input['content_library_url'] ) : $saved['content_library_url'];
-		$output['content_access_token']      = array_key_exists( 'content_access_token', $input ) ? sanitize_text_field( $input['content_access_token'] ) : $saved['content_access_token'];
+		if ( ! empty( $input['content_access_token_clear'] ) ) {
+			$output['content_access_token'] = '';
+		} elseif ( ! empty( $input['content_access_token'] ) ) {
+			$output['content_access_token'] = MichiRyu_Sekki_Content_Library_Access::sanitize_access_token( $input['content_access_token'] );
+		} else {
+			$output['content_access_token'] = $saved['content_access_token'];
+		}
 		if ( ! empty( $input['premium_license_token_clear'] ) ) {
 			$output['premium_license_token'] = '';
 		} elseif ( ! empty( $input['premium_license_token'] ) ) {
-			$output['premium_license_token'] = sanitize_text_field( $input['premium_license_token'] );
+			$output['premium_license_token'] = MichiRyu_Sekki_Content_Library_Access::sanitize_access_token( $input['premium_license_token'] );
 		} else {
 			$output['premium_license_token'] = $saved['premium_license_token'];
 		}

@@ -132,6 +132,7 @@ provided by a separate Content Provider follows that provider's license terms.
 * Add a clearer admin settings layout with content status, import summary, content actions, and developer diagnostics.
 * Add a future premium license token scaffold without changing the current basic import flow.
 * Point the built-in Basic Import flow to the branded MichiRyu API endpoint.
+* Harden remote imports by limiting file types, file sizes, unsafe URLs, and token forwarding.
 * Add helper packages and documentation for the external content API and static content lockdown.
 
 = 1.2.20 =

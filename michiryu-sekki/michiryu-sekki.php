@@ -28,6 +28,7 @@ require_once MICHIRYU_SEKKI_PATH . 'includes/providers/interface-michiryu-sekki-
 require_once MICHIRYU_SEKKI_PATH . 'includes/providers/class-michiryu-sekki-local-content-provider.php';
 require_once MICHIRYU_SEKKI_PATH . 'includes/providers/class-michiryu-sekki-file-content-provider.php';
 require_once MICHIRYU_SEKKI_PATH . 'includes/providers/class-michiryu-sekki-imported-content-provider.php';
+require_once MICHIRYU_SEKKI_PATH . 'includes/class-michiryu-sekki-content-library-access.php';
 require_once MICHIRYU_SEKKI_PATH . 'includes/class-michiryu-sekki-content-importer.php';
 require_once MICHIRYU_SEKKI_PATH . 'includes/class-michiryu-sekki-content.php';
 require_once MICHIRYU_SEKKI_PATH . 'includes/class-michiryu-sekki.php';

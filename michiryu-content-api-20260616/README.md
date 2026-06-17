@@ -1,33 +1,57 @@
 # MichiRyu Content API
 
-This package is server-side content infrastructure. It is not part of the public GPL WordPress plugin.
+This package is server-side content infrastructure. It is not part of the
+public GPL WordPress plugin.
 
 ## Deploy
 
 1. Upload this folder as:
 
 ```text
-/home1/bowerrx1/public_html/website_935ed7d0/michiryu-content-api/
+public_html/your-site/michiryu-content-api/
 ```
 
 2. Copy `config.example.php` to `config.php` on the server.
-3. Confirm `content_root` points to the existing hosted content folder:
+3. Set `base_url` to the public API folder URL.
+4. Configure at least the `basic` library:
 
-```text
-/home1/bowerrx1/public_html/website_935ed7d0/michiryu-content
+```php
+'libraries' => array(
+    'basic' => array(
+        'library' => 'michiryu-basic',
+        'version' => '2026.06.16',
+        'license' => 'MichiRyu Content License',
+        'content_root' => '/absolute/path/to/michiryu-content/basic',
+        'token_hash' => hash('sha256', 'your-basic-token'),
+        'manifests' => array(
+            'default' => array(
+                'featured_content' => 'featured-content.json',
+                'images' => 'images.json',
+            ),
+        ),
+    ),
+),
 ```
 
-4. Set `basic_token_hash` in `config.php` before using this for anything beyond initial testing.
+The API still accepts the older single-library config shape for transition, but
+new deployments should use `libraries`.
 
 ## Bluehost-Friendly Test URLs
 
-Use these explicit URLs first because they do not depend on clean URL rewriting:
+Use explicit URLs first because they do not depend on clean URL rewriting:
 
 ```text
 https://michiryu.com/michiryu-content-api/index.php?route=health
 https://michiryu.com/michiryu-content-api/index.php?route=manifest
 https://michiryu.com/michiryu-content-api/index.php?route=file&path=featured-content.json
 https://michiryu.com/michiryu-content-api/index.php?route=file&path=images/map/yuki-no-sato-sekki-map.jpg
+```
+
+The default library is used when no `library` parameter is supplied. You may
+also request a specific configured library:
+
+```text
+https://michiryu.com/michiryu-content-api/index.php?route=manifest&library=basic
 ```
 
 If `.htaccess` rewriting is working, these shorter URLs should also work:
@@ -43,13 +67,13 @@ https://michiryu.com/michiryu-content-api/file?path=featured-content.json
 For the current basic token gate, set:
 
 ```php
-'basic_token_hash' => hash('sha256', 'your-token-here'),
+'token_hash' => hash('sha256', 'your-token-here'),
 ```
 
 For the current test token, the value is:
 
 ```php
-'basic_token_hash' => '693e9ce2996d348e2720c198be73be1b81c670cb766296a55f70249ba8c1d56e',
+'token_hash' => '693e9ce2996d348e2720c198be73be1b81c670cb766296a55f70249ba8c1d56e',
 ```
 
 The plugin/import client sends:
@@ -58,14 +82,28 @@ The plugin/import client sends:
 Authorization: Bearer your-token-here
 ```
 
-This is a soft gate. Premium content should later use user-specific license tokens validated by a server-side entitlement service.
+This is a soft gate. Premium content should later use user-specific license
+tokens validated by a server-side entitlement service.
 
 ## Hardening Included
 
-- Rejects absolute paths, URL paths, empty path segments, `.`, and `..` traversal.
-- Serves only files resolved inside the configured `content_root`.
+- Supports explicit `basic` and future `premium` library separation.
+- Allows only configured manifest keys.
+- Keeps each library tied to its own configured `content_root`.
+- Rejects absolute paths, URL paths, empty path segments, `.`, and `..`
+  traversal.
+- Serves only files resolved inside the configured library root.
 - Restricts served file extensions with `allowed_extensions`.
 - Rejects files larger than `max_file_bytes`.
+- Fails closed when a library token hash is missing.
+- Returns JSON error responses for normal API failures.
 - Uses `X-Content-Type-Options: nosniff` and conservative cache headers.
-- Keeps `config.php` and `config.example.php` blocked from direct web access through `.htaccess`.
+- Keeps `config.php` and `config.example.php` blocked from direct web access
+  through `.htaccess`.
 - Provides a `/health` route for setup checks.
+
+## Later
+
+Rate-limit-style safeguards should be added at the hosting or edge layer when
+premium entitlement validation exists. The current API avoids local mutable rate
+state so it remains simple to deploy on shared hosting.

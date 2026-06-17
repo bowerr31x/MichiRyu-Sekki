@@ -191,8 +191,14 @@ class MichiRyu_Sekki_Admin {
 						<tr>
 							<th scope="row"><label for="michiryu-sekki-content-access-token"><?php esc_html_e( 'Custom access token', 'michiryu-sekki' ); ?></label></th>
 							<td>
-								<input id="michiryu-sekki-content-access-token" type="password" class="regular-text" autocomplete="off" name="<?php echo esc_attr( MichiRyu_Sekki::OPTION_NAME ); ?>[content_access_token]" value="<?php echo esc_attr( $options['content_access_token'] ); ?>" />
+								<input id="michiryu-sekki-content-access-token" type="password" class="regular-text" autocomplete="off" name="<?php echo esc_attr( MichiRyu_Sekki::OPTION_NAME ); ?>[content_access_token]" value="" placeholder="<?php echo ! empty( $options['content_access_token'] ) ? esc_attr__( 'Token saved', 'michiryu-sekki' ) : ''; ?>" />
 								<p class="description"><?php esc_html_e( 'Optional. Used only with a custom content source.', 'michiryu-sekki' ); ?></p>
+								<?php if ( ! empty( $options['content_access_token'] ) ) : ?>
+									<label>
+										<input type="checkbox" name="<?php echo esc_attr( MichiRyu_Sekki::OPTION_NAME ); ?>[content_access_token_clear]" value="1" />
+										<?php esc_html_e( 'Clear saved custom access token', 'michiryu-sekki' ); ?>
+									</label>
+								<?php endif; ?>
 							</td>
 						</tr>
 						</table>
@@ -214,8 +220,9 @@ class MichiRyu_Sekki_Admin {
 						<tr>
 							<th scope="row"><?php esc_html_e( 'Premium status', 'michiryu-sekki' ); ?></th>
 							<td>
-								<p><?php echo esc_html( $this->get_premium_license_status_label( $options ) ); ?></p>
-								<p class="description"><?php esc_html_e( 'Premium validation will be added later through a server-side entitlement check before premium manifests are imported.', 'michiryu-sekki' ); ?></p>
+								<?php $premium_status = MichiRyu_Sekki_Content_Library_Access::get_premium_status( $options ); ?>
+								<p><?php echo esc_html( $premium_status['label'] ); ?></p>
+								<p class="description"><?php echo esc_html( $premium_status['description'] ); ?></p>
 							</td>
 						</tr>
 						</table>
@@ -535,16 +542,9 @@ class MichiRyu_Sekki_Admin {
 	 * @return string
 	 */
 	private function get_basic_content_url( $options ) {
-		$default_content_url = 'https://michiryu.com/michiryu-content-api/index.php?route=manifest';
-		$content_url = defined( 'MICHIRYU_SEKKI_BASIC_CONTENT_URL' ) ? MICHIRYU_SEKKI_BASIC_CONTENT_URL : $default_content_url;
-		$content_url = '' !== trim( (string) $content_url ) ? $content_url : ( $options['content_library_url'] ?? '' );
+		$library = MichiRyu_Sekki_Content_Library_Access::get_basic_library( $options );
 
-		/**
-		 * Filters the basic MichiRyu content library URL.
-		 *
-		 * @param string $content_url Default content URL.
-		 */
-		return rtrim( esc_url_raw( apply_filters( 'michiryu_sekki_basic_content_url', $content_url ) ), '/' );
+		return $library['url'];
 	}
 
 	/**
@@ -554,30 +554,9 @@ class MichiRyu_Sekki_Admin {
 	 * @return string
 	 */
 	private function get_basic_content_token( $options ) {
-		$default_content_token = 'michiryu-basic-test';
-		$content_token         = defined( 'MICHIRYU_SEKKI_BASIC_CONTENT_TOKEN' ) ? MICHIRYU_SEKKI_BASIC_CONTENT_TOKEN : $default_content_token;
-		$content_token = '' !== trim( (string) $content_token ) ? $content_token : ( $options['content_access_token'] ?? '' );
+		$library = MichiRyu_Sekki_Content_Library_Access::get_basic_library( $options );
 
-		/**
-		 * Filters the basic MichiRyu content access token.
-		 *
-		 * @param string $content_token Default content token.
-		 */
-		return sanitize_text_field( apply_filters( 'michiryu_sekki_basic_content_token', $content_token ) );
-	}
-
-	/**
-	 * Return the saved premium license status label.
-	 *
-	 * @param array<string,mixed> $options Saved options.
-	 * @return string
-	 */
-	private function get_premium_license_status_label( $options ) {
-		if ( empty( $options['premium_license_token'] ) ) {
-			return __( 'No premium license token saved.', 'michiryu-sekki' );
-		}
-
-		return __( 'Premium license token saved. Validation is not active yet.', 'michiryu-sekki' );
+		return $library['token'];
 	}
 
 	/**

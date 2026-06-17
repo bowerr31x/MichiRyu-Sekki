@@ -505,6 +505,16 @@ https://michiryu.com/michiryu-content-api/index.php?route=manifest
 The prior static folder path remains useful as a fallback and for server-side
 content storage, but should not be treated as the long-term public access model.
 
+The hosted API should separate content libraries explicitly in configuration.
+Basic and future premium content should use separate configured library records,
+separate content roots, and explicit manifest allow-lists. The API should not
+discover manifests by scanning content directories. Unknown libraries, unknown
+manifest keys, invalid paths, missing token hashes, and other normal failures
+should return JSON error responses.
+
+Rate-limit-style safeguards should be added later at the hosting, CDN, or
+entitlement-service layer when premium license validation exists.
+
 Static-folder lockdown package:
 
 ```text

@@ -14,6 +14,9 @@ if ( ! defined( 'ABSPATH' ) ) {
  */
 class MichiRyu_Sekki_Content_Importer {
 	const OPTION_NAME = 'michiryu_sekki_content_import';
+	const MAX_JSON_BYTES = 1048576;
+	const MAX_IMPORT_FILE_BYTES = 26214400;
+	const ALLOWED_IMPORT_FILE_EXTENSIONS = array( 'jpg', 'jpeg', 'png', 'svg', 'webp', 'pdf' );
 
 	/**
 	 * Import a remote content library.
@@ -42,12 +45,12 @@ class MichiRyu_Sekki_Content_Importer {
 			return $this->error( $source->get_error_message() );
 		}
 
-		$featured_content = $this->fetch_json( $source['featured_content_url'], $access_token );
+		$featured_content = $this->fetch_json( $source['featured_content_url'], $this->get_request_token_for_url( $source['featured_content_url'], $source, $access_token ) );
 		if ( is_wp_error( $featured_content ) ) {
 			return $this->error( $featured_content->get_error_message() );
 		}
 
-		$images = $this->fetch_json( $source['images_url'], $access_token );
+		$images = $this->fetch_json( $source['images_url'], $this->get_request_token_for_url( $source['images_url'], $source, $access_token ) );
 		if ( is_wp_error( $images ) ) {
 			return $this->error( $images->get_error_message() );
 		}
@@ -154,6 +157,10 @@ class MichiRyu_Sekki_Content_Importer {
 			return '';
 		}
 
+		if ( function_exists( 'wp_http_validate_url' ) && ! wp_http_validate_url( $remote_url ) ) {
+			return '';
+		}
+
 		return rtrim( $remote_url, '/' );
 	}
 
@@ -165,7 +172,7 @@ class MichiRyu_Sekki_Content_Importer {
 	 * @return array<string,mixed>|WP_Error
 	 */
 	private function fetch_json( $url, $access_token = '' ) {
-		$response = wp_remote_get(
+		$response = $this->remote_get(
 			$url,
 			$this->get_request_args(
 				array(
@@ -190,7 +197,16 @@ class MichiRyu_Sekki_Content_Importer {
 			) );
 		}
 
-		$decoded = json_decode( (string) wp_remote_retrieve_body( $response ), true );
+		$body = (string) wp_remote_retrieve_body( $response );
+		if ( strlen( $body ) > self::MAX_JSON_BYTES ) {
+			return new WP_Error( 'michiryu_sekki_import_json_too_large', sprintf(
+				/* translators: %s: URL. */
+				__( 'The response from %s was too large.', 'michiryu-sekki' ),
+				$url
+			) );
+		}
+
+		$decoded = json_decode( $body, true );
 		if ( ! is_array( $decoded ) ) {
 			return new WP_Error( 'michiryu_sekki_import_json', sprintf(
 				/* translators: %s: URL. */
@@ -224,6 +240,7 @@ class MichiRyu_Sekki_Content_Importer {
 		return array(
 			'type'                 => 'static',
 			'base_url'             => $remote_url,
+			'auth_origin'          => $this->get_url_origin( $remote_url ),
 			'featured_content_url' => $remote_url . '/featured-content.json',
 			'images_url'           => $remote_url . '/images.json',
 			'file_base_url'        => $remote_url . '/',
@@ -244,6 +261,7 @@ class MichiRyu_Sekki_Content_Importer {
 		return array(
 			'type'                 => 'manifest',
 			'base_url'             => $base_url,
+			'auth_origin'          => $this->get_url_origin( $remote_url ),
 			'featured_content_url' => $this->resolve_manifest_url( $base_url, $manifest['featured_content_url'] ?? $manifest['featured_content'] ?? 'featured-content.json' ),
 			'images_url'           => $this->resolve_manifest_url( $base_url, $manifest['images_url'] ?? $manifest['images'] ?? 'images.json' ),
 			'file_base_url'        => $file_base_url,
@@ -299,12 +317,20 @@ class MichiRyu_Sekki_Content_Importer {
 				continue;
 			}
 
+			if ( ! $this->is_allowed_import_file( $relative_path ) ) {
+				return new WP_Error( 'michiryu_sekki_import_file_type', sprintf(
+					/* translators: %s: relative file path. */
+					__( 'Imported file type is not allowed: %s.', 'michiryu-sekki' ),
+					$relative_path
+				) );
+			}
+
 			$source_url = $this->get_source_file_url( $source, $relative_path );
 			if ( is_array( $image ) && ! empty( $image['url'] ) && is_string( $image['url'] ) && preg_match( '#^https?://#i', $image['url'] ) ) {
 				$source_url = $image['url'];
 			}
 
-			$result = $this->download_file( $source_url, $content_path . '/' . $relative_path, $access_token );
+			$result = $this->download_file( $source_url, $content_path . '/' . $relative_path, $this->get_request_token_for_url( $source_url, $source, $access_token ) );
 			if ( is_wp_error( $result ) ) {
 				return $result;
 			}
@@ -340,7 +366,11 @@ class MichiRyu_Sekki_Content_Importer {
 	 * @return true|WP_Error
 	 */
 	private function download_file( $source_url, $destination, $access_token = '' ) {
-		$response = wp_remote_get(
+		if ( ! $this->is_allowed_import_file( $destination ) ) {
+			return new WP_Error( 'michiryu_sekki_import_file_type', __( 'Imported file type is not allowed.', 'michiryu-sekki' ) );
+		}
+
+		$response = $this->remote_get(
 			$source_url,
 			$this->get_request_args(
 				array(
@@ -366,6 +396,14 @@ class MichiRyu_Sekki_Content_Importer {
 		}
 
 		$body = wp_remote_retrieve_body( $response );
+		if ( strlen( (string) $body ) > self::MAX_IMPORT_FILE_BYTES ) {
+			return new WP_Error( 'michiryu_sekki_import_image_too_large', sprintf(
+				/* translators: %s: URL. */
+				__( 'Downloaded image %s was too large.', 'michiryu-sekki' ),
+				$source_url
+			) );
+		}
+
 		if ( '' === $body ) {
 			return new WP_Error( 'michiryu_sekki_import_empty_image', sprintf(
 				/* translators: %s: URL. */
@@ -400,16 +438,86 @@ class MichiRyu_Sekki_Content_Importer {
 	 * @return array<string,mixed>
 	 */
 	private function get_request_args( $args, $access_token ) {
+		$args['reject_unsafe_urls'] = true;
 		$access_token = trim( (string) $access_token );
 		if ( '' === $access_token ) {
 			return $args;
 		}
 
+		$args['redirection'] = 0;
 		$headers = is_array( $args['headers'] ?? null ) ? $args['headers'] : array();
 		$headers['Authorization'] = 'Bearer ' . $access_token;
 		$args['headers'] = $headers;
 
 		return $args;
+	}
+
+	/**
+	 * Perform a guarded remote GET request.
+	 *
+	 * @param string              $url Remote URL.
+	 * @param array<string,mixed> $args Request arguments.
+	 * @return array<string,mixed>|WP_Error
+	 */
+	private function remote_get( $url, $args ) {
+		if ( function_exists( 'wp_safe_remote_get' ) ) {
+			return wp_safe_remote_get( $url, $args );
+		}
+
+		return wp_remote_get( $url, $args );
+	}
+
+	/**
+	 * Return a bearer token only for URLs on the original content source origin.
+	 *
+	 * @param string              $url Request URL.
+	 * @param array<string,mixed> $source Content source.
+	 * @param string              $access_token Access token.
+	 * @return string
+	 */
+	private function get_request_token_for_url( $url, $source, $access_token ) {
+		$access_token = trim( (string) $access_token );
+		if ( '' === $access_token ) {
+			return '';
+		}
+
+		$auth_origin = (string) ( $source['auth_origin'] ?? '' );
+		if ( '' === $auth_origin || $auth_origin !== $this->get_url_origin( $url ) ) {
+			return '';
+		}
+
+		return $access_token;
+	}
+
+	/**
+	 * Return a normalized URL origin.
+	 *
+	 * @param string $url URL.
+	 * @return string
+	 */
+	private function get_url_origin( $url ) {
+		$parts = wp_parse_url( (string) $url );
+		if ( ! is_array( $parts ) || empty( $parts['scheme'] ) || empty( $parts['host'] ) ) {
+			return '';
+		}
+
+		$scheme = strtolower( (string) $parts['scheme'] );
+		$host = strtolower( (string) $parts['host'] );
+		$port = isset( $parts['port'] ) ? ':' . absint( $parts['port'] ) : '';
+
+		return $scheme . '://' . $host . $port;
+	}
+
+	/**
+	 * Return whether an imported file path uses an allowed extension.
+	 *
+	 * @param string $path Relative or absolute file path.
+	 * @return bool
+	 */
+	private function is_allowed_import_file( $path ) {
+		$extension = strtolower( pathinfo( (string) $path, PATHINFO_EXTENSION ) );
+
+		return in_array( $extension, self::ALLOWED_IMPORT_FILE_EXTENSIONS, true );
 	}
 
 	/**

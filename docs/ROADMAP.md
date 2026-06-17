@@ -16,6 +16,7 @@
 - Design the admin-approved MichiRyu Content Library import flow.
 - Keep imported-content updates manual by default.
 - Use `docs/CONTENT-IMPORT-BDD.md` as acceptance criteria for import behavior.
+- Use `docs/RELEASE-QA-CHECKLIST.md` before production-ready release builds.
 - Store import consent acknowledgements and update mode before enabling network import.
 - Design the protected content endpoint described in `docs/CONTENT-API-SPEC.md`.
 - Keep changelog entries aligned with version bumps.

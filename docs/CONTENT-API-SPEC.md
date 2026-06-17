@@ -127,13 +127,41 @@ Configuration should not be committed with real secrets.
 
 ```php
 return array(
-	'content_root' => '/home1/bowerrx1/private-content',
-	'basic_token_hash' => '',
-	'premium_token_validator' => null,
+	'base_url' => 'https://michiryu.com/michiryu-content-api',
+	'default_library' => 'basic',
+	'libraries' => array(
+		'basic' => array(
+			'library' => 'michiryu-basic',
+			'content_root' => '/absolute/path/to/michiryu-content/basic',
+			'token_hash' => '',
+			'manifests' => array(
+				'default' => array(
+					'featured_content' => 'featured-content.json',
+					'images' => 'images.json',
+				),
+			),
+		),
+		'premium' => array(
+			'library' => 'michiryu-premium',
+			'content_root' => '/absolute/path/to/michiryu-content/premium',
+			'token_hash' => '',
+			'manifests' => array(
+				'default' => array(
+					'featured_content' => 'featured-content.json',
+					'images' => 'images.json',
+				),
+			),
+		),
+	),
 );
 ```
 
 Real deployment config should live outside Git or be excluded from Git.
+
+The current API also accepts the earlier single-library config shape during
+transition, but new deployments should use explicit libraries. Each library has
+its own `content_root`, token hash, and manifest allow-list. Unknown libraries
+or manifest keys return JSON errors and do not fall back to directory scanning.
 
 ## Plugin Compatibility
 
@@ -200,7 +228,8 @@ storage and must not expose license tokens on frontend pages.
 6. Add premium token validation and premium manifests later.
 7. Lock down public browser access to the static folder after the API endpoint
    is stable. ✓
-8. Add premium token validation and premium manifests later.
+8. Add rate-limit-style safeguards at the hosting, CDN, or entitlement-service
+   layer when premium validation exists.
 
 ## Static Folder Lockdown
 
