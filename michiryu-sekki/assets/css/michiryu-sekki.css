@@ -794,6 +794,10 @@
 	gap: 1rem;
 }
 
+.michiryu-sekki-map__landscape-notice {
+	display: none;
+}
+
 .michiryu-sekki-map__page-primary,
 .michiryu-sekki-map__page-map-stack,
 .michiryu-sekki-map__page-under-map {
@@ -3014,9 +3018,7 @@
 	}
 
 	.michiryu-sekki-map__main-top {
-		display: flex;
-		flex-direction: column;
-		gap: 1rem;
+		display: contents;
 		order: 3;
 	}
 
@@ -3026,7 +3028,7 @@
 	}
 
 	.michiryu-sekki-map__characters {
-		order: 2;
+		order: 6;
 		width: 100%;
 	}
 
@@ -3047,11 +3049,11 @@
 	}
 
 	.michiryu-sekki-map--page .michiryu-sekki-map__characters {
-		order: 5;
+		order: 6;
 	}
 
 	.michiryu-sekki-map--page .michiryu-sekki-map__story-region {
-		order: 6;
+		order: 5;
 	}
 
 	.michiryu-sekki-map__character {
@@ -3217,8 +3219,7 @@
 	}
 
 	.michiryu-sekki-map__main-top {
-		display: flex;
-		flex-direction: column;
+		display: contents;
 		order: 3;
 	}
 
@@ -3244,7 +3245,7 @@
 	}
 
 	.michiryu-sekki-map__characters {
-		order: 2;
+		order: 6;
 	}
 
 	.michiryu-sekki-map--page .michiryu-sekki-map__details {
@@ -3252,7 +3253,7 @@
 	}
 
 	.michiryu-sekki-map--page .michiryu-sekki-map__characters {
-		order: 5;
+		order: 6;
 	}
 
 	.michiryu-sekki-map__viewport {
@@ -3265,7 +3266,7 @@
 	}
 
 	.michiryu-sekki-map--page .michiryu-sekki-map__story-region {
-		order: 6;
+		order: 5;
 	}
 
 	.michiryu-sekki-map__controls {
@@ -3649,5 +3650,47 @@
 		max-height: min(70dvh, 22rem);
 		overflow: auto;
 		background: #fbfaf4;
+	}
+}
+
+@media (hover: none) and (pointer: coarse) and (max-width: 1200px) and (orientation: landscape) {
+	.michiryu-sekki-map--page {
+		min-height: 100dvh;
+		place-content: center;
+		padding: max(1rem, env(safe-area-inset-top)) max(1rem, env(safe-area-inset-right)) max(1rem, env(safe-area-inset-bottom)) max(1rem, env(safe-area-inset-left));
+	}
+
+	.michiryu-sekki-map--page .michiryu-sekki-map__header,
+	.michiryu-sekki-map--page .michiryu-sekki-map__progression,
+	.michiryu-sekki-map--page .michiryu-sekki-map__page-layout {
+		display: none !important;
+	}
+
+	.michiryu-sekki-map--page .michiryu-sekki-map__landscape-notice {
+		display: grid;
+		gap: 0.5rem;
+		width: min(34rem, 100%);
+		margin: 0 auto;
+		padding: 1.25rem;
+		color: var(--mrs-ink);
+		background: rgba(251, 250, 244, 0.96);
+		border: 1px solid var(--mrs-wash);
+		border-radius: 8px;
+		box-shadow: 0 16px 36px rgba(47, 51, 45, 0.14);
+		text-align: center;
+	}
+
+	.michiryu-sekki-map--page .michiryu-sekki-map__landscape-notice h3 {
+		margin: 0;
+		color: var(--mrs-bark);
+		font-size: clamp(1.4rem, 6vw, 2rem);
+		line-height: 1.1;
+		letter-spacing: 0;
+	}
+
+	.michiryu-sekki-map--page .michiryu-sekki-map__landscape-notice p {
+		margin: 0;
+		font-size: 1rem;
+		line-height: 1.45;
 	}
 }

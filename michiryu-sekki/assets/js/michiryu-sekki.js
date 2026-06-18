@@ -780,6 +780,42 @@
 		return 1.25;
 	}
 
+	function syncPageMapLayout( map ) {
+		var primary = map ? map.querySelector( '.michiryu-sekki-map__page-primary' ) : null;
+		var stack = map ? map.querySelector( '.michiryu-sekki-map__page-map-stack' ) : null;
+		var underMap = map ? map.querySelector( '.michiryu-sekki-map__page-under-map' ) : null;
+		var details = map ? map.querySelector( '.michiryu-sekki-map__details' ) : null;
+		var storyRegion = map ? map.querySelector( '.michiryu-sekki-map__story-region' ) : null;
+		var characters = map ? map.querySelector( '.michiryu-sekki-map__characters' ) : null;
+
+		if ( ! primary || ! stack || ! underMap || ! details || ! storyRegion || ! characters ) {
+			return;
+		}
+
+		if ( isMobilePageMap( map ) ) {
+			if ( details.parentNode !== primary ) {
+				primary.insertBefore( details, stack.nextSibling );
+			}
+			if ( storyRegion.parentNode !== primary || storyRegion.previousElementSibling !== details ) {
+				primary.insertBefore( storyRegion, details.nextSibling );
+			}
+			if ( characters.parentNode !== primary || characters.previousElementSibling !== storyRegion ) {
+				primary.insertBefore( characters, storyRegion.nextSibling );
+			}
+			return;
+		}
+
+		if ( characters.parentNode !== underMap ) {
+			underMap.insertBefore( characters, underMap.firstChild );
+		}
+		if ( storyRegion.parentNode !== underMap || storyRegion.previousElementSibling !== characters ) {
+			underMap.insertBefore( storyRegion, characters.nextSibling );
+		}
+		if ( details.parentNode !== primary || details.previousElementSibling !== stack ) {
+			primary.insertBefore( details, stack.nextSibling );
+		}
+	}
+
 	function prepareMapModalView( map ) {
 		if ( ! map ) {
 			return;
@@ -792,7 +828,10 @@
 	}
 
 	function preparePageMapView( map ) {
+		syncPageMapLayout( map );
+
 		if ( ! isMobilePageMap( map ) ) {
+			resetMapView( map );
 			return;
 		}
 

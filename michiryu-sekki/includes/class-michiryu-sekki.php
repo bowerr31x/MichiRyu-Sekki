@@ -1789,6 +1789,10 @@ class MichiRyu_Sekki {
 			</div>
 			<?php echo $this->render_map_progression( $seasons, $current, $options ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
 			<?php if ( 'page' === $layout ) : ?>
+				<div class="michiryu-sekki-map__landscape-notice" role="status">
+					<h3><?php esc_html_e( 'Rotate to Portrait', 'michiryu-sekki' ); ?></h3>
+					<p><?php esc_html_e( 'The Sekki map is best viewed upright on mobile.', 'michiryu-sekki' ); ?></p>
+				</div>
 				<div class="michiryu-sekki-map__page-layout">
 					<div class="michiryu-sekki-map__page-primary">
 						<div class="michiryu-sekki-map__page-map-stack">
