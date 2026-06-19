@@ -351,10 +351,20 @@ class MichiRyu_Sekki_Content_Importer {
 		$file_base_url = $source['file_base_url'] ?? ( ( $source['base_url'] ?? '' ) . '/' );
 
 		if ( false !== strpos( $file_base_url, '?' ) ) {
-			return $file_base_url . rawurlencode( $relative_path );
+			return $file_base_url . $this->encode_relative_path_for_query( $relative_path );
 		}
 
 		return rtrim( $file_base_url, '/' ) . '/' . ltrim( $relative_path, '/' );
+	}
+
+	/**
+	 * Encode a relative path for a query parameter while preserving folders.
+	 *
+	 * @param string $relative_path Relative path.
+	 * @return string
+	 */
+	private function encode_relative_path_for_query( $relative_path ) {
+		return implode( '/', array_map( 'rawurlencode', explode( '/', $relative_path ) ) );
 	}
 
 	/**
@@ -447,6 +457,7 @@ class MichiRyu_Sekki_Content_Importer {
 		$args['redirection'] = 0;
 		$headers = is_array( $args['headers'] ?? null ) ? $args['headers'] : array();
 		$headers['X-MichiRyu-Content-Token'] = $access_token;
+		$headers['Authorization'] = 'Bearer ' . $access_token;
 		$args['headers'] = $headers;
 
 		return $args;
