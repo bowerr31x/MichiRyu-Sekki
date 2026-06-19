@@ -13,7 +13,17 @@ public_html/your-site/michiryu-content-api/
 
 2. Copy `config.example.php` to `config.php` on the server.
 3. Set `base_url` to the public API folder URL.
-4. Configure at least the `basic` library:
+4. Configure the content libraries. The recommended private content-root layout is:
+
+```text
+/absolute/path/to/michiryu-content-libraries/
+  basic/
+  custom/
+  premium/
+```
+
+Configure at least `basic`; configure `custom` when you want the plugin's
+Custom Content Library import to test a distinct hosted source:
 
 ```php
 'libraries' => array(
@@ -21,8 +31,34 @@ public_html/your-site/michiryu-content-api/
         'library' => 'michiryu-basic',
         'version' => '2026.06.16',
         'license' => 'MichiRyu Content License',
-        'content_root' => '/absolute/path/to/michiryu-content/basic',
+        'content_root' => '/absolute/path/to/michiryu-content-libraries/basic',
         'token_hash' => hash('sha256', 'your-basic-token'),
+        'manifests' => array(
+            'default' => array(
+                'featured_content' => 'featured-content.json',
+                'images' => 'images.json',
+            ),
+        ),
+    ),
+    'custom' => array(
+        'library' => 'michiryu-custom',
+        'version' => '2026.06.16',
+        'license' => 'MichiRyu Content License',
+        'content_root' => '/absolute/path/to/michiryu-content-libraries/custom',
+        'token_hash' => hash('sha256', 'your-custom-token'),
+        'manifests' => array(
+            'default' => array(
+                'featured_content' => 'featured-content.json',
+                'images' => 'images.json',
+            ),
+        ),
+    ),
+    'premium' => array(
+        'library' => 'michiryu-premium',
+        'version' => '2026.06.16',
+        'license' => 'MichiRyu Premium Content License',
+        'content_root' => '/absolute/path/to/michiryu-content-libraries/premium',
+        'token_hash' => hash('sha256', 'your-premium-token'),
         'manifests' => array(
             'default' => array(
                 'featured_content' => 'featured-content.json',
@@ -52,6 +88,8 @@ also request a specific configured library:
 
 ```text
 https://michiryu.com/michiryu-content-api/index.php?route=manifest&library=basic
+https://michiryu.com/michiryu-content-api/index.php?route=manifest&library=custom
+https://michiryu.com/michiryu-content-api/index.php?route=manifest&library=premium
 ```
 
 If `.htaccess` rewriting is working, these shorter URLs should also work:

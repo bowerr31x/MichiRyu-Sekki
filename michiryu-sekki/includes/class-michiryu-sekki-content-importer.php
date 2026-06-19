@@ -482,11 +482,62 @@ class MichiRyu_Sekki_Content_Importer {
 		}
 
 		$auth_origin = (string) ( $source['auth_origin'] ?? '' );
-		if ( '' === $auth_origin || $auth_origin !== $this->get_url_origin( $url ) ) {
+		if ( '' === $auth_origin || ! $this->url_origins_match_for_token( $auth_origin, $this->get_url_origin( $url ) ) ) {
 			return '';
 		}
 
 		return $access_token;
+	}
+
+	/**
+	 * Return whether two URL origins are close enough to share a content token.
+	 *
+	 * @param string $expected_origin Original configured content source origin.
+	 * @param string $request_origin Requested content file origin.
+	 * @return bool
+	 */
+	private function url_origins_match_for_token( $expected_origin, $request_origin ) {
+		if ( '' === $expected_origin || '' === $request_origin ) {
+			return false;
+		}
+
+		if ( $expected_origin === $request_origin ) {
+			return true;
+		}
+
+		$expected = wp_parse_url( $expected_origin );
+		$request  = wp_parse_url( $request_origin );
+
+		if ( ! is_array( $expected ) || ! is_array( $request ) ) {
+			return false;
+		}
+
+		$expected_scheme = strtolower( (string) ( $expected['scheme'] ?? '' ) );
+		$request_scheme  = strtolower( (string) ( $request['scheme'] ?? '' ) );
+		$expected_port   = isset( $expected['port'] ) ? absint( $expected['port'] ) : 0;
+		$request_port    = isset( $request['port'] ) ? absint( $request['port'] ) : 0;
+
+		if ( $expected_scheme !== $request_scheme || $expected_port !== $request_port ) {
+			return false;
+		}
+
+		return $this->normalize_token_host( $expected['host'] ?? '' ) === $this->normalize_token_host( $request['host'] ?? '' );
+	}
+
+	/**
+	 * Normalize a host for same-site content token checks.
+	 *
+	 * @param string $host Host name.
+	 * @return string
+	 */
+	private function normalize_token_host( $host ) {
+		$host = strtolower( trim( (string) $host ) );
+
+		if ( 0 === strpos( $host, 'www.' ) ) {
+			return substr( $host, 4 );
+		}
+
+		return $host;
 	}
 
 	/**

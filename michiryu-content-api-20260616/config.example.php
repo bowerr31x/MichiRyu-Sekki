@@ -16,12 +16,26 @@ return array(
             'library' => 'michiryu-basic',
             'version' => '2026.06.16',
             'license' => 'MichiRyu Content License',
-            'content_root' => '/absolute/path/to/michiryu-content/basic',
+            'content_root' => '/absolute/path/to/michiryu-content-libraries/basic',
 
             // Required before manifest or file routes will serve this library.
             'token_hash' => '',
 
             // Explicit manifest allow-list.
+            'manifests' => array(
+                'default' => array(
+                    'featured_content' => 'featured-content.json',
+                    'images' => 'images.json',
+                ),
+            ),
+        ),
+
+        'custom' => array(
+            'library' => 'michiryu-custom',
+            'version' => '2026.06.16',
+            'license' => 'MichiRyu Content License',
+            'content_root' => '/absolute/path/to/michiryu-content-libraries/custom',
+            'token_hash' => '',
             'manifests' => array(
                 'default' => array(
                     'featured_content' => 'featured-content.json',
@@ -37,7 +51,7 @@ return array(
             'library' => 'michiryu-premium',
             'version' => '2026.06.16',
             'license' => 'MichiRyu Premium Content License',
-            'content_root' => '/absolute/path/to/michiryu-content/premium',
+            'content_root' => '/absolute/path/to/michiryu-content-libraries/premium',
             'token_hash' => '',
             'manifests' => array(
                 'default' => array(
