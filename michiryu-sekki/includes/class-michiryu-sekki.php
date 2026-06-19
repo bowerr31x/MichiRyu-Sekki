@@ -1108,7 +1108,6 @@ class MichiRyu_Sekki {
 			'content_import_ack_privacy' => false,
 			'content_library_url'     => '',
 			'content_access_token'    => '',
-			'premium_license_token'   => '',
 			'content_update_mode'      => 'manual',
 		);
 	}
@@ -1143,7 +1142,6 @@ class MichiRyu_Sekki {
 		$reader_open_behaviors = array( 'modal', 'inline' );
 		$map_progression_styles = array( 'wheel', 'timeline', 'none' );
 		$read_more_link_behaviors = array( 'none', 'internal', 'external' );
-		$content_update_modes = array( 'manual', 'monthly', 'sekki' );
 		$signature_positions = array( 'bottom-right', 'bottom-left', 'top-right', 'top-left' );
 		$signature_sizes     = array( 'small', 'medium', 'large' );
 		$signature_opacity   = isset( $input['signature_opacity'] ) ? (float) $input['signature_opacity'] : (float) $saved['signature_opacity'];
@@ -1155,7 +1153,7 @@ class MichiRyu_Sekki {
 		$output['reader_open_behavior']      = in_array( $input['reader_open_behavior'] ?? '', $reader_open_behaviors, true ) ? $input['reader_open_behavior'] : $saved['reader_open_behavior'];
 		$output['map_progression_style']     = in_array( $input['map_progression_style'] ?? '', $map_progression_styles, true ) ? $input['map_progression_style'] : $saved['map_progression_style'];
 		$output['read_more_link_behavior']   = in_array( $input['read_more_link_behavior'] ?? '', $read_more_link_behaviors, true ) ? $input['read_more_link_behavior'] : $saved['read_more_link_behavior'];
-		$output['content_update_mode']       = in_array( $input['content_update_mode'] ?? '', $content_update_modes, true ) ? $input['content_update_mode'] : $saved['content_update_mode'];
+		$output['content_update_mode']       = 'manual';
 		$output['content_library_url']       = array_key_exists( 'content_library_url', $input ) ? esc_url_raw( $input['content_library_url'] ) : $saved['content_library_url'];
 		if ( ! empty( $input['content_access_token_clear'] ) ) {
 			$output['content_access_token'] = '';
@@ -1163,13 +1161,6 @@ class MichiRyu_Sekki {
 			$output['content_access_token'] = MichiRyu_Sekki_Content_Library_Access::sanitize_access_token( $input['content_access_token'] );
 		} else {
 			$output['content_access_token'] = $saved['content_access_token'];
-		}
-		if ( ! empty( $input['premium_license_token_clear'] ) ) {
-			$output['premium_license_token'] = '';
-		} elseif ( ! empty( $input['premium_license_token'] ) ) {
-			$output['premium_license_token'] = MichiRyu_Sekki_Content_Library_Access::sanitize_access_token( $input['premium_license_token'] );
-		} else {
-			$output['premium_license_token'] = $saved['premium_license_token'];
 		}
 		$output['external_season_base_url']  = array_key_exists( 'external_season_base_url', $input ) ? esc_url_raw( $input['external_season_base_url'] ) : $saved['external_season_base_url'];
 		$output['map_page_url']              = esc_url_raw( $input['map_page_url'] ?? '' );

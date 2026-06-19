@@ -23,8 +23,7 @@ Author URI: https://michiryu.com
   content locally in WordPress after consent.
 - BDD acceptance scenarios for the future content import flow in
   `docs/CONTENT-IMPORT-BDD.md`.
-- Admin settings for future content import consent and manual or opt-in update
-  checks.
+- Admin settings for content import consent and manual content refreshes.
 
 ## Repository Structure
 

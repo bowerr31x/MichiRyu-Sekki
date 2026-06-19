@@ -135,7 +135,7 @@ Future premium libraries must use user-specific license tokens validated by the
 MichiRyu server.
 
 ```text
-michiryu-basic-test
+michiryu-basic-content
 ```
 
 Filters:

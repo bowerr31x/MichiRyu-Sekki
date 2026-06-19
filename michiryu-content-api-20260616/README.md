@@ -108,10 +108,10 @@ For the current basic token gate, set:
 'token_hash' => hash('sha256', 'your-token-here'),
 ```
 
-For the current test token, the value is:
+For the built-in Basic Import token, the value is:
 
 ```php
-'token_hash' => '693e9ce2996d348e2720c198be73be1b81c670cb766296a55f70249ba8c1d56e',
+'token_hash' => 'e3f50ee1f0c939713fb1beb9ba35554011f5fce416cac08bf2dd523ddd8bc08c',
 ```
 
 The plugin/import client sends:

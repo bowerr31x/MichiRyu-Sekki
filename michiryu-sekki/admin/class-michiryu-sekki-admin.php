@@ -169,10 +169,10 @@ class MichiRyu_Sekki_Admin {
 							</td>
 						</tr>
 						<tr>
-							<th scope="row"><label for="michiryu-sekki-content-update-mode"><?php esc_html_e( 'Content updates', 'michiryu-sekki' ); ?></label></th>
+							<th scope="row"><?php esc_html_e( 'Content updates', 'michiryu-sekki' ); ?></th>
 							<td>
-								<?php $this->render_select( 'content_update_mode', $options['content_update_mode'], $this->get_content_update_mode_options(), 'michiryu-sekki-content-update-mode' ); ?>
-								<p class="description"><?php esc_html_e( 'Manual updates only is the default. Automatic checks will be opt-in later.', 'michiryu-sekki' ); ?></p>
+								<p><?php esc_html_e( 'Manual updates only.', 'michiryu-sekki' ); ?></p>
+								<p class="description"><?php esc_html_e( 'Use the import buttons below when you want to refresh the local WordPress copy.', 'michiryu-sekki' ); ?></p>
 							</td>
 						</tr>
 					</table>
@@ -199,30 +199,6 @@ class MichiRyu_Sekki_Admin {
 										<?php esc_html_e( 'Clear saved custom access token', 'michiryu-sekki' ); ?>
 									</label>
 								<?php endif; ?>
-							</td>
-						</tr>
-						</table>
-						<h3><?php esc_html_e( 'Future premium access', 'michiryu-sekki' ); ?></h3>
-						<table class="form-table" role="presentation">
-						<tr>
-							<th scope="row"><label for="michiryu-sekki-premium-license-token"><?php esc_html_e( 'Premium license token', 'michiryu-sekki' ); ?></label></th>
-							<td>
-								<input id="michiryu-sekki-premium-license-token" type="password" class="regular-text" autocomplete="off" name="<?php echo esc_attr( MichiRyu_Sekki::OPTION_NAME ); ?>[premium_license_token]" value="" placeholder="<?php echo ! empty( $options['premium_license_token'] ) ? esc_attr__( 'Token saved', 'michiryu-sekki' ) : ''; ?>" />
-								<p class="description"><?php esc_html_e( 'Reserved for future premium MichiRyu libraries. This token is saved locally but is not used by the current basic import.', 'michiryu-sekki' ); ?></p>
-								<?php if ( ! empty( $options['premium_license_token'] ) ) : ?>
-									<label>
-										<input type="checkbox" name="<?php echo esc_attr( MichiRyu_Sekki::OPTION_NAME ); ?>[premium_license_token_clear]" value="1" />
-										<?php esc_html_e( 'Clear saved premium license token', 'michiryu-sekki' ); ?>
-									</label>
-								<?php endif; ?>
-							</td>
-						</tr>
-						<tr>
-							<th scope="row"><?php esc_html_e( 'Premium status', 'michiryu-sekki' ); ?></th>
-							<td>
-								<?php $premium_status = MichiRyu_Sekki_Content_Library_Access::get_premium_status( $options ); ?>
-								<p><?php echo esc_html( $premium_status['label'] ); ?></p>
-								<p class="description"><?php echo esc_html( $premium_status['description'] ); ?></p>
 							</td>
 						</tr>
 						</table>
@@ -932,19 +908,6 @@ class MichiRyu_Sekki_Admin {
 			'standard_horizontal' => __( 'Standard horizontal', 'michiryu-sekki' ),
 			'banner_tall'         => __( 'Banner tall (current full image layout)', 'michiryu-sekki' ),
 			'banner_narrow'       => __( 'Banner narrow (image, details, story)', 'michiryu-sekki' ),
-		);
-	}
-
-	/**
-	 * Content update mode choices.
-	 *
-	 * @return array<string,string>
-	 */
-	private function get_content_update_mode_options() {
-		return array(
-			'manual'  => __( 'Manual updates only', 'michiryu-sekki' ),
-			'monthly' => __( 'Check monthly for updates', 'michiryu-sekki' ),
-			'sekki'   => __( 'Check every Sekki', 'michiryu-sekki' ),
 		);
 	}
 

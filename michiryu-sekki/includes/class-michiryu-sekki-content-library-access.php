@@ -10,12 +10,12 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 /**
- * Centralizes basic and future premium content access decisions.
+ * Centralizes basic content access decisions.
  */
 class MichiRyu_Sekki_Content_Library_Access {
 	const BASIC_LIBRARY = 'michiryu-basic';
 	const BASIC_CONTENT_URL = 'https://michiryu.com/michiryu-content-api/index.php?route=manifest';
-	const BASIC_CONTENT_TOKEN = 'michiryu-basic-test';
+	const BASIC_CONTENT_TOKEN = 'michiryu-basic-content';
 
 	/**
 	 * Return the configured Basic MichiRyu content library.
@@ -53,25 +53,6 @@ class MichiRyu_Sekki_Content_Library_Access {
 			'library' => self::BASIC_LIBRARY,
 			'url'     => rtrim( esc_url_raw( $url ), '/' ),
 			'token'   => self::sanitize_access_token( $token ),
-		);
-	}
-
-	/**
-	 * Return the future premium access state.
-	 *
-	 * @param array<string,mixed> $options Saved plugin options.
-	 * @return array<string,mixed>
-	 */
-	public static function get_premium_status( $options = array() ) {
-		$has_token = ! empty( $options['premium_license_token'] );
-
-		return array(
-			'enabled'     => false,
-			'has_token'   => $has_token,
-			'label'       => $has_token
-				? __( 'Premium license token saved. Validation is not active yet.', 'michiryu-sekki' )
-				: __( 'No premium license token saved.', 'michiryu-sekki' ),
-			'description' => __( 'Premium validation will be added later through a server-side entitlement check before premium manifests are imported.', 'michiryu-sekki' ),
 		);
 	}
 

@@ -2,9 +2,9 @@
 Contributors: michiryu
 Plugin URI: https://michiryu.com
 Author URI: https://michiryu.com
-Tags: sekki, seasons, japan, shortcode, widget, block, ikebana
+Tags: sekki, seasons, japan, shortcode, widget
 Requires at least: 6.0
-Tested up to: 6.5
+Tested up to: 7.0
 Requires PHP: 7.4
 Stable tag: 1.3.0
 License: GPLv2 or later
@@ -70,7 +70,7 @@ Go to MichiRyu-Sekki-Calendar in WordPress Admin to set core defaults:
 * Content Provider Status showing the active source, content counts, and whether map or signature images are supplied.
 * Admin-approved Basic MichiRyu Content import with local WordPress storage.
 * Advanced custom content source settings for support, testing, and self-hosted content libraries.
-* Manual content updates by default, with opt-in update settings reserved for future automation.
+* Manual content updates through admin-approved import actions.
 
 Recommended setup: use [michiryu_sekki] for the main experience. It shows the
 current Sekki and current Ko.
@@ -123,6 +123,11 @@ default.
 No proprietary artwork or stories are included in this plugin package. Content
 provided by a separate Content Provider follows that provider's license terms.
 
+= Does uninstall remove imported content? =
+
+Yes. Uninstalling the plugin removes plugin settings, import status, and the
+local imported content copy stored under WordPress uploads.
+
 == Changelog ==
 
 = 1.3.0 =
@@ -130,7 +135,6 @@ provided by a separate Content Provider follows that provider's license terms.
 * Store imported stories, characters, image references, map images, and signature images locally in WordPress uploads.
 * Keep proprietary MichiRyu content outside the GPL plugin package and document the content-provider separation model.
 * Add a clearer admin settings layout with content status, import summary, content actions, and developer diagnostics.
-* Add a future premium license token scaffold without changing the current basic import flow.
 * Point the built-in Basic Import flow to the branded MichiRyu API endpoint.
 * Harden remote imports by limiting file types, file sizes, unsafe URLs, and token forwarding.
 * Add helper packages and documentation for the external content API and static content lockdown.

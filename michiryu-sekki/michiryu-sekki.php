@@ -4,6 +4,8 @@
  * Plugin URI:  https://michiryu.com
  * Description: Display the current Japanese 24 Sekki solar term with elegant seasonal cards, banners, widgets, and ikebana prompts.
  * Version:     1.3.0
+ * Requires at least: 6.0
+ * Requires PHP: 7.4
  * Author:      MichiRyu
  * Author URI:  https://michiryu.com
  * License:     GPL-2.0-or-later
