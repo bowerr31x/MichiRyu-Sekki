@@ -14,7 +14,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  */
 class MichiRyu_Sekki_Content_Library_Access {
 	const BASIC_LIBRARY = 'michiryu-basic';
-	const BASIC_CONTENT_URL = 'https://michiryu.com/michiryu-content-api/index.php?route=manifest';
+	const BASIC_CONTENT_URL = 'https://michiryu.com/michiryu-content-api/index.php?route=manifest&library=basic';
 	const BASIC_CONTENT_TOKEN = 'michiryu-basic-content';
 
 	/**

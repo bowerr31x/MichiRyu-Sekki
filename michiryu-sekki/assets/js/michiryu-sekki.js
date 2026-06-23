@@ -495,6 +495,7 @@
 			selectMapStory( map, storyTab.getAttribute( 'data-story' ) );
 		} else {
 			updateStoryCharacters( map, '' );
+			updateMapKoOverlays( map, '' );
 		}
 
 		if ( focusMarker && activeMarker ) {
@@ -525,6 +526,30 @@
 		if ( characterPanel ) {
 			characterPanel.classList.toggle( 'has-visible-characters', visibleCharacters > 0 );
 		}
+	}
+
+	function updateMapKoOverlays( map, activeKo ) {
+		if ( ! map ) {
+			return;
+		}
+
+		map.querySelectorAll( '.michiryu-sekki-map__detail' ).forEach( function ( detail ) {
+			var overlays = Array.prototype.slice.call( detail.querySelectorAll( '[data-mrs-ko-overlay]' ) );
+			var isActiveDetail = detail.classList.contains( 'is-active' ) && ! detail.hidden;
+			var hasVisibleOverlay = false;
+
+			overlays.forEach( function ( overlay ) {
+				var isActive = isActiveDetail && activeKo && overlay.getAttribute( 'data-ko' ) === activeKo;
+				overlay.hidden = ! isActive;
+				if ( isActive ) {
+					hasVisibleOverlay = true;
+				}
+			} );
+
+			if ( isActiveDetail && ! hasVisibleOverlay && overlays[0] ) {
+				overlays[0].hidden = false;
+			}
+		} );
 	}
 
 	function selectMapStory( map, storyId ) {
@@ -582,6 +607,7 @@
 		} );
 
 		updateStoryCharacters( map, storyId );
+		updateMapKoOverlays( map, activeKo );
 
 		if ( activeTab ) {
 			activeTab.scrollIntoView( { block: 'nearest', inline: 'center' } );

@@ -130,6 +130,14 @@ class MichiRyu_Sekki_Admin {
 							</td>
 						</tr>
 						<?php $this->render_checkbox_row( 'show_ko_icon', __( 'Show Ko microseason section', 'michiryu-sekki' ), $options['show_ko_icon'] ); ?>
+						<?php $this->render_checkbox_row( 'show_ko_artwork', __( 'Show Ko icon artwork', 'michiryu-sekki' ), $options['show_ko_artwork'], ! $has_content_provider, __( 'Available after importing MichiRyu content.', 'michiryu-sekki' ) ); ?>
+						<tr>
+							<th scope="row"><label for="michiryu-sekki-icon-style"><?php esc_html_e( 'Ko icon style', 'michiryu-sekki' ); ?></label></th>
+							<td>
+								<?php $this->render_select( 'icon_style', $options['icon_style'], $this->get_icon_style_options(), 'michiryu-sekki-icon-style' ); ?>
+								<p class="description"><?php esc_html_e( 'Choose how Ko artwork appears when Ko icon artwork is enabled.', 'michiryu-sekki' ); ?></p>
+							</td>
+						</tr>
 						<?php $this->render_checkbox_row( 'show_kanji', __( 'Show Japanese kanji', 'michiryu-sekki' ), $options['show_kanji'] ); ?>
 						<?php $this->render_checkbox_row( 'show_romanized', __( 'Show romanized name', 'michiryu-sekki' ), $options['show_romanized'] ); ?>
 						<?php $this->render_checkbox_row( 'show_english', __( 'Show English name', 'michiryu-sekki' ), $options['show_english'] ); ?>
@@ -908,6 +916,19 @@ class MichiRyu_Sekki_Admin {
 			'standard_horizontal' => __( 'Standard horizontal', 'michiryu-sekki' ),
 			'banner_tall'         => __( 'Banner tall (current full image layout)', 'michiryu-sekki' ),
 			'banner_narrow'       => __( 'Banner narrow (image, details, story)', 'michiryu-sekki' ),
+		);
+	}
+
+	/**
+	 * Ko icon style choices.
+	 *
+	 * @return array<string,string>
+	 */
+	private function get_icon_style_options() {
+		return array(
+			'outline' => __( 'Outline', 'michiryu-sekki' ),
+			'circle'  => __( 'Circle overlay', 'michiryu-sekki' ),
+			'none'    => __( 'None', 'michiryu-sekki' ),
 		);
 	}
 

@@ -118,7 +118,7 @@
 	user-select: none;
 }
 
-.michiryu-sekki__image > img:not(.michiryu-sekki-signature) {
+.michiryu-sekki__image-main {
 	display: block;
 	width: 100%;
 	height: auto;
@@ -127,6 +127,30 @@
 	pointer-events: none;
 	-webkit-user-drag: none;
 	user-select: none;
+}
+
+.michiryu-sekki__ko-overlay {
+	position: absolute;
+	left: 12px;
+	bottom: 12px;
+	z-index: 4;
+	display: block;
+	width: clamp(54px, 16%, 94px);
+	height: clamp(54px, 16%, 94px);
+	background: rgba(251, 250, 244, 0.54);
+	border-radius: 5px;
+	object-fit: contain;
+	pointer-events: none;
+	-webkit-user-drag: none;
+	user-select: none;
+}
+
+.michiryu-sekki__ko-overlay[hidden] {
+	display: none;
+}
+
+.michiryu-sekki__ko-overlay--circle {
+	border-radius: 999px;
 }
 
 .michiryu-sekki__image .michiryu-sekki-signature {
@@ -219,6 +243,11 @@
 	left: 12px;
 }
 
+.michiryu-sekki__image--has-ko-overlay .michiryu-sekki-signature--bottom-left {
+	right: 12px;
+	left: auto;
+}
+
 .michiryu-sekki__image .michiryu-sekki-signature--top-right {
 	top: 12px;
 	right: 12px;
@@ -234,7 +263,7 @@
 	left: 12px;
 }
 
-.michiryu-sekki--image-square .michiryu-sekki__image > img:not(.michiryu-sekki-signature) {
+.michiryu-sekki--image-square .michiryu-sekki__image-main {
 	aspect-ratio: 1 / 1;
 }
 
@@ -245,7 +274,7 @@
 	overflow: hidden;
 }
 
-.michiryu-sekki--image-circle .michiryu-sekki__image > img:not(.michiryu-sekki-signature) {
+.michiryu-sekki--image-circle .michiryu-sekki__image-main {
 	aspect-ratio: 1 / 1;
 }
 
@@ -1159,7 +1188,7 @@
 	user-select: none;
 }
 
-.michiryu-sekki-map__thumb > img:not(.michiryu-sekki-signature) {
+.michiryu-sekki-map__thumb-main {
 	display: block;
 	width: 100%;
 	height: 100%;
@@ -1167,6 +1196,11 @@
 	pointer-events: none;
 	-webkit-user-drag: none;
 	user-select: none;
+}
+
+.michiryu-sekki-map__thumb .michiryu-sekki__ko-overlay {
+	width: clamp(46px, 18%, 76px);
+	height: clamp(46px, 18%, 76px);
 }
 
 .michiryu-sekki-map__thumb .michiryu-sekki-signature {
@@ -1674,7 +1708,7 @@
 	min-height: 100%;
 }
 
-.michiryu-sekki--standard_horizontal .michiryu-sekki__image > img:not(.michiryu-sekki-signature) {
+.michiryu-sekki--standard_horizontal .michiryu-sekki__image-main {
 	height: 100%;
 	aspect-ratio: auto;
 }
@@ -1704,8 +1738,15 @@
 	min-height: 4.6rem;
 }
 
-.michiryu-sekki--small .michiryu-sekki__image > img:not(.michiryu-sekki-signature) {
+.michiryu-sekki--small .michiryu-sekki__image-main {
 	aspect-ratio: 16 / 5;
+}
+
+.michiryu-sekki--small .michiryu-sekki__ko-overlay {
+	left: 0.45rem;
+	bottom: 0.35rem;
+	width: clamp(40px, 22%, 58px);
+	height: clamp(40px, 22%, 58px);
 }
 
 .michiryu-sekki--small .michiryu-sekki-date-stamp {
@@ -1813,8 +1854,8 @@
 	min-height: 100%;
 }
 
-.michiryu-sekki--banner_tall .michiryu-sekki__image > img:not(.michiryu-sekki-signature),
-.michiryu-sekki--plan-banner .michiryu-sekki__image > img:not(.michiryu-sekki-signature) {
+.michiryu-sekki--banner_tall .michiryu-sekki__image-main,
+.michiryu-sekki--plan-banner .michiryu-sekki__image-main {
 	height: 100%;
 	aspect-ratio: auto;
 }
@@ -1855,11 +1896,16 @@
 	min-height: 100%;
 }
 
-.michiryu-sekki--banner_narrow .michiryu-sekki__image > img:not(.michiryu-sekki-signature) {
+.michiryu-sekki--banner_narrow .michiryu-sekki__image-main {
 	height: 100%;
 	aspect-ratio: auto;
 	object-fit: cover;
 	object-position: center;
+}
+
+.michiryu-sekki--banner_narrow .michiryu-sekki__ko-overlay {
+	width: clamp(40px, 16%, 64px);
+	height: clamp(40px, 16%, 64px);
 }
 
 .michiryu-sekki--banner_narrow .michiryu-sekki__body {
@@ -2593,7 +2639,7 @@
 	border-radius: 8px;
 }
 
-.michiryu-sekki-journey__image img:not(.michiryu-sekki-signature) {
+.michiryu-sekki-journey__image-main {
 	display: block;
 	width: 100%;
 	height: 100%;
@@ -2601,6 +2647,11 @@
 	object-fit: cover;
 	pointer-events: none;
 	user-select: none;
+}
+
+.michiryu-sekki-journey__image .michiryu-sekki__ko-overlay {
+	width: clamp(50px, 18%, 86px);
+	height: clamp(50px, 18%, 86px);
 }
 
 .michiryu-sekki-journey__image .michiryu-sekki-signature {
@@ -2613,6 +2664,11 @@
 	max-height: calc(100% - 24px);
 	opacity: var(--mrs-signature-opacity, 0.85);
 	pointer-events: none;
+}
+
+.michiryu-sekki-journey__image--has-ko-overlay .michiryu-sekki-signature--bottom-left {
+	right: 12px;
+	left: auto;
 }
 
 .michiryu-sekki-journey *,
@@ -2764,7 +2820,7 @@
 	order: -1;
 }
 
-.michiryu-sekki-journey--widget .michiryu-sekki-journey__image img:not(.michiryu-sekki-signature) {
+.michiryu-sekki-journey--widget .michiryu-sekki-journey__image-main {
 	min-height: 10rem;
 }
 
@@ -3136,7 +3192,7 @@
 		min-height: 12rem;
 	}
 
-	.michiryu-sekki-journey__image img:not(.michiryu-sekki-signature) {
+	.michiryu-sekki-journey__image-main {
 		min-height: 12rem;
 	}
 

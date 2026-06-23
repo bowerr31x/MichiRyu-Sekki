@@ -372,7 +372,7 @@ class MichiRyu_Sekki_Data {
 			'start'               => $range['start'],
 			'end'                 => $range['end'],
 			'date_range'          => $range['date_range'],
-			'icon_file'           => sprintf( 'KO_%02d_%s.svg', $ko_number, $name[3] ),
+			'icon_file'           => sprintf( 'KO_%02d_%s.png', $ko_number, $name[3] ),
 			'short_description'   => sprintf(
 				/* translators: %s: ko English name. */
 				__( 'A five-day microseason: %s.', 'michiryu-sekki' ),

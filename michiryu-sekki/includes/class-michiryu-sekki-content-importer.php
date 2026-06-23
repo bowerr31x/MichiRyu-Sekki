@@ -63,6 +63,9 @@ class MichiRyu_Sekki_Content_Importer {
 			return $this->error( __( 'images.json must be a JSON object.', 'michiryu-sekki' ) );
 		}
 
+		$images = $this->normalize_ko_icon_image_references( $images );
+		$images = $this->add_expected_ko_icon_image_references( $images );
+
 		$image_result = $this->import_images( $source, $images, $content_path, $access_token );
 		if ( is_wp_error( $image_result ) ) {
 			return $this->error( $image_result->get_error_message() );
@@ -189,11 +192,13 @@ class MichiRyu_Sekki_Content_Importer {
 
 		$code = (int) wp_remote_retrieve_response_code( $response );
 		if ( 200 !== $code ) {
+			$error_detail = $this->get_response_error_detail( $response );
 			return new WP_Error( 'michiryu_sekki_import_http', sprintf(
-				/* translators: 1: URL, 2: HTTP status code. */
-				__( 'Could not download %1$s. HTTP status: %2$d.', 'michiryu-sekki' ),
+				/* translators: 1: URL, 2: HTTP status code, 3: optional API error details. */
+				__( 'Could not download %1$s. HTTP status: %2$d.%3$s', 'michiryu-sekki' ),
 				$url,
-				$code
+				$code,
+				$error_detail
 			) );
 		}
 
@@ -295,6 +300,112 @@ class MichiRyu_Sekki_Content_Importer {
 	}
 
 	/**
+	 * Normalize ko icon image entries to the current PNG asset convention.
+	 *
+	 * @param array<string,mixed> $images Image mapping.
+	 * @return array<string,mixed>
+	 */
+	private function normalize_ko_icon_image_references( $images ) {
+		$normalized = array();
+
+		foreach ( $images as $id => $image ) {
+			$normalized_id = is_string( $id ) ? $this->replace_ko_icon_svg_extension( $id ) : $id;
+
+			if ( is_string( $image ) ) {
+				$image = $this->replace_ko_icon_svg_extension( $image );
+			} elseif ( is_array( $image ) ) {
+				foreach ( array( 'path', 'url' ) as $field ) {
+					if ( ! empty( $image[ $field ] ) && is_string( $image[ $field ] ) ) {
+						$image[ $field ] = $this->replace_ko_icon_svg_extension( $image[ $field ] );
+					}
+				}
+			}
+
+			$normalized[ $normalized_id ] = $image;
+		}
+
+		return $normalized;
+	}
+
+	/**
+	 * Add standard ko icon files when the content library includes a ko icon set.
+	 *
+	 * @param array<string,mixed> $images Image mapping.
+	 * @return array<string,mixed>
+	 */
+	private function add_expected_ko_icon_image_references( $images ) {
+		$path_prefix = $this->get_ko_icon_path_prefix( $images );
+
+		if ( '' === $path_prefix ) {
+			return $images;
+		}
+
+		foreach ( MichiRyu_Sekki_Data::get_ko() as $ko ) {
+			$filename = basename( (string) ( $ko['icon_file'] ?? '' ) );
+
+			if ( '' === $filename ) {
+				continue;
+			}
+
+			$id = 'ko/' . $filename;
+			if ( empty( $images[ $id ] ) ) {
+				$images[ $id ] = $path_prefix . $filename;
+			}
+		}
+
+		return $images;
+	}
+
+	/**
+	 * Infer the content-library ko icon folder from existing image mappings.
+	 *
+	 * @param array<string,mixed> $images Image mapping.
+	 * @return string
+	 */
+	private function get_ko_icon_path_prefix( $images ) {
+		foreach ( $images as $id => $image ) {
+			if ( ! is_string( $id ) || ! preg_match( '#^ko/KO_[0-9]{2}_[A-Za-z0-9]+\.png$#', $id ) ) {
+				continue;
+			}
+
+			$path = '';
+			if ( is_string( $image ) ) {
+				$path = $image;
+			} elseif ( is_array( $image ) && ! empty( $image['path'] ) && is_string( $image['path'] ) ) {
+				$path = $image['path'];
+			}
+
+			$path = $this->sanitize_relative_path( $path );
+			if ( '' === $path ) {
+				continue;
+			}
+
+			$directory = trim( dirname( $path ), '.' );
+			if ( '' !== $directory && preg_match( '#(^|/)ko$#', $directory ) ) {
+				return rtrim( $directory, '/' ) . '/';
+			}
+		}
+
+		return '';
+	}
+
+	/**
+	 * Replace old ko SVG icon references with PNG equivalents.
+	 *
+	 * @param string $value Image id, path, or URL.
+	 * @return string
+	 */
+	private function replace_ko_icon_svg_extension( $value ) {
+		return (string) preg_replace_callback(
+			'~(^|[=/&?/])((?:images/)?ko/KO_[0-9]{2}_[A-Za-z0-9]+)\.svg(?=$|[&#?])~',
+			function ( $matches ) {
+				return $matches[1] . $matches[2] . '.png';
+			},
+			(string) $value
+		);
+	}
+
+	/**
 	 * Import image files referenced by images.json.
 	 *
 	 * @param array<string,string> $source Content source.
@@ -305,6 +416,7 @@ class MichiRyu_Sekki_Content_Importer {
 	 */
 	private function import_images( $source, $images, $content_path, $access_token = '' ) {
 		$copied = 0;
+		$imported_paths = array();
 
 		foreach ( $images as $image ) {
 			$relative_path = is_string( $image ) ? $image : '';
@@ -314,6 +426,10 @@ class MichiRyu_Sekki_Content_Importer {
 
 			$relative_path = $this->sanitize_relative_path( $relative_path );
 			if ( '' === $relative_path ) {
+				continue;
+			}
+
+			if ( isset( $imported_paths[ $relative_path ] ) ) {
 				continue;
 			}
 
@@ -334,6 +450,7 @@ class MichiRyu_Sekki_Content_Importer {
 			if ( is_wp_error( $result ) ) {
 				return $result;
 			}
+			$imported_paths[ $relative_path ] = true;
 			$copied++;
 		}
 
@@ -397,11 +514,13 @@ class MichiRyu_Sekki_Content_Importer {
 
 		$code = (int) wp_remote_retrieve_response_code( $response );
 		if ( 200 !== $code ) {
+			$error_detail = $this->get_response_error_detail( $response );
 			return new WP_Error( 'michiryu_sekki_import_image_http', sprintf(
-				/* translators: 1: URL, 2: HTTP status code. */
-				__( 'Could not download image %1$s. HTTP status: %2$d.', 'michiryu-sekki' ),
+				/* translators: 1: URL, 2: HTTP status code, 3: optional API error details. */
+				__( 'Could not download image %1$s. HTTP status: %2$d.%3$s', 'michiryu-sekki' ),
 				$source_url,
-				$code
+				$code,
+				$error_detail
 			) );
 		}
 
@@ -457,7 +576,6 @@ class MichiRyu_Sekki_Content_Importer {
 		$args['redirection'] = 0;
 		$headers = is_array( $args['headers'] ?? null ) ? $args['headers'] : array();
 		$headers['X-MichiRyu-Content-Token'] = $access_token;
-		$headers['Authorization'] = 'Bearer ' . $access_token;
 		$args['headers'] = $headers;
 
 		return $args;
@@ -476,6 +594,47 @@ class MichiRyu_Sekki_Content_Importer {
 		}
 
 		return wp_remote_get( $url, $args );
+	}
+
+	/**
+	 * Return API error details from a non-200 response body.
+	 *
+	 * @param array<string,mixed> $response Remote response.
+	 * @return string
+	 */
+	private function get_response_error_detail( $response ) {
+		$body = (string) wp_remote_retrieve_body( $response );
+
+		if ( '' === $body || strlen( $body ) > self::MAX_JSON_BYTES ) {
+			return '';
+		}
+
+		$decoded = json_decode( $body, true );
+		if ( ! is_array( $decoded ) ) {
+			return '';
+		}
+
+		$error = sanitize_key( $decoded['error'] ?? '' );
+		$message = sanitize_text_field( (string) ( $decoded['message'] ?? '' ) );
+
+		if ( '' === $error && '' === $message ) {
+			return '';
+		}
+
+		if ( '' !== $error && '' !== $message ) {
+			return ' ' . sprintf(
+				/* translators: 1: API error code, 2: API error message. */
+				__( 'API error: %1$s - %2$s.', 'michiryu-sekki' ),
+				$error,
+				$message
+			);
+		}
+
+		return ' ' . sprintf(
+			/* translators: %s: API error code or message. */
+			__( 'API error: %s.', 'michiryu-sekki' ),
+			'' !== $error ? $error : $message
+		);
 	}
 
 	/**

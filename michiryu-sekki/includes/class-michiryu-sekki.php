@@ -316,7 +316,9 @@ class MichiRyu_Sekki {
 		$next    = MichiRyu_Sekki_Data::get_next( $season['slug'] );
 		$ko      = $args['show_ko'] ? MichiRyu_Sekki_Data::get_current_ko( $timestamp_utc, $display_timezone ) : null;
 		$story   = $args['show_story'] ? $this->get_current_story_for_season( $season, $timestamp_utc, $display_timezone ) : array();
-		$image   = $has_sekki_image ? $this->render_sekki_image( $season, $options, $args ) : '';
+		$ko_overlay = $ko && $has_sekki_image ? $this->render_ko_image_overlay( $ko, $options ) : '';
+		$image   = $has_sekki_image ? $this->render_sekki_image( $season, $options, $args, $ko_overlay ) : '';
+		$args['ko_icon_overlay'] = ! empty( $image ) && ! empty( $ko_overlay );
 		$ko_html = $ko ? $this->render_ko( $ko, $options, $args ) : '';
 
 		if ( $has_sekki_image || $args['show_map_link'] || ! empty( $story ) ) {
@@ -430,7 +432,7 @@ class MichiRyu_Sekki {
 		$excerpt = ! empty( $story['body_text'] ) ? wp_trim_words( (string) $story['body_text'], 28, '...' ) : '';
 		$story_url = ! empty( $story_id ) ? $this->get_story_reader_url( $story ) : '';
 		$stories = $this->get_all_stories();
-		$image = $this->render_journey_image( $season, $options );
+		$image = $this->render_journey_image( $season, $options, $ko );
 		$classes = array( 'michiryu-sekki-journey', 'michiryu-sekki-journey--' . sanitize_html_class( $args['variant'] ) );
 
 		ob_start();
@@ -531,7 +533,7 @@ class MichiRyu_Sekki {
 
 		$season = $this->get_story_season( $story );
 		$ko     = $this->get_story_ko( $story );
-		$image  = ! empty( $ko ) ? $this->get_asset_url( 'ko', $story['related_ko_icon'] ?? ( $ko['icon_file'] ?? '' ), '', $options ) : '';
+		$image  = ! empty( $ko ) && $this->should_render_ko_artwork( $options ) ? $this->get_asset_url( 'ko', $story['related_ko_icon'] ?? ( $ko['icon_file'] ?? '' ), '', $options ) : '';
 		$characters = $this->get_story_character_names( $story );
 		$show_navigation = ! empty( $args['show_navigation'] );
 
@@ -791,19 +793,31 @@ class MichiRyu_Sekki {
 	 *
 	 * @param array<string,mixed> $season Season record.
 	 * @param array<string,mixed> $options Saved options.
+	 * @param array<string,mixed> $ko Current ko record.
 	 * @return string
 	 */
-	private function render_journey_image( $season, $options ) {
+	private function render_journey_image( $season, $options, $ko = array() ) {
 		$url = $this->get_asset_url( 'sekki', $season['image_file'] ?? '', $options['custom_fallback_image_url'], $options );
 
 		if ( empty( $url ) ) {
 			return '';
 		}
 
+		$ko_overlay = $this->render_ko_image_overlay( $ko, $options );
+		$classes = array(
+			'michiryu-sekki-journey__image',
+			'michiryu-sekki-image-wrap',
+		);
+
+		if ( ! empty( $ko_overlay ) ) {
+			$classes[] = 'michiryu-sekki-journey__image--has-ko-overlay';
+		}
+
 		ob_start();
 		?>
-		<figure class="michiryu-sekki-journey__image michiryu-sekki-image-wrap">
-			<img src="<?php echo esc_url( $url ); ?>" alt="<?php echo esc_attr( $season['romaji'] . ' - ' . $season['english_name'] ); ?>" loading="lazy" draggable="false" />
+		<figure class="<?php echo esc_attr( implode( ' ', $classes ) ); ?>">
+			<img class="michiryu-sekki-journey__image-main" src="<?php echo esc_url( $url ); ?>" alt="<?php echo esc_attr( $season['romaji'] . ' - ' . $season['english_name'] ); ?>" loading="lazy" draggable="false" />
+			<?php echo $ko_overlay; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
 			<?php
 			echo $this->render_signature(
 				array(
@@ -1082,6 +1096,7 @@ class MichiRyu_Sekki {
 			'show_description'        => true,
 			'show_sekki_image'        => true,
 			'show_ko_icon'            => true,
+			'show_ko_artwork'         => true,
 			'show_ikebana_materials'  => true,
 			'show_story_teaser'       => true,
 			'use_bundled_images'      => true,
@@ -1128,7 +1143,7 @@ class MichiRyu_Sekki {
 		$output['default_style'] = $this->normalize_style_value( $input['default_style'] ?? '', $defaults['default_style'] );
 		$output['default_plan']  = in_array( $input['default_plan'] ?? '', $this->plans, true ) ? $input['default_plan'] : $saved['default_plan'];
 
-		foreach ( array( 'show_kanji', 'show_romanized', 'show_english', 'show_sekki_image', 'show_ko_icon', 'show_ikebana_materials', 'show_story_teaser', 'show_date_stamp', 'show_creator_link', 'content_import_ack_copyright', 'content_import_accept_license', 'content_import_ack_privacy' ) as $key ) {
+		foreach ( array( 'show_kanji', 'show_romanized', 'show_english', 'show_sekki_image', 'show_ko_icon', 'show_ko_artwork', 'show_ikebana_materials', 'show_story_teaser', 'show_date_stamp', 'show_creator_link', 'content_import_ack_copyright', 'content_import_accept_license', 'content_import_ack_privacy' ) as $key ) {
 			$output[ $key ] = ! empty( $input[ $key ] );
 		}
 
@@ -1436,7 +1451,7 @@ class MichiRyu_Sekki {
 		$icon  = '';
 		$title = $this->render_ko_name_title( $ko, $args, 'michiryu-sekki__ko-title' );
 
-		if ( 'none' !== $options['icon_style'] ) {
+		if ( $this->should_render_ko_artwork( $options ) ) {
 			$icon_url = $this->get_asset_url( 'ko', $ko['icon_file'], '', $options );
 			if ( ! empty( $icon_url ) ) {
 				$icon = sprintf(
@@ -2186,7 +2201,7 @@ class MichiRyu_Sekki {
 	private function render_map_detail( $season, $current, $current_ko, $options ) {
 		$previous = MichiRyu_Sekki_Data::get_previous( $season['slug'] );
 		$next     = MichiRyu_Sekki_Data::get_next( $season['slug'] );
-		$image    = $this->render_map_detail_image( $season, $options );
+		$image    = $this->render_map_detail_image( $season, $options, $current_ko );
 		$read_more_url = $this->get_season_detail_url( $season, $options );
 		$is_current = $season['slug'] === $current['slug'];
 		$nav_bottom = 'none' !== ( $options['map_progression_style'] ?? 'wheel' );
@@ -2478,19 +2493,32 @@ class MichiRyu_Sekki {
 	 *
 	 * @param array<string,mixed> $season Season record.
 	 * @param array<string,mixed> $options Saved options.
+	 * @param array<string,mixed> $current_ko Current ko record.
 	 * @return string
 	 */
-	private function render_map_detail_image( $season, $options ) {
+	private function render_map_detail_image( $season, $options, $current_ko = array() ) {
 		$url = $this->get_asset_url( 'sekki', $season['image_file'], $options['custom_fallback_image_url'], $options );
 
 		if ( empty( $url ) ) {
 			return '';
 		}
 
+		$ko_overlays = $this->render_map_detail_ko_overlays( $season, $options, $current_ko );
+		$classes = array(
+			'michiryu-sekki-map__thumb',
+			'michiryu-sekki-image-wrap',
+		);
+
+		if ( ! empty( $ko_overlays ) ) {
+			$classes[] = 'michiryu-sekki-map__thumb--has-ko-overlay';
+		}
+
 		return sprintf(
-			'<div class="michiryu-sekki-map__thumb michiryu-sekki-image-wrap"><img src="%1$s" alt="%2$s" loading="lazy" draggable="false" />%3$s</div>',
+			'<div class="%1$s"><img class="michiryu-sekki-map__thumb-main" src="%2$s" alt="%3$s" loading="lazy" draggable="false" />%4$s%5$s</div>',
+			esc_attr( implode( ' ', $classes ) ),
 			esc_url( $url ),
 			esc_attr( $season['romaji'] . ' - ' . $season['english_name'] ),
+			$ko_overlays,
 			$this->render_signature(
 				array(
 					'signature_position' => 'bottom-right',
@@ -2499,6 +2527,41 @@ class MichiRyu_Sekki {
 				)
 			)
 		);
+	}
+
+	/**
+	 * Render all ko artwork overlays available to one map detail image.
+	 *
+	 * @param array<string,mixed> $season Season record.
+	 * @param array<string,mixed> $options Saved options.
+	 * @param array<string,mixed> $current_ko Current ko record.
+	 * @return string
+	 */
+	private function render_map_detail_ko_overlays( $season, $options, $current_ko = array() ) {
+		$ko_records = MichiRyu_Sekki_Data::get_ko();
+		$related_ko = array_map( 'absint', $season['related_ko'] ?? array() );
+		$active_ko_number = $related_ko[0] ?? 0;
+		$overlays = array();
+
+		if ( in_array( absint( $current_ko['ko_number'] ?? 0 ), $related_ko, true ) ) {
+			$active_ko_number = absint( $current_ko['ko_number'] );
+		}
+
+		foreach ( $related_ko as $ko_number ) {
+			$ko = $ko_records[ $ko_number - 1 ] ?? array();
+
+			if ( empty( $ko ) ) {
+				continue;
+			}
+
+			$overlay = $this->render_ko_image_overlay( $ko, $options, absint( $ko['ko_number'] ) === $active_ko_number );
+
+			if ( ! empty( $overlay ) ) {
+				$overlays[] = $overlay;
+			}
+		}
+
+		return implode( '', $overlays );
 	}
 
 	/**
@@ -2684,9 +2747,11 @@ class MichiRyu_Sekki {
 	 *
 	 * @param array<string,mixed> $season Season data.
 	 * @param array<string,mixed> $options Saved options.
+	 * @param array<string,mixed> $args Render args.
+	 * @param string              $ko_overlay Ko artwork overlay markup.
 	 * @return string
 	 */
-	private function render_sekki_image( $season, $options, $args = array() ) {
+	private function render_sekki_image( $season, $options, $args = array(), $ko_overlay = '' ) {
 		if ( 'none' === $options['image_style'] ) {
 			return '';
 		}
@@ -2707,13 +2772,52 @@ class MichiRyu_Sekki {
 			$image_classes[] = 'michiryu-sekki__image--has-date-stamp';
 		}
 
+		if ( ! empty( $ko_overlay ) ) {
+			$image_classes[] = 'michiryu-sekki__image--has-ko-overlay';
+		}
+
 		return sprintf(
-			'<div class="%1$s"><img src="%2$s" alt="%3$s" loading="lazy" />%4$s%5$s</div>',
+			'<div class="%1$s"><img class="michiryu-sekki__image-main" src="%2$s" alt="%3$s" loading="lazy" />%4$s%5$s%6$s</div>',
 			esc_attr( implode( ' ', $image_classes ) ),
 			esc_url( $url ),
 			esc_attr( $season['romaji'] . ' - ' . $season['english_name'] ),
+			$ko_overlay,
 			$this->render_date_stamp( $args ),
 			$this->render_signature( $args )
+		);
+	}
+
+	/**
+	 * Render ko artwork over a Sekki image when provider artwork exists.
+	 *
+	 * @param array<string,mixed> $ko Ko data.
+	 * @param array<string,mixed> $options Saved options.
+	 * @param bool                $is_active Whether this overlay is initially visible.
+	 * @return string
+	 */
+	private function render_ko_image_overlay( $ko, $options, $is_active = true ) {
+		if ( empty( $ko ) || ! $this->should_render_ko_artwork( $options ) ) {
+			return '';
+		}
+
+		$icon_url = $this->get_asset_url( 'ko', $ko['icon_file'] ?? '', '', $options );
+
+		if ( empty( $icon_url ) ) {
+			return '';
+		}
+
+		$classes = array( 'michiryu-sekki__ko-overlay' );
+
+		if ( 'circle' === ( $options['icon_style'] ?? '' ) ) {
+			$classes[] = 'michiryu-sekki__ko-overlay--circle';
+		}
+
+		return sprintf(
+			'<img class="%1$s" src="%2$s" alt="" aria-hidden="true" loading="lazy" data-mrs-ko-overlay data-ko="%3$d"%4$s />',
+			esc_attr( implode( ' ', $classes ) ),
+			esc_url( $icon_url ),
+			absint( $ko['ko_number'] ?? 0 ),
+			$is_active ? '' : ' hidden'
 		);
 	}
 
@@ -2791,7 +2895,7 @@ class MichiRyu_Sekki {
 			$description = '';
 		}
 
-		if ( 'none' !== $options['icon_style'] ) {
+		if ( $this->should_render_ko_artwork( $options ) && empty( $args['ko_icon_overlay'] ) ) {
 			$icon_url = $this->get_asset_url( 'ko', $ko['icon_file'], '', $options );
 			if ( ! empty( $icon_url ) ) {
 				$icon = sprintf(
@@ -2810,6 +2914,16 @@ class MichiRyu_Sekki {
 			esc_html( $ko['date_range'] ),
 			'' === $description ? '' : '<p class="michiryu-sekki__ko-description">' . esc_html( $description ) . '</p>'
 		);
+	}
+
+	/**
+	 * Whether Ko artwork should render.
+	 *
+	 * @param array<string,mixed> $options Saved options.
+	 * @return bool
+	 */
+	private function should_render_ko_artwork( $options ) {
+		return ! empty( $options['show_ko_artwork'] ) && 'none' !== ( $options['icon_style'] ?? 'none' );
 	}
 
 	/**

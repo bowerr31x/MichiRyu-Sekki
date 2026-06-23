@@ -135,10 +135,16 @@ class MichiRyu_Sekki_File_Content_Provider extends MichiRyu_Sekki_Local_Content_
 	public function get_image( $id ) {
 		$images = $this->read_json_file( 'images.json' );
 		$id     = trim( (string) $id, '/' );
+		$requested_id = $id;
 
 		if ( ! is_array( $images ) || empty( $images[ $id ] ) ) {
-			$id = $this->find_alternate_image_id( $id, $images );
+			$id = is_array( $images ) ? $this->find_alternate_image_id( $id, $images ) : '';
 			if ( '' === $id ) {
+				$direct_image = $this->resolve_direct_image_file( $requested_id );
+				if ( ! empty( $direct_image ) ) {
+					return $direct_image;
+				}
+
 				return '';
 			}
 		}
@@ -233,6 +239,90 @@ class MichiRyu_Sekki_File_Content_Provider extends MichiRyu_Sekki_Local_Content_
 		return array(
 			'url' => $this->content_url . '/' . $image,
 		);
+	}
+
+	/**
+	 * Resolve an image file by standard relative path when images.json omits it.
+	 *
+	 * @param string $id Image identifier.
+	 * @return array<string,string>|string
+	 */
+	private function resolve_direct_image_file( $id ) {
+		$relative = $this->sanitize_image_path( $id );
+
+		if ( '' === $relative || '' === $this->content_url ) {
+			return '';
+		}
+
+		$base_candidates = $this->get_direct_image_candidates( $relative );
+		$candidates      = $base_candidates;
+
+		foreach ( $base_candidates as $candidate ) {
+			if ( 0 !== strpos( $candidate, 'images/' ) ) {
+				$candidates[] = 'images/' . $candidate;
+			}
+		}
+
+		foreach ( $candidates as $candidate ) {
+			if ( is_readable( $this->content_path . DIRECTORY_SEPARATOR . str_replace( '/', DIRECTORY_SEPARATOR, $candidate ) ) ) {
+				return array(
+					'url' => $this->content_url . '/' . $candidate,
+				);
+			}
+		}
+
+		return '';
+	}
+
+	/**
+	 * Return direct image path candidates, including common extension alternates.
+	 *
+	 * @param string $relative Relative image path.
+	 * @return array<int,string>
+	 */
+	private function get_direct_image_candidates( $relative ) {
+		$candidates = array( $relative );
+		$extension = strtolower( pathinfo( $relative, PATHINFO_EXTENSION ) );
+
+		if ( '' === $extension ) {
+			return $candidates;
+		}
+
+		$base = substr( $relative, 0, -1 * ( strlen( $extension ) + 1 ) );
+		foreach ( array( 'png', 'jpg', 'jpeg', 'webp', 'svg' ) as $alternate_extension ) {
+			if ( $extension !== $alternate_extension ) {
+				$candidates[] = $base . '.' . $alternate_extension;
+			}
+		}
+
+		return array_values( array_unique( $candidates ) );
+	}
+
+	/**
+	 * Sanitize a relative image path.
+	 *
+	 * @param string $path Relative path.
+	 * @return string
+	 */
+	private function sanitize_image_path( $path ) {
+		$path = ltrim( str_replace( '\\', '/', trim( (string) $path ) ), '/' );
+
+		if ( '' === $path || preg_match( '#^https?://#i', $path ) ) {
+			return '';
+		}
+
+		foreach ( explode( '/', $path ) as $segment ) {
+			if ( '' === $segment || '..' === $segment ) {
+				return '';
+			}
+		}
+
+		$extension = strtolower( pathinfo( $path, PATHINFO_EXTENSION ) );
+		if ( ! in_array( $extension, array( 'jpg', 'jpeg', 'png', 'svg', 'webp' ), true ) ) {
+			return '';
+		}
+
+		return $path;
 	}
 
 	/**
